@@ -1,0 +1,19 @@
+@font-face {
+  font-weight: 500;
+  font-style: normal;
+  font-family: "Inter";
+  src:
+    url("src/assets/fonts/inter/inter-medium.woff2") format("woff2"),
+    url("src/assets/fonts/inter/inter-medium.woff") format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 600;
+  font-style: normal;
+  font-family: "Inter";
+  src:
+    url("src/assets/fonts/inter/inter-semi-bold.woff2") format("woff2"),
+    url("src/assets/fonts/inter/inter-semi-bold.woff") format("woff");
+  font-display: swap;
+}
