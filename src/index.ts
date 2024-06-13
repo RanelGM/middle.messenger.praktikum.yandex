@@ -1,5 +1,6 @@
 import Handlebars from "handlebars";
-import { AppRoutes } from "shared";
+import { AppRoutes } from "shared/constants";
+import * as SharedUI from "shared/ui";
 import { ChatPage, ErrorNotFoundPage, ErrorServerPage, ProfilePage, SignInPage, SignUpPage } from "./pages";
 import "./assets/styles/index.scss";
 
@@ -11,6 +12,10 @@ const routes = {
   [AppRoutes.ErrorNotFound]: [ErrorNotFoundPage],
   [AppRoutes.ErrorServer]: [ErrorServerPage],
 };
+
+Object.entries(SharedUI).forEach(([name, component]) => {
+  Handlebars.registerPartial(name, component);
+});
 
 const navigateTo = (page: keyof typeof routes) => {
   const route = routes[page];

@@ -1,0 +1,13 @@
+<div class="input">
+  <label class="input__label">
+    {{#if labelText}}
+    <span class="input__label-text">{{ labelText }}</span>
+    {{/if}}
+
+    <input name="{{ name }}" type="{{#if type}}type={{ type }}{{/if}}" class="input__input" required="{{ required }}" />
+  </label>
+
+  {{#if errorMessage}}
+  <p class="input__error-message">{{ errorMessage }}</p>
+  {{/if}}
+</div>

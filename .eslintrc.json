@@ -148,7 +148,7 @@
     "import/newline-after-import": ["error", { "considerComments": true }], // Проверяет наличие пустой строки после всех импортов (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/newline-after-import.md)
     "import/no-default-export": "error", // Запрещает дефолтный экспорт (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-default-export.md)
     "import/no-named-default": "error", // Сообщает об использовании дефолтного экспорта как именованного (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-named-default.md)
-    "import/no-namespace": "error", // Запрещает импорт пространства имен (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-namespace.md)
+    "import/no-namespace": "off", // Запрещает импорт пространства имен (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-namespace.md)
     "import/no-named-as-default-member": "off",
     "import/order": [
       "warn",
