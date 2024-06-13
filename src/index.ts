@@ -22,8 +22,10 @@ const navigateTo = (page: keyof typeof routes) => {
 
   if (route) {
     const [source, args] = route;
+    const renderHeader = Handlebars.compile(SharedUI.Header);
     const renderContent = Handlebars.compile(source);
-    document.body.innerHTML = renderContent(args);
+
+    document.body.innerHTML = renderHeader("") + renderContent(args);
   }
 };
 
