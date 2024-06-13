@@ -1,0 +1,24 @@
+.error-not-found-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.error-not-found-page__content {
+  display: flex;
+  flex-direction: column;
+  gap: 65px;
+}
+
+.error-not-found-page__title-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.error-not-found-page__title-number {
+  font-size: 40px;
+  line-height: 40px;
+}
