@@ -1,0 +1,28 @@
+.sign-up-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.sign-up-page__content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 340px;
+  height: 62%;
+  padding: 50px 30px;
+  box-shadow: var(--box-shadow-around);
+}
+
+.sign-up-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sign-up-page__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
