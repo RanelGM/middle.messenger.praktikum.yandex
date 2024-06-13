@@ -1,1 +1,1 @@
-export { default as ErrorServerPage } from "./ui/error-server-page.hbs?raw";
+export { default as ErrorServerPage } from "./error-server-page.hbs?raw";
