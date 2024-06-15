@@ -1,10 +1,17 @@
-<div class="input">
-  <label class="input__label">
+<div class="input {{#if wrapperClass}}{{ wrapperClass }}{{/if}}">
+  <label class="input__label {{#if labelClass}}{{ labelClass }}{{/if}}">
     {{#if labelText}}
-    <span class="input__label-text">{{ labelText }}</span>
+    <span class="input__label-text {{#if labelClass}}{{ labelTextClass }}{{/if}}">{{ labelText }}</span>
     {{/if}}
 
-    <input name="{{ name }}" type="{{#if type}}type={{ type }}{{/if}}" class="input__input" required="{{ required }}" />
+    <input
+      class="input__input {{#if inputClass}}{{ inputClass }}{{/if}}"
+      name="{{ name }}"
+      type="{{ type }}"
+      value="{{#if value}}{{ value }}{{/if}}"
+      {{#if disabled}}disabled{{/if}}
+      {{#if required}}required{{/if}}
+    />
   </label>
 
   {{#if errorMessage}}

@@ -7,7 +7,9 @@ import "./assets/styles/index.scss";
 const routes = {
   [AppRoutes.SignIn]: [SignInPage],
   [AppRoutes.SignUp]: [SignUpPage],
-  [AppRoutes.Profile]: [ProfilePage],
+  [AppRoutes.Profile]: [ProfilePage, { isMainSubPage: true }],
+  [AppRoutes.ProfileEditInfo]: [ProfilePage, { isEditInfoSubPage: true }],
+  [AppRoutes.ProfileEditPassword]: [ProfilePage, { isEditPasswordSubPage: true }],
   [AppRoutes.Chat]: [ChatPage],
   [AppRoutes.ErrorNotFound]: [ErrorNotFoundPage],
   [AppRoutes.ErrorServer]: [ErrorServerPage],
