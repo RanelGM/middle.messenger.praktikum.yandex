@@ -1,0 +1,36 @@
+{
+  "extends": ["stylelint-config-standard-scss", "stylelint-config-hudochenkov/full"],
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "at-rule-no-unknown": null,
+    "scss/at-rule-no-unknown": true,
+    "no-unknown-animations": null,
+    "selector-max-type": 2,
+    "selector-class-pattern": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
+      }
+    ],
+    "order/order": [
+      [
+        "dollar-variables",
+        "custom-properties",
+        "at-rules",
+        "declarations",
+        "rules",
+        {
+          "type": "at-rule",
+          "name": "include",
+          "parameter": "viewport-"
+        },
+        {
+          "type": "at-rule",
+          "name": "media"
+        }
+      ],
+      { "severity": "warning" }
+    ]
+  }
+}

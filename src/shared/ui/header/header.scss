@@ -1,0 +1,32 @@
+.navigation {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.navigation__link {
+  position: relative;
+  padding: 8px 12px;
+  color: var(--color-text-primary);
+  text-decoration: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background-color: var(--color-blue-1);
+    transition: width var(--transition-default);
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+.navigation__link_disabled {
+  color: var(--color-disabled);
+  pointer-events: none;
+}

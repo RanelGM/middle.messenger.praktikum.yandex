@@ -1,0 +1,45 @@
+:root {
+  /* Все цвета, используемые в проекте */
+  --color-white: rgb(255 255 255); // #FFFFFF
+  --color-black: rgb(0 0 0); // #000000
+  --color-black-opacity-15: rgb(0 0 0 / 15%); // #00000026
+  --color-black-opacity-60: rgb(0 0 0 / 60%); // #00000099
+  --color-black-1: rgb(30 30 30); // #1E1E1E
+  --color-black-1-opacity-60: rgb(30 30 30 / 60%);
+  --color-black-1-opacity-30: rgb(30 30 30 / 30%);
+  --color-gray-1: rgb(153 153 153); // #999999
+  --color-gray-2: #efefef; // #EFEFEF
+  --color-red-1: rgb(255 47 47); // #FF2F2F
+  --color-blue-1: rgb(51 105 243); // #3369F3
+  --color-blue-1-opacity-90: rgb(51 105 243 / 90%);
+  --color-blue-1-opacity-60: rgb(51 105 243 / 60%);
+
+  /* Палитры цветов */
+  --color-text-primary: var(--color-black-1);
+  --color-text-secondary: var(--color-gray-1);
+  --color-background-primary: var(--color-white);
+  --color-background-secondary: var(--color-gray-2);
+  --color-overlay: var(--color-black-opacity-60);
+  --color-box-shadow: var(--color-black-opacity-15);
+  --color-error: var(--color-red-1);
+  --color-disabled: var(--color-black-1-opacity-30);
+  --color-border-primary: var(--color-gray-1);
+  --color-border-hover: var(--color-black-1-opacity-60);
+  --color-border-active: var(--color-black-1);
+
+  /* Шрифты */
+  --font-family-primary: "Inter", "Arial", sans-serif;
+
+  /* Значения */
+  --transition-duration-default: 0.3s;
+  --transition-default: var(--transition-duration-default) ease;
+  --box-shadow-around: 0 0 6px var(--color-box-shadow);
+  --font-size-small: 10px;
+  --font-size-medium: 12px;
+  --font-size-large: 14px;
+  --font-size-extra-large: 20px;
+  --line-height-small: 12px;
+  --line-height-medium: 14px;
+  --line-height-large: 16px;
+  --line-height-extra-large: 24px;
+}

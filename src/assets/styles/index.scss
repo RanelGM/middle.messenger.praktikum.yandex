@@ -1,0 +1,38 @@
+@import "./modern-normalize";
+@import "./variables";
+@import "../fonts/inter/stylesheet";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: var(--color-text-primary);
+  font-weight: 500;
+  font-family: var(--font-family-primary);
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+}
+
+.text-dots {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

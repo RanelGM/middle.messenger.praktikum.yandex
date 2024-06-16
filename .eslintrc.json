@@ -1,0 +1,220 @@
+{
+  "root": true,
+  "env": { "browser": true, "es2020": true },
+  "extends": [
+    "eslint:recommended",
+    "plugin:deprecation/recommended",
+    "plugin:unicorn/recommended",
+    "plugin:promise/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/strict-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": true
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": true
+    }
+  },
+  "ignorePatterns": ["dist"],
+  "overrides": [
+    {
+      "files": "./vite.config.ts",
+      "rules": {
+        "import/no-nodejs-modules": "off",
+        "import/no-extraneous-dependencies": "off",
+        "import/no-default-export": "off"
+      }
+    }
+  ],
+  "rules": {
+    /* --- eslint rules --- */
+    "array-callback-return": "error", // Требует возврат значения в колбэке методов массива (https://eslint.org/docs/latest/rules/array-callback-return)
+    "no-await-in-loop": "error", // Запрещает использование await внутри цикла (https://eslint.org/docs/latest/rules/no-await-in-loop)
+    "no-self-compare": "error", // Запрещает сравнения, когда оба значения абсолютно одинаковы (https://eslint.org/docs/latest/rules/no-self-compare)
+    "no-template-curly-in-string": "warn", // Сообщает об использовании шаблонных строк в обычных кавычках (https://eslint.org/docs/latest/rules/no-template-curly-in-string)
+    "require-atomic-updates": "error", // Запрещает присваивания, которые могут привести к race condition (https://eslint.org/docs/latest/rules/require-atomic-updates)
+    "curly": "warn", // Сообщает, что все условия и циклы должны использовать фигурные скобки (https://eslint.org/docs/latest/rules/curly)
+    "default-case": "error", // Запрещает пропуск default case внутри switch (https://eslint.org/docs/latest/rules/default-case)
+    "default-case-last": "error", // Запрещает расположение default case не в конце switch (https://eslint.org/docs/latest/rules/default-case-last)
+    "eqeqeq": "error", // Запрещает использовать нестрогие равенства и неравенства (https://eslint.org/docs/latest/rules/eqeqeq)
+    "func-style": "warn", // Сообщает о создании функции не в function expression стиле (https://eslint.org/docs/latest/rules/func-style)
+    "guard-for-in": "error", // Требует, чтобы оператор for-in включал в себя условие (https://eslint.org/docs/latest/rules/guard-for-in)
+    "id-length": ["error", { "exceptions": ["i", "j", "k"], "properties": "never" }], // Запрещает названия переменных короче 2 символов (https://eslint.org/docs/latest/rules/id-length)
+    "no-alert": "warn", // Сообщает об использовании alert, confirm, и prompt (https://eslint.org/docs/latest/rules/no-alert)
+    "no-array-constructor": "error", //Запрещает использование конструктора Array (https://eslint.org/docs/latest/rules/no-array-constructor)
+    "no-bitwise": "error", // Запрещает побитовые операторы (https://eslint.org/docs/latest/rules/no-bitwise)
+    "no-caller": "error", // Запрещает использование arguments.caller и arguments.callee (https://eslint.org/docs/latest/rules/no-caller)
+    "no-console": "off", // Сообщает об использовании console (https://eslint.org/docs/latest/rules/no-console)
+    // "no-continue": "error", // Запрещает использование continue в циклах (https://eslint.org/docs/latest/rules/no-continue)
+    // "no-div-regex": "error", // Запрещает использование знака равенства в начале регулярных выражений (https://eslint.org/docs/latest/rules/no-div-regex)
+    "no-else-return": "warn", // Сообщает об использовании else после блока if c return (https://eslint.org/docs/latest/rules/no-else-return)
+    "no-eval": "error", // Запрещает использование eval (https://eslint.org/docs/latest/rules/no-eval)
+    "no-extend-native": "error", // Запрещает расширение нативных типов (https://eslint.org/docs/latest/rules/no-extend-native)
+    "no-extra-label": "error", // Запрещает использование ненужных меток для циклов (https://eslint.org/docs/latest/rules/no-extra-label)
+    "no-implicit-coercion": "error", // Запрещает сокращенное преобразование типов (https://eslint.org/docs/latest/rules/no-implicit-coercion)
+    "no-label-var": "error", // Запрещает имена меток для циклов, которые совпадают с объявленными переменными (https://eslint.org/docs/latest/rules/no-label-var)
+    // "no-labels": "error", // Запрещает использование меток для циклов (https://eslint.org/docs/latest/rules/no-labels)
+    "no-lone-blocks": "warn", //  Сообщает об использовании ненужных вложенных блоков (https://eslint.org/docs/latest/rules/no-lone-blocks)
+    "no-lonely-if": "warn", //  Сообщает, если используется отдельный if, если он единственный оператор внутри else (https://eslint.org/docs/latest/rules/no-lonely-if)
+    "no-multi-assign": "error", // Запрещает использование цепочек присваивания значения переменным (https://eslint.org/docs/latest/rules/no-multi-assign)
+    "no-multi-str": "error", // Запрещает использование многострочных строк (https://eslint.org/docs/latest/rules/no-multi-str)
+    "no-new": "error", // Запрещает использование оператора new вне присваивания или сравнения (https://eslint.org/docs/latest/rules/no-new)
+    "no-new-func": "error", // Запрещает использование оператора new с объектом Function (https://eslint.org/docs/latest/rules/no-new-func)
+    "no-object-constructor": "error", // Запрещает вызов конструктора объекта без аргументов (https://eslint.org/docs/latest/rules/no-object-constructor)
+    "no-new-wrappers": "error", // Запрещает использование оператора new со строковыми, числовыми и логическими объектами (https://eslint.org/docs/latest/rules/no-new-wrappers)
+    "no-octal-escape": "error", // Запрещает использование восьмеричного экранирования (https://eslint.org/docs/latest/rules/no-octal-escape)
+    "no-param-reassign": ["error", { "props": false }], // Запрещает переназначение параметров функции (https://eslint.org/docs/latest/rules/no-param-reassign)
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }], // Разрешает унарные операторы ++ и -- только для циклов (https://eslint.org/docs/latest/rules/no-plusplus)
+    "no-proto": "error", // Запрещает использование __proto__ (https://eslint.org/docs/latest/rules/no-proto)
+    "no-return-assign": "error", // Запрещает присваивание в return (https://eslint.org/docs/latest/rules/no-return-assign)
+    "no-sequences": "error", // Запрещает оператор "," // (https://eslint.org/docs/latest/rules/no-sequences)
+    "no-unneeded-ternary": "error", // Запрещает тернарные операторы, если их можно упростить (https://eslint.org/docs/latest/rules/no-unneeded-ternary)
+    "no-useless-computed-key": "error", // Запрещает ненужные вычисляемые ключи свойств в объектах (https://eslint.org/docs/latest/rules/no-useless-computed-key)
+    "no-useless-concat": "error", // Запрещает ненужную конкатенацию строк (https://eslint.org/docs/latest/rules/no-useless-concat)
+    "no-useless-rename": "error", // Запрещает дублирующее переименование импортов, экспортов и деструктурированных значений (https://eslint.org/docs/latest/rules/no-useless-rename)
+    "no-useless-return": "error", // Запрещает ненужный return (https://eslint.org/docs/latest/rules/no-useless-return)
+    "no-var": "error", // Запрещает использование var (https://eslint.org/docs/latest/rules/no-var)
+    // "operator-assignment": "error", // Предпочитать использование сокращенных операторов присваивания (https://eslint.org/docs/latest/rules/operator-assignment)
+    "prefer-arrow-callback": "error", // Требует использование стрелочных функций для колбэков (https://eslint.org/docs/latest/rules/prefer-arrow-callback)
+    "prefer-const": "error", // Предпочитать использование const для переменных, которые не переназначаются (https://eslint.org/docs/latest/rules/prefer-const)
+    // "prefer-destructuring": "error", // Предпочитать использование деструктуризации (https://eslint.org/docs/latest/rules/prefer-destructuring)
+    // "prefer-exponentiation-operator": "error", // Предпочитать использование оператора возведения в степень (https://eslint.org/docs/latest/rules/prefer-exponentiation-operator)
+    // "prefer-object-has-own": "error", // Предпочитать использование Object.hasOwn (https://eslint.org/docs/latest/rules/prefer-object-has-own)
+    "prefer-object-spread": "error", // Предпочитать использование spread оператора при Object.assign (https://eslint.org/docs/latest/rules/prefer-object-spread)
+    // "prefer-regex-literals": "error", // Предпочитать использование RegExp литералов (https://eslint.org/docs/latest/rules/prefer-regex-literals)
+    "prefer-rest-params": "error", // Предпочитать использование rest параметров (https://eslint.org/docs/latest/rules/prefer-rest-params)
+    "prefer-spread": "error", // Предпочитать использование spread оператора (https://eslint.org/docs/latest/rules/prefer-spread)
+    "prefer-template": "error", // Предпочитать использование шаблоны строк (https://eslint.org/docs/latest/rules/prefer-template)
+    "radix": "error", // Требует всегда указывать систему счисления для parseInt (https://eslint.org/docs/latest/rules/radix)
+    "sort-imports": ["warn", { "ignoreDeclarationSort": true }], // Проверяет, что все члены импорта отсортированы (https://eslint.org/docs/latest/rules/sort-imports)
+    "spaced-comment": ["warn", "always", { "markers": ["/"] }], // Сообщает об отсутствии отступа в комментарии, разрешая 3 слэша (https://eslint.org/docs/latest/rules/spaced-comment)
+    "symbol-description": "error", // Требует наличия описания у Symbol (https://eslint.org/docs/latest/rules/symbol-description)
+    "yoda": "error", // Обеспечивает консистентный стиль в условиях, когда переменная сравнивается с литеральным значением (https://eslint.org/docs/latest/rules/yoda)
+    "default-param-last": "off", // Переопределено в typescript-eslint
+    "init-declarations": "off", // Переопределено в typescript-eslint
+    "no-invalid-this": "off", // Переопределено в typescript-eslint
+    "no-loop-func": "off", // Переопределено в typescript-eslint
+    "no-magic-numbers": "off", // Переопределено в typescript-eslint
+    "no-redeclare": "off", // Переопределено в typescript-eslint
+    "no-shadow": "off", // Переопределено в typescript-eslint
+    "no-unused-expressions": "off", // Переопределено в typescript-eslint
+    "no-use-before-define": "off", // Переопределено в typescript-eslint
+    "padding-line-between-statements": "off", // Переопределено в typescript-eslint
+
+    /* --- unicorn plugin rules --- */
+    "unicorn/consistent-function-scoping": "off", // Отключает ошибку, когда функция объявлена не на самом высоком уровне, который для нее возможен (https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/consistent-function-scoping.md)
+    "unicorn/no-null": "off", // Отключает запрет использования null (https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-null.md)
+    "unicorn/prevent-abbreviations": "off", // Отключает запрет аббревиатур (https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prevent-abbreviations.md)
+    "unicorn/filename-case": "off", // Отключает запрет наименования файлов строго в kebab-case (https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/filename-case.md)
+    "unicorn/consistent-destructuring": "off", // Отключает обязательное требование деструктуризации при передаче пропсов (https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/consistent-destructuring.md)
+    "unicorn/expiring-todo-comments": "off", // Отключает требование добавление срока истечения для TODO (https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/expiring-todo-comments.md)
+    "unicorn/no-array-for-each": "off", // Отключает запрет на использование forEach (https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-array-for-each.md)
+    "unicorn/no-array-reduce": "off", // Отключает запрет на использование reduce (https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-array-reduce.md)
+    "unicorn/no-for-loop": "off", // Отключает запрет на for loop (https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-for-loop.md)
+
+    /* --- promise plugin rules --- */
+    "promise/no-multiple-resolved": "error", // Запрещает возможный множественный resolve промиса (https://github.com/eslint-community/eslint-plugin-promise/blob/main/docs/rules/no-multiple-resolved.md)
+    "promise/prefer-await-to-then": "error", // Предпочитать синтаксис async/await обычным промисам (https://github.com/eslint-community/eslint-plugin-promise/blob/main/docs/rules/prefer-await-to-then.md)
+
+    /* --- import plugin rules --- */
+    "import/no-deprecated": "warn", // Сообщает об импорте устаревшего (deprecated) метода (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-deprecated.md)
+    "import/no-empty-named-blocks": "error", // Запрещает использование конструкции import {} from 'mod' (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-empty-named-blocks.md)
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": false,
+        "optionalDependencies": false,
+        "peerDependencies": false
+      }
+    ], // Запрещает импорт зависимостей, которые в package.json находятся не в "dependencies" (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-extraneous-dependencies.md)
+    "import/no-mutable-exports": "error", // Запрещает импорт var и let переменных (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-mutable-exports.md)
+    // "import/no-unused-modules": ["warn", { "unusedExports": true }], // Сообщает о модулях, которые нигде не используются (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-unused-modules.md)
+    "import/no-nodejs-modules": "error", // Запрещает использование встроенных Node.js модулей (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-nodejs-modules.md)
+    "import/no-absolute-path": "error", // Запрещает использование абсолютных путей относительно компьютера (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-absolute-path.md)
+    "import/no-cycle": "error", // Запрещает использование циклических зависимостей (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-cycle.md)
+    "import/no-self-import": "error", // Запрещает модулю импортировать самого себя (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-self-import.md)
+    "import/no-useless-path-segments": ["error", { "noUselessIndex": true }], // Сообщает о ненужных сегментах импорта (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-useless-path-segments.md)
+    "import/no-webpack-loader-syntax": "error", // Запретить синтаксис Webpack лоадеров (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-webpack-loader-syntax.md)
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level"], // Поддерживает консистентное использование импорта типов (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/consistent-type-specifier-style.md)
+    "import/first": "error", // Запрещает расположение импортов не в самом начале файла (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/first.md)
+    "import/newline-after-import": ["error", { "considerComments": true }], // Проверяет наличие пустой строки после всех импортов (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/newline-after-import.md)
+    "import/no-default-export": "error", // Запрещает дефолтный экспорт (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-default-export.md)
+    "import/no-named-default": "error", // Сообщает об использовании дефолтного экспорта как именованного (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-named-default.md)
+    "import/no-namespace": "off", // Запрещает импорт пространства имен (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-namespace.md)
+    "import/no-named-as-default-member": "off",
+    "import/order": [
+      "warn",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type", "unknown"],
+        "pathGroups": [
+          {
+            "pattern": "*.?(s)css",
+            "group": "unknown",
+            "patternOptions": { "matchBase": true },
+            "position": "after"
+          }
+        ],
+        "distinctGroup": false,
+        "newlines-between": "never",
+        "alphabetize": { "order": "asc", "orderImportKind": "asc" },
+        "warnOnUnassignedImports": true
+      }
+    ], // Проверяет порядок импортов (https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/order.md)
+
+    /* --- typescript-eslint plugin rules --- */
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"], // Проверяет консистентное использование типов (позволяет только type, а не interface) (https://typescript-eslint.io/rules/consistent-type-definitions)
+    "@typescript-eslint/consistent-type-exports": "error", // Обеспечивает консистентный экспорт типов (https://typescript-eslint.io/rules/consistent-type-exports)
+    "@typescript-eslint/consistent-type-imports": "error", // Обеспечивает консистентный импорт типов (https://typescript-eslint.io/rules/consistent-type-imports)
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "variable",
+        "format": ["camelCase", "PascalCase", "UPPER_CASE"]
+      },
+      {
+        "selector": "function",
+        "format": ["camelCase"]
+      },
+      {
+        "selector": "typeLike",
+        "format": ["PascalCase"]
+      },
+      {
+        "selector": "variable",
+        "types": ["boolean"],
+        "format": ["PascalCase"],
+        "prefix": ["is", "should", "has", "can", "did", "will"]
+      }
+    ], // Обеспечивает соответствие названий соглашению об именовании (https://typescript-eslint.io/rules/naming-convention)
+    "@typescript-eslint/no-unnecessary-qualifier": "error", // Запрещает использование ненужного квалификатора в enum и namespace (https://typescript-eslint.io/rules/no-unnecessary-qualifier)
+    "@typescript-eslint/no-useless-empty-export": "error", // Запрещает пустой импорт (https://typescript-eslint.io/rules/no-useless-empty-export)
+    "@typescript-eslint/prefer-enum-initializers": "error", // Требует, чтобы значение каждого элемента в enum было явно инициализировано (https://typescript-eslint.io/rules/prefer-enum-initializers)
+    "@typescript-eslint/promise-function-async": "error", // Проверяет, что все функции, возвращающие промис, асинхронные (https://typescript-eslint.io/rules/promise-function-async)
+    "@typescript-eslint/require-array-sort-compare": "error", // Требует функцию сравнения для метода массива sort() (https://typescript-eslint.io/rules/require-array-sort-compare)
+    "@typescript-eslint/switch-exhaustiveness-check": "error", // Требует, чтобы операторы switch-case были исчерпывающими с union типом (https://typescript-eslint.io/rules/switch-exhaustiveness-check)
+    "@typescript-eslint/default-param-last": "error", // Делает параметры со значением по умолчанию последними (https://typescript-eslint.io/rules/default-param-last)
+    "@typescript-eslint/init-declarations": "error", // Требует инициализацию переменных при их объявлении (https://typescript-eslint.io/rules/init-declarations)
+    "@typescript-eslint/no-extra-semi": "error", // Сообщает о ненужных точках с запятой (https://typescript-eslint.io/rules/no-extra-semi)
+    "@typescript-eslint/no-invalid-this": "error", // Запрещает использование this вне классов (https://typescript-eslint.io/rules/no-invalid-this)
+    "@typescript-eslint/no-loop-func": "error", // Запрещает объявление функций внутри цикла, использующие небезопасные ссылки (https://typescript-eslint.io/rules/no-loop-func)
+    "@typescript-eslint/no-unused-expressions": "error", // Запрещает неиспользуемые выражения (https://typescript-eslint.io/rules/no-unused-expressions)
+    "@typescript-eslint/no-use-before-define": "error", // Запрещает использование переменных до их определения (https://typescript-eslint.io/rules/no-use-before-define)
+    "@typescript-eslint/padding-line-between-statements": [
+      "warn",
+      { "blankLine": "always", "prev": "*", "next": "return" },
+      { "blankLine": "always", "prev": "*", "next": "if" },
+      { "blankLine": "always", "prev": "*", "next": "for" }
+    ], // Добавляет пустую строку перед return (https://typescript-eslint.io/rules/padding-line-between-statements)
+    "@typescript-eslint/non-nullable-type-assertion-style": "off", // Отключает рекомендацию использовать оператор ненулевого утверждения (https://typescript-eslint.io/rules/non-nullable-type-assertion-style)
+    "@typescript-eslint/prefer-for-of": "off", // Отключает требование использовать for of вместо for loop
+    "@typescript-eslint/no-unused-vars": "warn"
+  }
+}
