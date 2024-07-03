@@ -1,3 +1,4 @@
+import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
 import { LinkAsButton } from "shared/ui";
 import { ProfileFormInfo } from "../../profile-form-info/profile-form-info";
@@ -8,18 +9,26 @@ export class ProfileMainSubPage extends Block {
     super({
       ProfileFormInfo: new ProfileFormInfo({ isReadonly: true }),
       LinkChangeData: new LinkAsButton({
+        href: AppRoutes.ProfileEditInfo,
+        page: AppRoutes.ProfileEditInfo,
         text: "Изменить данные",
         variant: "white",
         size: "medium",
-        page: "profile/edit-info",
       }),
       LinkChangePassword: new LinkAsButton({
+        href: AppRoutes.ProfileEditPassword,
+        page: AppRoutes.ProfileEditPassword,
         text: "Изменить пароль",
         variant: "white",
         size: "medium",
-        page: "profile/edit-password",
       }),
-      LinkSignOut: new LinkAsButton({ text: "Выйти", variant: "white", size: "medium", page: "signin" }),
+      LinkSignOut: new LinkAsButton({
+        href: AppRoutes.SignIn,
+        page: AppRoutes.SignIn,
+        text: "Выйти",
+        variant: "white",
+        size: "medium",
+      }),
     });
   }
 

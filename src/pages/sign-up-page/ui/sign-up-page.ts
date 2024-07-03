@@ -1,3 +1,4 @@
+import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
 import { Input, LinkAsButton, PageTitle } from "shared/ui";
 import styles from "./sign-up-page.module.scss";
@@ -13,8 +14,18 @@ export class SignUpPage extends Block {
       InputPhone: new Input({ labelText: "Телефон", name: "phone", type: "tel" }),
       InputPassword: new Input({ labelText: "Пароль", name: "password", type: "password" }),
       InputPasswordRepeat: new Input({ labelText: "Пароль (ещё раз)", name: "password-repeat", type: "password" }),
-      SignUp: new LinkAsButton({ text: "Зарегистрироваться", href: "/signup", variant: "blue", page: "signup" }),
-      SignIn: new LinkAsButton({ text: "Войти", href: "/signin", variant: "white", page: "signin" }),
+      SignUp: new LinkAsButton({
+        href: AppRoutes.Profile,
+        page: AppRoutes.Profile,
+        text: "Зарегистрироваться",
+        variant: "blue",
+      }),
+      SignIn: new LinkAsButton({
+        href: AppRoutes.SignIn,
+        page: AppRoutes.SignIn,
+        text: "Войти",
+        variant: "white",
+      }),
     });
   }
 

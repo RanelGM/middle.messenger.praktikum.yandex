@@ -1,3 +1,4 @@
+import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
 import { LinkAsButton } from "shared/ui";
 import { ProfileInput } from "../../profile-input/profile-input";
@@ -25,10 +26,11 @@ export class ProfileEditPasswordSubPage extends Block {
         value: "foobarbaz",
       }),
       LinkAsButton: new LinkAsButton({
+        href: AppRoutes.Profile,
+        page: AppRoutes.Profile,
         text: "Сохранить",
         variant: "blue",
         size: "medium",
-        page: "profile",
       }),
     });
   }

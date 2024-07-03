@@ -1,3 +1,4 @@
+import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
 import { LinkAsButton } from "shared/ui";
 import { ProfileFormInfo } from "../../profile-form-info/profile-form-info";
@@ -8,11 +9,11 @@ export class ProfileEditInfoSubPage extends Block {
     super({
       ProfileFormInfo: new ProfileFormInfo({}),
       LinkAsButton: new LinkAsButton({
+        href: AppRoutes.Profile,
+        page: AppRoutes.Profile,
         text: "Сохранить",
-        href: "/profile",
         variant: "blue",
         size: "medium",
-        page: "profile",
       }),
     });
   }
