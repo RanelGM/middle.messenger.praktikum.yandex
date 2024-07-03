@@ -1,18 +1,6 @@
 export { Button, LinkAsButton } from "./button";
 export { Header } from "./header";
-
-export {
-  IconArrowCircle,
-  IconArrowTick,
-  IconCirclePoint,
-  IconClip,
-  IconKebab,
-  IconSearch,
-  IconSquareCorner,
-  IconSquareImage,
-  IconTickDouble,
-  IconTickSingle,
-} from "./icons";
-
+export { Icon } from "./icons";
+export type { InputProps } from "./input";
 export { Input } from "./input";
 export { PageTitle } from "./page-title";

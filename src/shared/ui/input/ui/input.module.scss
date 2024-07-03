@@ -1,21 +1,26 @@
-.input__label {
+.inputWrapper,
+.label {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.input__label-text {
+.labelText {
   color: var(--color-text-secondary);
   font-size: var(--font-size-medium);
   line-height: var(--font-size-medium);
   transition: color var(--transition-default);
 
-  .input__label:focus-within & {
+  .label:focus-within & {
     color: var(--color-text-primary);
   }
 }
 
-.input__input {
+.labelText_error {
+  color: var(--color-error);
+}
+
+.input {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -41,11 +46,11 @@
   }
 }
 
-.input__input_error {
+.input_error {
   border-color: var(--color-error);
 }
 
-.input__error-message {
+.errorMessage {
   color: var(--color-error);
   font-size: var(--font-size-small);
   line-height: var(--font-size-small);

@@ -1,3 +1,2 @@
-import "./input.scss";
-
-export { default as Input } from "./input.hbs?raw";
+export type { InputProps } from "./ui/input";
+export { Input } from "./ui/input";

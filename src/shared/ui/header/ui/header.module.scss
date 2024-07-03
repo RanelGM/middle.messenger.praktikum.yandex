@@ -4,7 +4,7 @@
   align-items: center;
 }
 
-.navigation__link {
+.navLink {
   position: relative;
   padding: 8px 12px;
   color: var(--color-text-primary);
@@ -24,9 +24,14 @@
   &:hover::after {
     width: 100%;
   }
+
+  &:disabled {
+    color: var(--color-disabled);
+    pointer-events: none;
+  }
 }
 
-.navigation__link_disabled {
+.navLink_disabled {
   color: var(--color-disabled);
   pointer-events: none;
 }

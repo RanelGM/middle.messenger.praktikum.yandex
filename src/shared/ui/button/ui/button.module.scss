@@ -1,5 +1,5 @@
 .button,
-.link-as-button {
+.linkAsButton {
   display: flex;
   gap: 15px;
   justify-content: center;
@@ -28,7 +28,7 @@
 }
 
 .button_variant,
-.link-as-button_variant {
+.linkAsButton_variant {
   &-blue {
     border-color: var(--color-blue-1);
     background-color: var(--color-blue-1);
@@ -53,7 +53,7 @@
 }
 
 .button_size,
-.link-as-button_size {
+.linkAsButton_size {
   &-small {
     font-size: var(--font-size-small);
     line-height: var(--font-size-small);
