@@ -32,6 +32,13 @@
         "import/no-extraneous-dependencies": "off",
         "import/no-default-export": "off"
       }
+    },
+    {
+      "files": "./src/shared/types/typed-scss.d.ts",
+      "rules": {
+        "@typescript-eslint/consistent-indexed-object-style": "off",
+        "import/no-default-export": "off"
+      }
     }
   ],
   "rules": {
