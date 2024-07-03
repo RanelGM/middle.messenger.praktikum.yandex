@@ -1,0 +1,18 @@
+.main {
+  display: flex;
+  min-height: 100vh;
+}
+
+.contentPositioner {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  padding: 40px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 510px;
+}

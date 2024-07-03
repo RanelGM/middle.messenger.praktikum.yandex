@@ -1,0 +1,24 @@
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 65px;
+}
+
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.titleNumber {
+  font-size: 40px;
+  line-height: 40px;
+}

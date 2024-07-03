@@ -1,6 +1,7 @@
 import { Block } from "shared/constructors";
 import { cn } from "shared/lib";
 import { DefaultButtonSize, DefaultColorVariant } from "../model/constants";
+import type { Icon } from "../../icons";
 import type { ButtonSize, ColorVariant } from "../model/types";
 import styles from "./button.module.scss";
 
@@ -11,6 +12,7 @@ type Props = {
   variant?: ColorVariant;
   size?: ButtonSize;
   className?: string;
+  Icon?: Icon;
 };
 
 export class LinkAsButton extends Block {
@@ -29,6 +31,6 @@ export class LinkAsButton extends Block {
   }
 
   override render() {
-    return /* HTML */ `<a href="{{ href }}" page="{{ page }}" class="{{ className }}">{{ text }}</a>`;
+    return /* HTML */ ` <a href="{{ href }}" page="{{ page }}" class="{{ className }}"> {{{ Icon }}} {{ text }} </a> `;
   }
 }
