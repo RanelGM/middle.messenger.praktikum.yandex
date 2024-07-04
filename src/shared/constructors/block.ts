@@ -6,7 +6,7 @@ type PropsWithChildrenProps = Record<string, unknown>;
 
 type ChildrenProps = Record<string, Block>;
 
-type BlockProps = {
+export type BlockProps = {
   attr?: Record<string, string>;
   events?: Record<string, EventCallback>;
   [key: string]: unknown;
