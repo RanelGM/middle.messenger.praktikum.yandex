@@ -12,3 +12,12 @@ export const validatePassword = (value: string) => {
     errorMessage: isValid ? "" : "От 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра",
   };
 };
+
+export const validatePasswordRepeat = (prev: string, repeat: string) => {
+  const isValid = prev === repeat;
+
+  return {
+    isValid,
+    errorMessage: isValid ? "" : "Не совпадает с введенным ранее значением",
+  };
+};

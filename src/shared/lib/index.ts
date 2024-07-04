@@ -4,5 +4,8 @@ export { isTruthy } from "./misc/isTruthy";
 
 export { typedObjectKeys } from "./object/typedObjectKeys";
 
+export { validateEmail } from "./validators/validateEmail";
 export { validateLogin } from "./validators/validateLogin";
-export { validatePassword } from "./validators/validatePassword";
+export { validateName } from "./validators/validateName";
+export { validatePassword, validatePasswordRepeat } from "./validators/validatePassword";
+export { validatePhone } from "./validators/validatePhone";
