@@ -1,4 +1,5 @@
-export { cn } from "./classNames";
-export { isFalsy } from "./isFalsy";
-export { isTruthy } from "./isTruthy";
-export { typedObjectKeys } from "./typedObjectKeys";
+export { cn } from "./misc/classNames";
+export { isFalsy } from "./misc/isFalsy";
+export { isTruthy } from "./misc/isTruthy";
+
+export { typedObjectKeys } from "./object/typedObjectKeys";
