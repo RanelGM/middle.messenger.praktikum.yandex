@@ -17,7 +17,7 @@ type ListsProps = Record<string, unknown[]>;
 export class Block {
   static EVENTS = {
     INIT: "init",
-    FLOW_CMD: "flow:component-did-mount",
+    FLOW_CDM: "flow:component-did-mount",
     FLOW_CDU: "flow:component-did-update",
     FLOW_RENDER: "flow:render",
   };
@@ -29,71 +29,15 @@ export class Block {
   lists: ListsProps;
   eventBus: () => EventBus;
 
-  constructor(propsWithChildrenProps: PropsWithChildrenProps = {}) {
+  constructor(propsWithChildren = {}) {
     const eventBus = new EventBus();
-    const { children, props, lists } = this._getChildrenPropsAndProps(propsWithChildrenProps);
-
-    this.props = this._makePropsProxy(props);
+    const { props, children, lists } = this._getChildrenPropsAndProps(propsWithChildren);
+    this.props = this._makePropsProxy({ ...props });
     this.children = children;
     this.lists = lists;
     this.eventBus = () => eventBus;
     this._registerEvents(eventBus);
-
     eventBus.emit(Block.EVENTS.INIT);
-  }
-
-  _getChildrenPropsAndProps(propsWithChildrenProps: PropsWithChildrenProps) {
-    const children: ChildrenProps = {};
-    const props: BlockProps = {};
-    const lists: ListsProps = {};
-
-    Object.entries(propsWithChildrenProps).forEach(([key, value]) => {
-      if (value instanceof Block) {
-        children[key] = value;
-
-        return;
-      }
-
-      if (Array.isArray(value)) {
-        lists[key] = value;
-
-        return;
-      }
-
-      props[key] = value;
-    });
-
-    return { children, props, lists };
-  }
-
-  _makePropsProxy(blockProps: BlockProps): BlockProps {
-    return new Proxy(blockProps, {
-      get(target, prop: string) {
-        const value = target[prop];
-
-        // FIXME:
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return typeof value === "function" ? value.bind(value) : value;
-      },
-      set(target, prop: string, value) {
-        const prevTarget = { ...target };
-
-        target[prop] = value;
-        (this as Block).eventBus().emit(Block.EVENTS.FLOW_CDU, prevTarget);
-
-        return true;
-      },
-      deleteProperty() {
-        throw new Error("Нет доступа");
-      },
-    });
-  }
-
-  _registerEvents(eventBus: EventBus) {
-    eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_CMD, this._componentDidMount.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this) as EventCallback);
-    eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
   _addEvents() {
@@ -107,13 +51,19 @@ export class Block {
     });
   }
 
+  _registerEvents(eventBus: EventBus) {
+    eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this) as EventCallback);
+    eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+  }
+
   init() {
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
 
   _componentDidMount() {
     this.componentDidMount();
-
     Object.values(this.children).forEach((child) => {
       child.dispatchComponentDidMount();
     });
@@ -124,66 +74,62 @@ export class Block {
   }
 
   dispatchComponentDidMount() {
-    this.eventBus().emit(Block.EVENTS.FLOW_CMD);
+    this.eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
 
-  _componentDidUpdate(prevProps: BlockProps, nextProps: BlockProps) {
-    const hasUpdates = this.componentDidUpdate(prevProps, nextProps);
+  _componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
+    const hasUpdates = this.componentDidUpdate(oldProps, newProps);
 
     if (hasUpdates) {
       this._render();
     }
   }
 
-  componentDidUpdate(prevProps: BlockProps, nextProps: BlockProps) {
+  componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
     return true;
   }
+
+  _getChildrenPropsAndProps(propsWithChildrenProps: PropsWithChildrenProps) {
+    const children: ChildrenProps = {};
+    const props: BlockProps = {};
+    const lists: ListsProps = {};
+
+    Object.entries(propsWithChildrenProps).forEach(([key, value]) => {
+      if (value instanceof Block) {
+        children[key] = value;
+      } else if (Array.isArray(value)) {
+        lists[key] = value;
+      } else {
+        props[key] = value;
+      }
+    });
+
+    return { children, props, lists };
+  }
+
+  addAttributes() {
+    const { attr = {} } = this.props;
+
+    Object.entries(attr).forEach(([key, value]) => {
+      this._element?.setAttribute(key, value);
+    });
+  }
+
+  setProps = (nextProps: BlockProps | undefined | null) => {
+    if (!nextProps) {
+      return;
+    }
+
+    Object.assign(this.props, nextProps);
+  };
 
   get element() {
     return this._element;
   }
 
-  addAttributes() {
-    if (!this.element) {
-      return;
-    }
-
-    const { attr = {} } = this.props;
-
-    Object.entries(attr).forEach(([key, value]) => {
-      this.element?.setAttribute(key, value);
-    });
-  }
-
-  getContent() {
-    return this.element;
-  }
-
-  _createDocumentElement(tagName: string) {
-    return document.createElement(tagName);
-  }
-
-  show() {
-    const element = this.getContent();
-
-    if (element) {
-      element.style.display = "block";
-    }
-  }
-
-  hide() {
-    const element = this.getContent();
-
-    if (element) {
-      element.style.display = "none";
-    }
-  }
-
   _render() {
     const propsAndStubs = { ...this.props };
-
     const tmpId = Math.floor(100_000 + Math.random() * 900_000);
-
     Object.entries(this.children).forEach(([key, child]) => {
       propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
     });
@@ -206,17 +152,14 @@ export class Block {
 
     Object.entries(this.lists).forEach(([key, child]) => {
       const listCont = this._createDocumentElement("template") as HTMLTemplateElement;
-
       child.forEach((item) => {
         if (item instanceof Block) {
-          const content = item.getContent() ?? "";
-          listCont.content.append(content);
+          listCont.content.append(item.getContent() ?? "");
         } else {
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           listCont.content.append(`${item}`);
         }
       });
-
       const stub = fragment.content.querySelector(`[data-id="__l_${tmpId}"]`);
       stub?.replaceWith(listCont.content);
     });
@@ -226,7 +169,6 @@ export class Block {
     if (this._element && newElement) {
       this._element.replaceWith(newElement);
     }
-
     this._element = newElement;
     this._addEvents();
     this.addAttributes();
@@ -234,5 +176,53 @@ export class Block {
 
   render() {
     return "";
+  }
+
+  getContent() {
+    return this.element;
+  }
+
+  _makePropsProxy(props: BlockProps): BlockProps {
+    // eslint-disable-next-line unicorn/no-this-assignment, @typescript-eslint/no-this-alias
+    const self = this;
+
+    return new Proxy(props, {
+      get(target, prop: string) {
+        const value = target[prop];
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return typeof value === "function" ? value.bind(target) : value;
+      },
+      set(target, prop: string, value) {
+        const oldTarget = { ...target };
+        target[prop] = value;
+        self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+
+        return true;
+      },
+      deleteProperty() {
+        throw new Error("No access");
+      },
+    });
+  }
+
+  _createDocumentElement(tagName: string) {
+    return document.createElement(tagName);
+  }
+
+  show() {
+    const element = this.getContent();
+
+    if (element) {
+      element.style.display = "block";
+    }
+  }
+
+  hide() {
+    const element = this.getContent();
+
+    if (element) {
+      element.style.display = "none";
+    }
   }
 }

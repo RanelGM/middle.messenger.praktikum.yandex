@@ -1,21 +1,15 @@
 import { Block } from "shared/constructors";
 import { cn } from "shared/lib";
+import { InputBasic } from "./input-basic/input-basic";
+import type { InputBasicProps } from "./input-basic/input-basic";
 import styles from "./input.module.scss";
 
-type InputType = "text" | "email" | "password" | "tel";
-
-export type InputProps = {
-  value?: string;
-  type?: InputType;
-  name?: string;
-  labelText?: string;
-  required?: boolean;
-  disabled?: boolean;
-  errorMessage?: string;
+export type InputProps = InputBasicProps & {
   classNameWrapper?: string;
   classNameLabel?: string;
   classNameLabelText?: string;
-  classNameInput?: string;
+  labelText?: string;
+  errorMessage?: string;
 };
 
 export class Input extends Block {
@@ -24,11 +18,14 @@ export class Input extends Block {
 
     super({
       ...restProps,
+      InputBasic: new InputBasic({
+        ...restProps,
+        classNameInput: cn(styles.input, errorMessage && styles.input_error, classNameInput),
+      }),
       errorMessage,
       classNameWrapper: cn(styles.inputWrapper, classNameWrapper),
       classNameLabel: cn(styles.label, classNameLabel),
       classNameLabelText: cn(styles.labelText, errorMessage && styles.labelText_error, classNameLabelText),
-      classNameInput: cn(styles.input, errorMessage && styles.input_error, classNameInput),
     });
   }
 
@@ -38,16 +35,7 @@ export class Input extends Block {
         <label class="{{ classNameLabel }}">
           {{#if labelText}}
           <span class="{{ classNameLabelText }}">{{ labelText }}</span>
-          {{/if}}
-
-          <input
-            class="{{ classNameInput }}"
-            name="{{ name }}"
-            type="{{ type }}"
-            value="{{#if value}}{{ value }}{{/if}}"
-            {{#if disabled}}disabled{{/if}}
-            {{#if required}}required{{/if}}
-          />
+          {{/if}} {{{ InputBasic }}}
         </label>
 
         {{#if errorMessage}}
