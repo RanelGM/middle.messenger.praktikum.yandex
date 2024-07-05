@@ -107,11 +107,17 @@ export class Block {
     return { children, props, lists };
   }
 
-  addAttributes() {
-    const { attr = {} } = this.props;
+  addAttributes(attrs?: Record<string, string>) {
+    const attr = attrs ?? this.props.attr ?? {};
 
     Object.entries(attr).forEach(([key, value]) => {
       this._element?.setAttribute(key, value);
+    });
+  }
+
+  removeAttributes(attrs: string[]) {
+    attrs.forEach((attr) => {
+      this._element?.removeAttribute(attr);
     });
   }
 

@@ -7,6 +7,7 @@
     "no-unknown-animations": null,
     "selector-max-type": 2,
     "selector-class-pattern": null,
+    "value-no-vendor-prefix": null,
     "selector-pseudo-class-no-unknown": [
       true,
       {

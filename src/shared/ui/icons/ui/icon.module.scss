@@ -6,6 +6,11 @@
 }
 
 .icon_size {
+  &-extra-small {
+    width: 18px;
+    height: 18px;
+  }
+
   &-small {
     width: 22px;
     height: 22px;

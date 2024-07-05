@@ -3,7 +3,7 @@ import { cn } from "shared/lib";
 import { IconsMap } from "./icons-map";
 import styles from "./icon.module.scss";
 
-type IconSize = "small" | "medium";
+type IconSize = "extra-small" | "small" | "medium";
 
 type Props = {
   name: keyof typeof IconsMap;
