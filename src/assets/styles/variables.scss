@@ -44,4 +44,7 @@
   --line-height-medium: 14px;
   --line-height-large: 16px;
   --line-height-extra-large: 24px;
+
+  // TODO: Удалить вычитание после реализации роутинга и удаления компонента header
+  --page-height: calc(100vh - 35px);
 }
