@@ -13,7 +13,7 @@ type FormInput = Omit<InputProps, "onBlur" | "onChange" | "onFocus" | "name"> & 
 
 type Props = {
   inputs: FormInput[];
-  submitText: string;
+  submitText?: string;
   className?: string;
   onSubmit?: (formData: Record<string, string>) => void;
 };
@@ -37,6 +37,7 @@ export class Form extends Block {
     super({
       ...restProps,
       lists,
+      submitText,
       SubmitButton: new Button({
         text: submitText,
         variant: "blue",
@@ -50,6 +51,10 @@ export class Form extends Block {
     inputs.forEach((inputProps, index) => {
       this.inputsMap[inputProps.name] = inputProps;
       this.inputsIndexMap[inputProps.name] = index;
+
+      if (inputProps.value) {
+        this.props[inputProps.name] = inputProps.value;
+      }
     });
   }
 
@@ -128,9 +133,9 @@ export class Form extends Block {
 
   render(): string {
     return /* HTML */ `
-      <form class="${styles.form} {{#if value}}{{ className }}{{/if}}">
+      <form class="${styles.form} {{#if className}}{{ className }}{{/if}}">
         <div class="${styles.inputsWrapper}">{{{ lists }}}</div>
-        {{{ SubmitButton }}}
+        {{#if submitText}} {{{ SubmitButton }}} {{/if}}
       </form>
     `;
   }

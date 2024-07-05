@@ -26,7 +26,7 @@ export class ChatPage extends Block {
     super({
       ProfileLink: new ProfileLink(),
       Search: new Search(),
-      // Stub: new Stub(),
+      Stub: new Stub(),
       ChatExpanded: new ChatExpanded({ chatItem: chatItemsMock[0] as ChatItemType }),
       lists,
     });
@@ -65,7 +65,7 @@ export class ChatPage extends Block {
           </ul>
         </div>
 
-        {{{ ChatExpanded }}}
+        {{{ Stub }}} {{#if activeChat}} {{{ ChatExpanded }}} {{/if}}
       </main>
     `;
   }
