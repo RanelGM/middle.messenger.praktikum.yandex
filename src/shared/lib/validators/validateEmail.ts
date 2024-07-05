@@ -1,3 +1,5 @@
+import type { ValidationResult } from "shared/types";
+
 /*
   1. Латиница
   2. Может включать цифры и спецсимволы вроде дефиса и подчёркивания
@@ -6,7 +8,7 @@
 */
 const Rule = new RegExp(/^[\w%+.-]+@[\d.A-Za-z-]+\.[A-Za-z]{2,}$/);
 
-export const validateEmail = (value: string) => {
+export const validateEmail = (value: string): ValidationResult => {
   const isValid = Rule.test(value);
 
   return {

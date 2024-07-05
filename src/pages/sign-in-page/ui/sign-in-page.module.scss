@@ -8,25 +8,13 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 8px;
   width: 340px;
-  height: 62%;
-  padding: 50px 30px;
+  padding: 50px 30px 40px;
   box-shadow: var(--box-shadow-around);
 }
 
 .title {
+  margin-bottom: 32px;
   text-align: center;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
 }

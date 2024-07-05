@@ -1,10 +1,12 @@
+import type { ValidationResult } from "shared/types";
+
 /*
   1. От 8 до 40 символов
   2. Обязательно хотя бы одна заглавная буква и цифра.
 */
 const Rule = new RegExp(/^(?=.*[A-Z])(?=.*\d)[\dA-Za-z]{8,40}$/);
 
-export const validatePassword = (value: string) => {
+export const validatePassword = (value: string): ValidationResult => {
   const isValid = Rule.test(value);
 
   return {
@@ -13,7 +15,7 @@ export const validatePassword = (value: string) => {
   };
 };
 
-export const validatePasswordRepeat = (prev: string, repeat: string) => {
+export const validatePasswordRepeat = (repeat: string | undefined, prev: string | undefined): ValidationResult => {
   const isValid = prev === repeat;
 
   return {

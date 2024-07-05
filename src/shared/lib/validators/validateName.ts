@@ -1,3 +1,5 @@
+import type { ValidationResult } from "shared/types";
+
 /*
   1. Латиница или кириллица
   2. Первая буква должна быть заглавной (прочие - как заглавные, так и строчные)
@@ -7,7 +9,7 @@
 */
 const Rule = new RegExp(/^[A-ZЁА-Я][A-Za-zЁА-яё-]*$/);
 
-export const validateName = (value: string) => {
+export const validateName = (value: string): ValidationResult => {
   const isValid = Rule.test(value);
 
   return {

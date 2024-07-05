@@ -1,3 +1,5 @@
+import type { ValidationResult } from "shared/types";
+
 /*
   1. От 10 до 15 символов
   2. Состоит из цифр
@@ -5,7 +7,7 @@
 */
 const Rule = new RegExp(/^\+?\d{10,15}$/);
 
-export const validatePhone = (value: string) => {
+export const validatePhone = (value: string): ValidationResult => {
   const isValid = Rule.test(value);
 
   return {

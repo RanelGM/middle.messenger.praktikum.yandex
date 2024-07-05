@@ -1,5 +1,6 @@
 import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
+import { Form } from "shared/form";
 import {
   validateEmail,
   validateLogin,
@@ -8,7 +9,7 @@ import {
   validatePasswordRepeat,
   validatePhone,
 } from "shared/lib";
-import { Button, Input, LinkAsButton, PageTitle } from "shared/ui";
+import { LinkAsButton, PageTitle } from "shared/ui";
 import type { ValueOf } from "shared/types";
 import type { BasicInputEvent } from "shared/ui";
 import styles from "./sign-up-page.module.scss";
@@ -37,68 +38,29 @@ export class SignUpPage extends Block {
   constructor() {
     super({
       PageTitle: new PageTitle({ text: "Регистрация", className: styles.title }),
-      [InputNames.Email]: new Input({
-        labelText: "Почта",
-        name: InputNames.Email,
-        type: "email",
-        onBlur: (evt) => {
-          this._handleInputBlur(evt, InputNames.Email);
-        },
-      }),
-      [InputNames.Login]: new Input({
-        labelText: "Логин",
-        name: InputNames.Login,
-        type: "text",
-        onBlur: (evt) => {
-          this._handleInputBlur(evt, InputNames.Login);
-        },
-      }),
-      [InputNames.FirstName]: new Input({
-        labelText: "Имя",
-        name: InputNames.FirstName,
-        type: "text",
-        onBlur: (evt) => {
-          this._handleInputBlur(evt, InputNames.FirstName);
-        },
-      }),
-      [InputNames.SecondName]: new Input({
-        labelText: "Фамилия",
-        name: InputNames.SecondName,
-        type: "text",
-        onBlur: (evt) => {
-          this._handleInputBlur(evt, InputNames.SecondName);
-        },
-      }),
-      [InputNames.Phone]: new Input({
-        labelText: "Телефон",
-        name: InputNames.Phone,
-        type: "tel",
-        onBlur: (evt) => {
-          this._handleInputBlur(evt, InputNames.Phone);
-        },
-      }),
-      [InputNames.Password]: new Input({
-        labelText: "Пароль",
-        name: InputNames.Password,
-        type: "password",
-        onBlur: (evt) => {
-          this._handleInputBlur(evt, InputNames.Password);
-        },
-      }),
-      [InputNames.PasswordRepeat]: new Input({
-        labelText: "Пароль (ещё раз)",
-        name: InputNames.PasswordRepeat,
-        type: "password",
-        onBlur: (evt) => {
-          this._handleInputBlur(evt, InputNames.PasswordRepeat);
-        },
-      }),
-      SignUp: new Button({
-        text: "Зарегистрироваться",
-        variant: "blue",
-        onClick: () => {
-          this._handleSubmitButtonClick();
-        },
+      Form: new Form({
+        inputs: [
+          { labelText: "Почта", name: "email", type: "email", validate: validateEmail },
+          { labelText: "Логин", name: "login", type: "text", validate: validateLogin },
+          { labelText: "Имя", name: "first_name", type: "text", validate: validateName },
+          { labelText: "Фамилия", name: "second_name", type: "text", validate: validateName },
+          { labelText: "Телефон", name: "phone", type: "tel", validate: validatePhone },
+          {
+            labelText: "Пароль",
+            name: "password",
+            type: "password",
+            repeatByName: "password-repeat",
+            validate: validatePassword,
+          },
+          {
+            labelText: "Пароль (ещё раз)",
+            name: "password-repeat",
+            type: "password",
+            repeatForName: "password",
+            validate: validatePasswordRepeat,
+          },
+        ],
+        submitText: "Зарегистрироваться",
       }),
       SignIn: new LinkAsButton({
         href: AppRoutes.SignIn,
@@ -178,17 +140,7 @@ export class SignUpPage extends Block {
   override render() {
     return /* HTML */ `
       <main class="${styles.main}">
-        <div class="${styles.content}">
-          {{{ PageTitle }}}
-
-          <form class="${styles.form}">
-            {{{ ${InputNames.Email} }}} {{{ ${InputNames.Login} }}} {{{ ${InputNames.FirstName} }}} {{{
-            ${InputNames.SecondName} }}} {{{ ${InputNames.Phone} }}} {{{ ${InputNames.Password} }}} {{{
-            ${InputNames.PasswordRepeat} }}}
-          </form>
-
-          <div class="${styles.buttons}">{{{ SignUp }}} {{{ SignIn }}}</div>
-        </div>
+        <div class="${styles.content}">{{{ PageTitle }}} {{{ Form }}} {{{ SignIn }}}</div>
       </main>
     `;
   }
