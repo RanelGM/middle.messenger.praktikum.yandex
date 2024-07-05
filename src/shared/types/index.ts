@@ -1,1 +1,1 @@
-export type { ValueOf } from "./common";
+export type { ValueOf, ValidationResult } from "./common";
