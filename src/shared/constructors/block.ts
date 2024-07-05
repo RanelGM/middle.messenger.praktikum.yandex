@@ -162,7 +162,6 @@ export class Block {
         if (item instanceof Block) {
           listCont.content.append(item.getContent() ?? "");
         } else {
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           listCont.content.append(`${item}`);
         }
       });
@@ -189,14 +188,12 @@ export class Block {
   }
 
   _makePropsProxy(props: BlockProps): BlockProps {
-    // eslint-disable-next-line unicorn/no-this-assignment, @typescript-eslint/no-this-alias
     const self = this;
 
     return new Proxy(props, {
-      get(target, prop: string) {
+      get(target, prop: string): unknown {
         const value = target[prop];
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return typeof value === "function" ? value.bind(target) : value;
       },
       set(target, prop: string, value) {

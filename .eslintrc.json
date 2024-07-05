@@ -126,6 +126,7 @@
     "unicorn/no-array-for-each": "off", // Отключает запрет на использование forEach (https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-array-for-each.md)
     "unicorn/no-array-reduce": "off", // Отключает запрет на использование reduce (https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-array-reduce.md)
     "unicorn/no-for-loop": "off", // Отключает запрет на for loop (https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-for-loop.md)
+    "unicorn/no-this-assignment": "off",
 
     /* --- promise plugin rules --- */
     "promise/no-multiple-resolved": "error", // Запрещает возможный множественный resolve промиса (https://github.com/eslint-community/eslint-plugin-promise/blob/main/docs/rules/no-multiple-resolved.md)
@@ -222,6 +223,8 @@
     ], // Добавляет пустую строку перед return (https://typescript-eslint.io/rules/padding-line-between-statements)
     "@typescript-eslint/non-nullable-type-assertion-style": "off", // Отключает рекомендацию использовать оператор ненулевого утверждения (https://typescript-eslint.io/rules/non-nullable-type-assertion-style)
     "@typescript-eslint/prefer-for-of": "off", // Отключает требование использовать for of вместо for loop
-    "@typescript-eslint/no-unused-vars": "warn"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-this-alias": "off"
   }
 }
