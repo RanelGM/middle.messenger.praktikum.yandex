@@ -1,9 +1,5 @@
 import { DayIndexShortMap, MonthIndexMap } from "shared/constants";
-import { getBeginningOfDate, getDateDifference } from "shared/lib";
-
-const zeroficate = (number: number): string => {
-  return number < 10 ? `0${number}` : `${number}`;
-};
+import { getBeginningOfDate, getDateDifference, zeroficate } from "shared/lib";
 
 export const formatPreviewDate = (isoDate: string): string => {
   const date = new Date(isoDate);

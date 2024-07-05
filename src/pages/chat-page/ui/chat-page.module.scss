@@ -1,7 +1,9 @@
 .main {
   display: grid;
   grid-template-columns: 310px 1fr;
-  height: 100vh;
+
+  // TODO: Удалить после реализации роутинга и отключения Header
+  height: calc(100vh - 35px);
 }
 
 .sidebar {

@@ -7,3 +7,10 @@ export type ChatItemType = {
   unreadCount: number;
   isActive?: boolean;
 };
+
+export type ChatMessageType = {
+  id: string;
+  text: string;
+  date: string;
+  owner: "currentUser" | "externalUser";
+};

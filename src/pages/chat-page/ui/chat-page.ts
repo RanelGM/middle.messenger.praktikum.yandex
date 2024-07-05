@@ -1,12 +1,14 @@
 import { Block } from "shared/constructors";
+import { ChatExpanded } from "./chat-expanded/chat-expanded";
 import { ChatItem } from "./chat-item/chat-item";
 import { getChatItemMock } from "./chat-item/getChatItemsMock";
 import { ProfileLink } from "./profile-link/profile-link";
 import { Search } from "./search/search";
+import { Stub } from "./stub/stub";
 import type { ChatItemType } from "../model/types";
 import styles from "./chat-page.module.scss";
 
-const chatItemsMock = Array.from({ length: 20 }, (_value, index) => getChatItemMock(index));
+const chatItemsMock = Array.from({ length: 8 }, (_value, index) => getChatItemMock(index));
 
 export class ChatPage extends Block {
   activeChat: ChatItemType | null = null;
@@ -24,6 +26,8 @@ export class ChatPage extends Block {
     super({
       ProfileLink: new ProfileLink(),
       Search: new Search(),
+      // Stub: new Stub(),
+      ChatExpanded: new ChatExpanded({ chatItem: chatItemsMock[0] as ChatItemType }),
       lists,
     });
   }
@@ -31,6 +35,13 @@ export class ChatPage extends Block {
   _handleChatItemClick(chatItem: ChatItemType) {
     if (chatItem.id === this.activeChat?.id || !this.lists.lists) {
       return;
+    }
+
+    this.setProps({ activeChat: chatItem });
+    this.children.Stub?.hide();
+
+    if (this.children.ChatExpanded) {
+      (this.children.ChatExpanded as ChatExpanded).setProps({ chatItem });
     }
 
     (this.lists.lists as ChatItem[]).forEach((chat) => {
@@ -53,6 +64,8 @@ export class ChatPage extends Block {
             {{{ lists }}}
           </ul>
         </div>
+
+        {{{ ChatExpanded }}}
       </main>
     `;
   }

@@ -1,0 +1,20 @@
+.userControls {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-background-secondary);
+}
+
+.imageWrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.name {
+  font-weight: bold;
+  font-size: var(--font-size-medium);
+  line-height: var(--line-height-medium);
+}

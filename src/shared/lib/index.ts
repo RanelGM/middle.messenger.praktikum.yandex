@@ -1,6 +1,7 @@
 export { getBeginningOfDate } from "./date/getBeginningOfDate";
 export { getDateDifference } from "./date/getDateDifference";
 export { getEndOfDate } from "./date/getEndOfDate";
+export { zeroficate } from "./date/zeroficate";
 
 export { cn } from "./misc/classNames";
 export { isFalsy } from "./misc/isFalsy";

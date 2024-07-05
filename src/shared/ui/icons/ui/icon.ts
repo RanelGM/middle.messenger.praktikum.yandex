@@ -1,12 +1,11 @@
 import { Block } from "shared/constructors";
 import { cn } from "shared/lib";
 import { IconsMap } from "./icons-map";
+import type { IconName, IconSize } from "../model/types";
 import styles from "./icon.module.scss";
 
-type IconSize = "extra-small" | "small" | "medium";
-
 type Props = {
-  name: keyof typeof IconsMap;
+  name: IconName;
   size?: IconSize;
   className?: string;
 };

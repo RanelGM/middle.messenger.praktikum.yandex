@@ -66,3 +66,33 @@
     line-height: var(--font-size-medium);
   }
 }
+
+.iconReset {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--color-blue-1-opacity-60);
+  cursor: pointer;
+  transition:
+    color var(--transition-default),
+    background-color var(--transition-default);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-blue-1);
+  }
+}
+
+.iconReset_background {
+  background-color: var(--color-background-secondary);
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--color-gray-3);
+  }
+}
