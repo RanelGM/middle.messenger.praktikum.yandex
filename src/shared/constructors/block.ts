@@ -42,12 +42,17 @@ export class Block {
 
   _addEvents() {
     const { events = {} } = this.props;
-    Object.keys(events).forEach((eventName) => {
-      const eventCallback = events[eventName];
 
-      if (eventCallback) {
-        this._element?.addEventListener(eventName, eventCallback);
-      }
+    Object.entries(events).forEach(([eventName, eventCallback]) => {
+      this._element?.addEventListener(eventName, eventCallback);
+    });
+  }
+
+  _removeEvents() {
+    const { events = {} } = this.props;
+
+    Object.entries(events).forEach(([eventName, eventCallback]) => {
+      this._element?.removeEventListener(eventName, eventCallback);
     });
   }
 
@@ -171,9 +176,12 @@ export class Block {
 
     const newElement = fragment.content.firstElementChild as HTMLElement | null;
 
+    this._removeEvents();
+
     if (this._element && newElement) {
       this._element.replaceWith(newElement);
     }
+
     this._element = newElement;
     this._addEvents();
     this.addAttributes();
