@@ -1,0 +1,13 @@
+.profileLink {
+  display: flex;
+  align-items: center;
+  align-self: flex-end;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-medium);
+  line-height: var(--font-size-medium);
+  cursor: pointer;
+}
+
+.icon {
+  transform: rotate(180deg);
+}

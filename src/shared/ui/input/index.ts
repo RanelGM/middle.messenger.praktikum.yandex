@@ -1,3 +1,3 @@
-import "./input.scss";
-
-export { default as Input } from "./input.hbs?raw";
+export type { BasicInputEvent } from "./ui/input-basic/input-basic";
+export type { InputProps } from "./ui/input";
+export { Input } from "./ui/input";

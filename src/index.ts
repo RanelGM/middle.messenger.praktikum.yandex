@@ -1,33 +1,32 @@
-import Handlebars from "handlebars";
 import { AppRoutes } from "shared/constants";
-import * as SharedUI from "shared/ui";
+import { typedObjectKeys } from "shared/lib";
+import { Header } from "shared/ui";
 import { ChatPage, ErrorNotFoundPage, ErrorServerPage, ProfilePage, SignInPage, SignUpPage } from "./pages";
 import "./assets/styles/index.scss";
 
 const routes = {
-  [AppRoutes.SignIn]: [SignInPage],
-  [AppRoutes.SignUp]: [SignUpPage],
-  [AppRoutes.Profile]: [ProfilePage, { isMainSubPage: true }],
-  [AppRoutes.ProfileEditInfo]: [ProfilePage, { isEditInfoSubPage: true }],
-  [AppRoutes.ProfileEditPassword]: [ProfilePage, { isEditPasswordSubPage: true }],
-  [AppRoutes.Chat]: [ChatPage],
-  [AppRoutes.ErrorNotFound]: [ErrorNotFoundPage],
-  [AppRoutes.ErrorServer]: [ErrorServerPage],
-};
+  [AppRoutes.SignIn]: () => new SignInPage(),
+  [AppRoutes.SignUp]: () => new SignUpPage(),
+  [AppRoutes.Profile]: () => new ProfilePage({ subPage: "main" }),
+  [AppRoutes.ProfileEditInfo]: () => new ProfilePage({ subPage: "edit-info" }),
+  [AppRoutes.ProfileEditPassword]: () => new ProfilePage({ subPage: "edit-password" }),
+  [AppRoutes.Chat]: () => new ChatPage(),
+  [AppRoutes.ErrorNotFound]: () => new ErrorNotFoundPage(),
+  [AppRoutes.ErrorServer]: () => new ErrorServerPage(),
+} as const;
 
-Object.entries(SharedUI).forEach(([name, component]) => {
-  Handlebars.registerPartial(name, component);
-});
+const navigateTo = (page: string | undefined) => {
+  const key = page && page in routes ? (page as keyof typeof routes) : AppRoutes.ErrorNotFound;
+  const preparePage = routes[key];
 
-const navigateTo = (page: keyof typeof routes) => {
-  const route = routes[page];
+  const container = document.querySelector("#app");
+  const header = new Header().getContent();
+  const content = preparePage().getContent();
 
-  if (route) {
-    const [source, args] = route;
-    const renderHeader = Handlebars.compile(SharedUI.Header);
-    const renderContent = Handlebars.compile(source);
-
-    document.body.innerHTML = renderHeader("") + renderContent(args);
+  if (container && header && content) {
+    container.innerHTML = "";
+    container.append(header);
+    container.append(content);
   }
 };
 
@@ -41,9 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  const route = Object.keys(routes).find((item) => pathname.includes(item));
+  const route = typedObjectKeys(routes).find((item) => pathname.includes(item));
 
-  navigateTo(route ?? AppRoutes.ErrorNotFound);
+  navigateTo(route);
 });
 
 /* При клике на ссылки - перейти на нужную страницу */

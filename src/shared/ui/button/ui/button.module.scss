@@ -1,0 +1,68 @@
+.button,
+.linkAsButton {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  border: 1px solid var(--color-border-primary);
+  border-radius: 8px;
+  background-color: transparent;
+  color: var(--color-text-primary);
+  outline: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-default),
+    background-color var(--transition-default);
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--color-border-hover);
+  }
+
+  &:active {
+    border-color: var(--color-border-active);
+    box-shadow: inset 0 0 1px var(--color-border-active);
+  }
+}
+
+.button_variant,
+.linkAsButton_variant {
+  &-blue {
+    border-color: var(--color-blue-1);
+    background-color: var(--color-blue-1);
+    color: var(--color-white);
+
+    &:hover,
+    &:focus-visible {
+      background-color: var(--color-blue-1-opacity-90);
+    }
+  }
+
+  &-white {
+    border-color: var(--color-white);
+    background-color: var(--color-white);
+    color: var(--color-blue-1);
+  }
+
+  &-transparent {
+    border-color: transparent;
+    background-color: transparent;
+  }
+}
+
+.button_size,
+.linkAsButton_size {
+  &-small {
+    font-size: var(--font-size-small);
+    line-height: var(--font-size-small);
+  }
+
+  &-medium {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    font-size: var(--font-size-medium);
+    line-height: var(--font-size-medium);
+  }
+}
