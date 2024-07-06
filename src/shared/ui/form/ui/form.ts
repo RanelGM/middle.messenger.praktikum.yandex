@@ -1,5 +1,6 @@
 import { Block } from "shared/constructors";
-import { Button, Input } from "shared/ui";
+import { Button } from "../../button";
+import { Input } from "../../input";
 import type { ValidationResult } from "shared/types";
 import type { BasicInputEvent, InputProps } from "shared/ui";
 import styles from "./form.module.scss";

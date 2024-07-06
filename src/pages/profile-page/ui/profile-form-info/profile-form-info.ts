@@ -1,6 +1,6 @@
 import { Block } from "shared/constructors";
-import { Form } from "shared/form";
 import { cn, validateEmail, validateLogin, validateName, validatePhone } from "shared/lib";
+import { Form } from "shared/ui";
 import styles from "./profile-form-info.module.scss";
 import inputStyles from "../profile-page.module.scss";
 

@@ -1,4 +1,5 @@
 export { Button, LinkAsButton } from "./button";
+export { Form } from "./form";
 export { Header } from "./header";
 export { IconButton } from "./icon-button";
 export type { IconName, IconSize } from "./icons";

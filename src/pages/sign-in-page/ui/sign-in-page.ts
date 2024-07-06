@@ -1,6 +1,6 @@
 import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
-import { Form } from "shared/form";
+import { Form } from "shared/ui";
 import { validateLogin, validatePassword } from "shared/lib";
 import { LinkAsButton, PageTitle } from "shared/ui";
 import styles from "./sign-in-page.module.scss";

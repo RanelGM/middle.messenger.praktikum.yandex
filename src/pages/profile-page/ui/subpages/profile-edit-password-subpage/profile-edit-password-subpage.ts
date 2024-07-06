@@ -1,5 +1,5 @@
 import { Block } from "shared/constructors";
-import { Form } from "shared/form";
+import { Form } from "shared/ui";
 import { cn, validatePassword, validatePasswordRepeat } from "shared/lib";
 import inputStyles from "../../profile-page.module.scss";
 
