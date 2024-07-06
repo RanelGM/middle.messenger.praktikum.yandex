@@ -1,0 +1,31 @@
+.profile-page {
+  display: flex;
+  min-height: 100vh;
+}
+
+.profile-page__content-positioner {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  padding: 40px;
+}
+
+.profile-page__content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 510px;
+}
+
+.profile-page__button {
+  justify-content: flex-start;
+  padding: 8px 0;
+  border: none;
+
+  &:hover,
+  &:focus-visible,
+  &:active {
+    border: none;
+    box-shadow: none;
+  }
+}

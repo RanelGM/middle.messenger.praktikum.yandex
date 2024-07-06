@@ -85,7 +85,7 @@ export class Block {
     }
   }
 
-  componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
+  componentDidUpdate(_oldProps: BlockProps, _newProps: BlockProps) {
     return true;
   }
 
@@ -140,7 +140,7 @@ export class Block {
       propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
     });
 
-    Object.entries(this.lists).forEach(([key, child]) => {
+    Object.entries(this.lists).forEach(([key, _child]) => {
       propsAndStubs[key] = `<div data-id="__l_${tmpId}"></div>`;
     });
 
@@ -156,7 +156,7 @@ export class Block {
       }
     });
 
-    Object.entries(this.lists).forEach(([key, child]) => {
+    Object.entries(this.lists).forEach(([_key, child]) => {
       const listCont = this._createDocumentElement("template") as HTMLTemplateElement;
       child.forEach((item) => {
         if (item instanceof Block) {
