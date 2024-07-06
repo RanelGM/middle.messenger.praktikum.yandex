@@ -1,5 +1,6 @@
-export { Button, LinkAsButton, IconAsButton } from "./button";
+export { Button, LinkAsButton } from "./button";
 export { Header } from "./header";
+export { IconButton } from "./icon-button";
 export type { IconName, IconSize } from "./icons";
 export { Icon } from "./icons";
 export type { InputProps, BasicInputEvent } from "./input";

@@ -122,7 +122,6 @@ export class Form extends Block {
     console.log(`Текущие данные:`, formData);
     console.groupEnd();
 
-    // eslint-disable-next-line no-alert
     alert(`${validationMessage} ${JSON.stringify(formData, null, 2)}`);
   }
 

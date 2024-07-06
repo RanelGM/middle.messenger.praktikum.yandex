@@ -1,5 +1,5 @@
 import { Block } from "shared/constructors";
-import { IconAsButton } from "shared/ui";
+import { IconButton } from "shared/ui";
 import type { ChatItemType } from "pages/chat-page/model/types";
 import styles from "./user-controls.module.scss";
 
@@ -13,7 +13,7 @@ export class UserControls extends Block {
 
     super({
       chatItem,
-      KebabButton: new IconAsButton({ name: "Kebab", size: "extra-small", hasBackground: true }),
+      KebabButton: new IconButton({ name: "Kebab", size: "extra-small", hasBackground: true }),
     });
   }
 

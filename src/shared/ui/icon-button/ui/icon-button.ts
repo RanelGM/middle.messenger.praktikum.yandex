@@ -2,7 +2,7 @@ import { Block } from "shared/constructors";
 import { cn } from "shared/lib";
 import { Icon } from "shared/ui/icons";
 import type { IconName, IconSize } from "shared/ui/icons";
-import styles from "./button.module.scss";
+import styles from "./icon-button.module.scss";
 
 type Props = {
   name: IconName;
@@ -13,12 +13,12 @@ type Props = {
   onClick?: () => void;
 };
 
-export class IconAsButton extends Block {
+export class IconButton extends Block {
   constructor(props: Props) {
     const { hasBackground, className, iconClassName, onClick, ...iconProps } = props;
 
     super({
-      className: cn(styles.iconReset, hasBackground ? styles.iconReset_background : "", className),
+      className: cn(styles.iconButton, hasBackground ? styles.iconButton_background : "", className),
       Icon: new Icon({ ...iconProps, className: iconClassName }),
       events: {
         click: onClick,
