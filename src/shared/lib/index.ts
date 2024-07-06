@@ -6,6 +6,7 @@ export { zeroficate } from "./date/zeroficate";
 export { cn } from "./misc/classNames";
 export { isFalsy } from "./misc/isFalsy";
 export { isTruthy } from "./misc/isTruthy";
+export { queryStringify } from "./misc/queryStringify";
 
 export { typedObjectKeys } from "./object/typedObjectKeys";
 
