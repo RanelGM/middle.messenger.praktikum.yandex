@@ -1,0 +1,20 @@
+.profilePrevious {
+  display: flex;
+  background-color: var(--color-background-secondary);
+  transition: background-color var(--transition-default);
+
+  &:hover,
+  &:focus-within {
+    background-color: var(--color-blue-1);
+  }
+}
+
+.icon {
+  color: var(--color-blue-1);
+  transition: color var(--transition-default);
+
+  .profilePrevious:hover &,
+  .profilePrevious:focus-within & {
+    color: var(--color-background-secondary);
+  }
+}

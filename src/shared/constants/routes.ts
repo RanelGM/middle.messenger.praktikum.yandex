@@ -7,4 +7,4 @@ export const AppRoutes = {
   Chat: "chat",
   ErrorNotFound: "error-not-found",
   ErrorServer: "error-server",
-};
+} as const;

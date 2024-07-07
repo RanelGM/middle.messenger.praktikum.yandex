@@ -1,0 +1,31 @@
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 50%;
+  padding: 10px;
+  border: 1px solid var(--color-background-secondary);
+  border-radius: 12px;
+  font-size: var(--font-size-medium);
+  line-height: var(--line-height-medium);
+}
+
+.message_owner {
+  &-currentUser {
+    align-self: flex-end;
+    border-color: var(--color-gray-3);
+    background-color: var(--color-gray-3);
+  }
+
+  &-externalUser {
+    align-self: flex-start;
+    background-color: var(--color-background-secondary);
+  }
+}
+
+.time {
+  align-self: flex-end;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
