@@ -1,0 +1,9 @@
+.link {
+  display: flex;
+  align-items: center;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-medium);
+  line-height: var(--font-size-medium);
+  text-decoration: none;
+  cursor: pointer;
+}

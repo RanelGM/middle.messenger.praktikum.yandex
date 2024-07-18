@@ -236,4 +236,12 @@ export class Block {
       element.style.display = "none";
     }
   }
+
+  remove() {
+    const element = this.getContent();
+
+    if (element) {
+      element.remove();
+    }
+  }
 }
