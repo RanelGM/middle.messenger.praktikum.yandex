@@ -9,7 +9,6 @@ export class ErrorNotFoundPage extends Block {
       PageTitle: new PageTitle({ text: "Страница не найдена" }),
       LinkAsButton: new LinkAsButton({
         href: AppRoutes.Chat,
-        page: AppRoutes.Chat,
         text: "Назад к чатам",
         variant: "white",
       }),

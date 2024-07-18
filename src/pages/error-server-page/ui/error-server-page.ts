@@ -9,7 +9,6 @@ export class ErrorServerPage extends Block {
       PageTitle: new PageTitle({ text: "Ошибка сервера" }),
       LinkAsButton: new LinkAsButton({
         href: AppRoutes.Chat,
-        page: AppRoutes.Chat,
         text: "Назад к чатам",
         variant: "white",
       }),

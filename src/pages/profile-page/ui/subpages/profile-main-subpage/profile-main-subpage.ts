@@ -10,21 +10,18 @@ export class ProfileMainSubPage extends Block {
       ProfileFormInfo: new ProfileFormInfo({ isReadonly: true }),
       LinkChangeData: new LinkAsButton({
         href: AppRoutes.ProfileEditInfo,
-        page: AppRoutes.ProfileEditInfo,
         text: "Изменить данные",
         variant: "white",
         size: "medium",
       }),
       LinkChangePassword: new LinkAsButton({
         href: AppRoutes.ProfileEditPassword,
-        page: AppRoutes.ProfileEditPassword,
         text: "Изменить пароль",
         variant: "white",
         size: "medium",
       }),
       LinkSignOut: new LinkAsButton({
         href: AppRoutes.SignIn,
-        page: AppRoutes.SignIn,
         text: "Выйти",
         variant: "white",
         size: "medium",

@@ -1,8 +1,7 @@
 import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
-import { Form } from "shared/ui";
 import { validateLogin, validatePassword } from "shared/lib";
-import { LinkAsButton, PageTitle } from "shared/ui";
+import { Form, LinkAsButton, PageTitle } from "shared/ui";
 import styles from "./sign-in-page.module.scss";
 
 export class SignInPage extends Block {
@@ -18,7 +17,6 @@ export class SignInPage extends Block {
       }),
       SignUp: new LinkAsButton({
         href: AppRoutes.SignUp,
-        page: AppRoutes.SignUp,
         text: "Зарегистрироваться",
         variant: "white",
       }),

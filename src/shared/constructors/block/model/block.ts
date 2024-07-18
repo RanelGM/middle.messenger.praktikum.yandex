@@ -1,18 +1,6 @@
 import Handlebars from "handlebars";
 import { EventBus } from "./event-bus";
-import type { EventCallback } from "./event-bus";
-
-type PropsWithChildrenProps = Record<string, unknown>;
-
-type ChildrenProps = Record<string, Block>;
-
-export type BlockProps = {
-  attr?: Record<string, string>;
-  events?: Record<string, EventCallback>;
-  [key: string]: unknown;
-};
-
-type ListsProps = Record<string, unknown[]>;
+import type { BlockProps, ChildrenProps, EventCallback, ListsProps, PropsWithChildrenProps } from "./types";
 
 export class Block {
   static EVENTS = {

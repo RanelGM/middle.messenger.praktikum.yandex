@@ -8,7 +8,6 @@ export class ProfilePrevious extends Block {
     super({
       LinkAsButton: new LinkAsButton({
         href: AppRoutes.Chat,
-        page: AppRoutes.Chat,
         variant: "transparent",
         Icon: new Icon({ name: "ArrowCircle", className: styles.icon }),
       }),

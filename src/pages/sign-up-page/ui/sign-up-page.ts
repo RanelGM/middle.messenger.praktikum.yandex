@@ -1,6 +1,5 @@
 import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
-import { Form } from "shared/ui";
 import {
   validateEmail,
   validateLogin,
@@ -9,7 +8,7 @@ import {
   validatePasswordRepeat,
   validatePhone,
 } from "shared/lib";
-import { LinkAsButton, PageTitle } from "shared/ui";
+import { Form, LinkAsButton, PageTitle } from "shared/ui";
 import styles from "./sign-up-page.module.scss";
 
 export class SignUpPage extends Block {
@@ -42,7 +41,6 @@ export class SignUpPage extends Block {
       }),
       SignIn: new LinkAsButton({
         href: AppRoutes.SignIn,
-        page: AppRoutes.SignIn,
         text: "Войти",
         variant: "white",
       }),

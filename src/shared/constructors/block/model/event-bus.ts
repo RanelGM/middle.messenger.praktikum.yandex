@@ -1,8 +1,7 @@
-export type EventCallback = (...args: unknown[]) => void;
-type Listeners = Record<string, EventCallback[]>;
+import type { EventCallback, EventListeners } from "./types";
 
 export class EventBus {
-  _listeners: Listeners;
+  _listeners: EventListeners;
 
   constructor() {
     this._listeners = {};

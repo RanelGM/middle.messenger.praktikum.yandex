@@ -1,15 +1,8 @@
 import { Route } from "./route";
-import type { Block } from "./block";
+import type { RegisterRoute } from "./types";
 
 type RouterProps = {
   root: string;
-};
-
-export type RegisterRoute = {
-  pathname: string;
-  page: typeof Block;
-  pageProps?: Record<string, unknown>;
-  isFallbackRoute?: boolean;
 };
 
 class Router {

@@ -1,10 +1,10 @@
 export const AppRoutes = {
-  SignIn: "signin",
-  SignUp: "signup",
-  Profile: "profile",
-  ProfileEditInfo: "profile/edit-info",
-  ProfileEditPassword: "profile/edit-password",
-  Chat: "chat",
-  ErrorNotFound: "error-not-found",
-  ErrorServer: "error-server",
+  SignIn: "/",
+  SignUp: "/sign-up",
+  Profile: "/settings",
+  ProfileEditInfo: "/settings/edit-info",
+  ProfileEditPassword: "/settings/edit-password",
+  Chat: "/messenger",
+  ErrorNotFound: "/error-not-found",
+  ErrorServer: "/error-server",
 } as const;
