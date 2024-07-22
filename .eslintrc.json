@@ -225,6 +225,7 @@
     "@typescript-eslint/prefer-for-of": "off", // Отключает требование использовать for of вместо for loop
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/restrict-template-expressions": "off",
-    "@typescript-eslint/no-this-alias": "off"
+    "@typescript-eslint/no-this-alias": "off",
+    "@typescript-eslint/no-unnecessary-condition": "off"
   }
 }

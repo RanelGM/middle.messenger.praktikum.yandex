@@ -1,19 +1,35 @@
 import { AppRoutes } from "shared/constants";
-import { Block } from "shared/constructors";
+import { Block, BlockProps } from "shared/constructors";
 import { validateLogin, validatePassword } from "shared/lib";
 import { Form, LinkAsButton, PageTitle } from "shared/ui";
+import { authApi, User, type SignIn } from "entities/auth";
 import styles from "./sign-in-page.module.scss";
+import { StoreState } from "entities/store/model/types";
+import { ApiState } from "shared/types";
+import { connect } from "entities/store";
 
-export class SignInPage extends Block {
+type MapProps = {
+  userApi: ApiState<User | null>;
+};
+
+const mapStateToProps = (state: StoreState): MapProps => {
+  return {
+    userApi: state.authReducer.user,
+  };
+};
+class SignInPage extends Block {
   constructor() {
     super({
       PageTitle: new PageTitle({ text: "Вход", className: styles.title }),
-      Form: new Form({
+      Form: new Form<SignIn>({
         inputs: [
           { labelText: "Логин", name: "login", type: "text", validate: validateLogin },
           { labelText: "Пароль", name: "password", type: "password", validate: validatePassword },
         ],
         submitText: "Войти",
+        onSubmit: (submitData) => {
+          void authApi.signIn(submitData);
+        },
       }),
       SignUp: new LinkAsButton({
         href: AppRoutes.SignUp,
@@ -21,6 +37,17 @@ export class SignInPage extends Block {
         variant: "white",
       }),
     });
+  }
+
+  componentDidUpdate(oldProps: BlockProps & Partial<MapProps>, newProps: BlockProps & Partial<MapProps>): boolean {
+    if (newProps.userApi && oldProps.userApi?.isLoading !== newProps.userApi.isLoading) {
+      const isLoading = newProps.userApi.isLoading;
+
+      this.children.SignUp?.setProps({ isLoading });
+      this.children.Form?.setProps({ isLoading });
+    }
+
+    return true;
   }
 
   override render() {
@@ -31,3 +58,5 @@ export class SignInPage extends Block {
     `;
   }
 }
+
+export const SignInPageWithStore = connect(mapStateToProps, SignInPage);

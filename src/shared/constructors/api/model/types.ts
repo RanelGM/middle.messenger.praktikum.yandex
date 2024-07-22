@@ -8,5 +8,5 @@ export type ParsedXHRResponse = {
   statusText: string;
   headers: Record<string, string>;
   rawXHR: XMLHttpRequest;
-  getData: <T>() => T | ServerError;
+  getData: <T>() => T | ServerError | null;
 };

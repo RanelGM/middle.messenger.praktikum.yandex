@@ -10,6 +10,7 @@ type Props = {
   size?: ButtonSize;
   type?: ButtonType;
   className?: string;
+  isLoading?: boolean;
   onClick: () => void;
 };
 
@@ -20,6 +21,7 @@ export class Button extends Block {
       size = DefaultButtonSize,
       type = DefaultButtonType,
       className,
+
       onClick,
       ...restProps
     } = props;
@@ -35,6 +37,10 @@ export class Button extends Block {
   }
 
   override render() {
-    return /* HTML */ `<button type="{{ type }}" class="{{ className }}">{{ text }}</button>`;
+    return /* HTML */ `
+      <button type="{{ type }}" class="{{ className }}">
+        {{#if isLoading }} Загружаем... {{ else }} {{ text }} {{/if}}
+      </button>
+    `;
   }
 }

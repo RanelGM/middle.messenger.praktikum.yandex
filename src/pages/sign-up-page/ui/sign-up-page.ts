@@ -1,3 +1,5 @@
+import { authApi } from "entities/auth";
+import { connect } from "entities/store";
 import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
 import {
@@ -9,13 +11,27 @@ import {
   validatePhone,
 } from "shared/lib";
 import { Form, LinkAsButton, PageTitle } from "shared/ui";
+import type { SignUp, User } from "entities/auth";
+import type { StoreState } from "entities/store/model/types";
+import type { BlockProps } from "shared/constructors";
+import type { ApiState } from "shared/types";
 import styles from "./sign-up-page.module.scss";
 
-export class SignUpPage extends Block {
+type MapProps = {
+  userApi: ApiState<User | null>;
+};
+
+const mapStateToProps = (state: StoreState): MapProps => {
+  return {
+    userApi: state.authReducer.user,
+  };
+};
+
+class SignUpPage extends Block {
   constructor() {
     super({
       PageTitle: new PageTitle({ text: "Регистрация", className: styles.title }),
-      Form: new Form({
+      Form: new Form<SignUp>({
         inputs: [
           { labelText: "Почта", name: "email", type: "email", validate: validateEmail },
           { labelText: "Логин", name: "login", type: "text", validate: validateLogin },
@@ -38,13 +54,29 @@ export class SignUpPage extends Block {
           },
         ],
         submitText: "Зарегистрироваться",
+        isLoading: false,
+        onSubmit: (submitData) => {
+          void authApi.signUp(submitData);
+        },
       }),
       SignIn: new LinkAsButton({
         href: AppRoutes.SignIn,
         text: "Войти",
         variant: "white",
+        isLoading: false,
       }),
     });
+  }
+
+  componentDidUpdate(oldProps: BlockProps & Partial<MapProps>, newProps: BlockProps & Partial<MapProps>): boolean {
+    if (newProps.userApi && oldProps.userApi?.isLoading !== newProps.userApi.isLoading) {
+      const isLoading = newProps.userApi.isLoading;
+
+      this.children.SignIn?.setProps({ isLoading });
+      this.children.Form?.setProps({ isLoading });
+    }
+
+    return true;
   }
 
   override render() {
@@ -55,3 +87,5 @@ export class SignUpPage extends Block {
     `;
   }
 }
+
+export const SignUpPageWithStore = connect(mapStateToProps, SignUpPage);

@@ -73,6 +73,9 @@ export class ProfileFormInfo extends Block {
         ],
         submitText: isReadonly ? undefined : "Сохранить",
         className: isReadonly ? styles.readonly : "",
+        onSubmit: () => {
+          //
+        },
       }),
     });
   }

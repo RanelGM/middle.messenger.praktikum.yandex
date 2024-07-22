@@ -1,6 +1,6 @@
 import { Block } from "shared/constructors";
-import { Form } from "shared/ui";
 import { cn, validatePassword, validatePasswordRepeat } from "shared/lib";
+import { Form } from "shared/ui";
 import inputStyles from "../../profile-page.module.scss";
 
 const inputsClassNames = {
@@ -36,6 +36,9 @@ export class ProfileEditPasswordSubPage extends Block {
           },
         ],
         submitText: "Сохранить",
+        onSubmit: () => {
+          //
+        },
       }),
     });
   }

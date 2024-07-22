@@ -1,6 +1,7 @@
 import { Block } from "shared/constructors";
 import { Button } from "../../button";
 import { Input } from "../../input";
+import type { BlockProps } from "shared/constructors";
 import type { ValidationResult } from "shared/types";
 import type { BasicInputEvent, InputProps } from "shared/ui";
 import styles from "./form.module.scss";
@@ -12,19 +13,20 @@ type FormInput = Omit<InputProps, "onBlur" | "onChange" | "onFocus" | "name"> & 
   repeatByName?: string;
 };
 
-type Props = {
+type Props<SubmitData> = {
   inputs: FormInput[];
   submitText?: string;
   className?: string;
-  onSubmit?: (formData: Record<string, string>) => void;
+  isLoading?: boolean;
+  onSubmit: (submitData: SubmitData) => void;
 };
 
-export class Form extends Block {
+export class Form<SubmitData extends Record<string, string>> extends Block {
   inputsMap: Record<string, FormInput> = {};
   inputsIndexMap: Record<string, number> = {};
 
-  constructor(props: Props) {
-    const { inputs, submitText, ...restProps } = props;
+  constructor(props: Props<SubmitData>) {
+    const { inputs, submitText, isLoading, onSubmit, ...restProps } = props;
 
     const lists = inputs.map((inputProps) => {
       return new Input({
@@ -43,8 +45,9 @@ export class Form extends Block {
         text: submitText,
         variant: "blue",
         type: "button",
+        isLoading,
         onClick: () => {
-          this._handleSubmitButtonClick();
+          this._handleSubmitButtonClick(onSubmit);
         },
       }),
     });
@@ -57,6 +60,14 @@ export class Form extends Block {
         this.props[inputProps.name] = inputProps.value;
       }
     });
+  }
+
+  componentDidUpdate(oldProps: BlockProps & Props<SubmitData>, newProps: BlockProps & Props<SubmitData>): boolean {
+    if (oldProps.isLoading !== newProps.isLoading) {
+      this.children.SubmitButton?.setProps({ isLoading: newProps.isLoading });
+    }
+
+    return true;
   }
 
   _updateErrorMessage(inputName: string, errorMessage: string) {
@@ -101,29 +112,24 @@ export class Form extends Block {
     return isValid;
   }
 
-  _handleSubmitButtonClick() {
-    const formData: Record<string, string> = {};
+  _handleSubmitButtonClick(onSubmit: (submitData: SubmitData) => void) {
+    const submitData: Record<string, string> = {};
     let isFormValid = true;
 
     Object.keys(this.inputsMap).forEach((inputName) => {
       const value = (this.props[inputName] as string | undefined) ?? "";
       const isValid = this._validate(value, inputName);
 
-      formData[inputName] = value;
+      submitData[inputName] = value;
 
       if (!isValid) {
         isFormValid = false;
       }
     });
 
-    const validationMessage = `Форма ${(isFormValid as boolean) ? "прошла" : "не прошла"} валидацию`;
-
-    console.group("Форма");
-    console.log(validationMessage);
-    console.log(`Текущие данные:`, formData);
-    console.groupEnd();
-
-    alert(`${validationMessage} ${JSON.stringify(formData, null, 2)}`);
+    if (isFormValid) {
+      onSubmit(submitData as SubmitData);
+    }
   }
 
   _handleInputBlur(evt: BasicInputEvent<FocusEvent>, inputName: string) {

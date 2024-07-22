@@ -23,6 +23,8 @@ export class BasicApi {
   }
 
   public handleError(error: unknown, statusCode?: number) {
+    console.log("ERROR IS", error);
+
     const notify = (message: string) => {
       console.log(message, statusCode);
     };

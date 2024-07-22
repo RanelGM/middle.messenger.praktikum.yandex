@@ -59,7 +59,11 @@ export class HTTPTransport {
       statusText: rawXHR.statusText,
       headers: this._combineHeaders(rawXHR),
       rawXHR,
-      getData: <T>(): T | ServerError => {
+      getData: <T>(): T | ServerError | null => {
+        if (rawXHR.responseText === "OK") {
+          return null;
+        }
+
         return JSON.parse(rawXHR.responseText) as T | ServerError;
       },
     };
@@ -67,6 +71,8 @@ export class HTTPTransport {
 
   _request: HTTPMethod = async (url, options = {}) => {
     const { headers = {}, method, query, timeout = 10_000, body } = options;
+    const defaultHeaders = { "Content-Type": "application/json" };
+    const requestHeaders = { ...headers, ...defaultHeaders };
 
     return new Promise((resolve, reject) => {
       if (!method) {
@@ -80,8 +86,9 @@ export class HTTPTransport {
 
       xhr.open(method, `${url}${queryString}`);
       xhr.timeout = timeout;
+      xhr.withCredentials = true;
 
-      Object.entries(headers).forEach(([key, value]) => {
+      Object.entries(requestHeaders).forEach(([key, value]) => {
         xhr.setRequestHeader(key, value);
       });
 

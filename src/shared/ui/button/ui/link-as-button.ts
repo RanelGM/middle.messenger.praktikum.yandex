@@ -12,6 +12,7 @@ type Props = {
   size?: ButtonSize;
   className?: string;
   Icon?: Icon;
+  isLoading?: boolean;
 };
 
 export class LinkAsButton extends Block {
@@ -37,6 +38,10 @@ export class LinkAsButton extends Block {
   }
 
   override render() {
-    return /* HTML */ ` <a href="{{ href }}" page="{{ page }}" class="{{ className }}"> {{{ Icon }}} {{ text }} </a> `;
+    return /* HTML */ `
+      <a href="{{ href }}" page="{{ page }}" class="{{ className }}">
+        {{{ Icon }}} {{#if isLoading }} Загружаем... {{ else }} {{ text }} {{/if}}
+      </a>
+    `;
   }
 }

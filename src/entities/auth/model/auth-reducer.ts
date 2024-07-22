@@ -20,12 +20,17 @@ class AuthReducer {
   public dispatch(action: AuthReducerAction) {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (action.type === "SET_USER") {
-      this.setUser(action.payload);
+      const updatedState = this.setUser(action.payload);
+      this.state = updatedState;
+
+      return updatedState;
     }
+
+    return this.getState();
   }
 
   private setUser(payload: SetUserAction["payload"]) {
-    this.state = deepClone({ ...this.state, user: { ...this.state.user, ...payload } });
+    return deepClone({ ...this.state, user: { ...this.state.user, ...payload } });
   }
 }
 

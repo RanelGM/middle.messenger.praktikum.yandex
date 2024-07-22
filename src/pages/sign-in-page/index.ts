@@ -1,1 +1,1 @@
-export { SignInPage } from "./ui/sign-in-page";
+export { SignInPageWithStore as SignInPage } from "./ui/sign-in-page";
