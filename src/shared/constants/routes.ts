@@ -8,3 +8,12 @@ export const AppRoutes = {
   ErrorNotFound: "/error-not-found",
   ErrorServer: "/error-server",
 } as const;
+
+export const ApiRoutes = {
+  Auth: {
+    user: "/auth/user",
+    signup: "/auth/signup",
+    signin: "/auth/signin",
+    logout: "/auth/logout",
+  },
+} as const;

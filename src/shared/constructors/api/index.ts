@@ -1,1 +1,1 @@
-export { HTTPTransport } from "./model/http-transport";
+export { BasicApi } from "./model/basic-api";

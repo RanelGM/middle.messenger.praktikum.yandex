@@ -4,10 +4,14 @@ export { getEndOfDate } from "./date/getEndOfDate";
 export { zeroficate } from "./date/zeroficate";
 
 export { cn } from "./misc/classNames";
+export { getDefaultApiState } from "./misc/getDefaultApiState";
 export { isFalsy } from "./misc/isFalsy";
 export { isTruthy } from "./misc/isTruthy";
 export { queryStringify } from "./misc/queryStringify";
 
+export { isBetweenRange } from "./number/isBetweenRange";
+
+export { deepClone } from "./object/deepClone";
 export { typedObjectKeys } from "./object/typedObjectKeys";
 
 export { validateEmail } from "./validators/validateEmail";
