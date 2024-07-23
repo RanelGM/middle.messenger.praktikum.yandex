@@ -4,7 +4,7 @@ export type PropsWithChildrenProps = Record<string, unknown>;
 
 export type ChildrenProps = Record<string, Block>;
 
-export type ListsProps = Record<string, unknown[]>;
+export type ListsProps = Record<string, Block[]>;
 
 export type BlockProps = {
   attr?: Record<string, string>;

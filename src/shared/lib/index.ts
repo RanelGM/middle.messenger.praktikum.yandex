@@ -5,6 +5,7 @@ export { zeroficate } from "./date/zeroficate";
 
 export { cn } from "./misc/classNames";
 export { getDefaultApiState } from "./misc/getDefaultApiState";
+export { isEqual } from "./misc/isEqual";
 export { isFalsy } from "./misc/isFalsy";
 export { isTruthy } from "./misc/isTruthy";
 export { queryStringify } from "./misc/queryStringify";

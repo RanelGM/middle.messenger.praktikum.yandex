@@ -1,4 +1,5 @@
 import { Block } from "shared/constructors";
+import { deepClone, isEqual } from "shared/lib";
 import { Button } from "../../button";
 import { Input } from "../../input";
 import type { BlockProps } from "shared/constructors";
@@ -18,6 +19,7 @@ type Props<SubmitData> = {
   submitText?: string;
   className?: string;
   isLoading?: boolean;
+  values?: Record<string, string>;
   onSubmit: (submitData: SubmitData) => void;
 };
 
@@ -67,7 +69,31 @@ export class Form<SubmitData extends Record<string, string>> extends Block {
       this.children.SubmitButton?.setProps({ isLoading: newProps.isLoading });
     }
 
+    if (!isEqual(oldProps.values ?? {}, newProps.values ?? {})) {
+      this._updateValues(newProps.values ?? {});
+    }
+
     return true;
+  }
+
+  _updateValues(values: Record<string, string>) {
+    const inputsMap: typeof this.inputsMap = {};
+
+    Object.entries(values).forEach(([key, value]) => {
+      if (!this.inputsMap[key] || this.inputsIndexMap[key] === undefined) {
+        return;
+      }
+
+      const lists = deepClone(this.lists.lists) ?? [];
+      const block = lists[this.inputsIndexMap[key] as number];
+
+      if (block) {
+        block.setProps({ value });
+        inputsMap[key] = { ...this.inputsMap[key], value } as FormInput;
+      }
+    });
+
+    this.setProps({ inputsMap });
   }
 
   _updateErrorMessage(inputName: string, errorMessage: string) {

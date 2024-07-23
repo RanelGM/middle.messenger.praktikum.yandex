@@ -2,13 +2,13 @@ import { authApi } from "entities/auth";
 import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
 import { Button, LinkAsButton } from "shared/ui";
-import { ProfileFormInfo } from "../../profile-form-info/profile-form-info";
+import { ProfileFormInfoWithStore } from "../../profile-form-info/profile-form-info";
 import styles from "./profile-main-subpage.module.scss";
 
 export class ProfileMainSubPage extends Block {
   constructor() {
     super({
-      ProfileFormInfo: new ProfileFormInfo({ isReadonly: true }),
+      ProfileFormInfo: new ProfileFormInfoWithStore({ isReadonly: true }),
       ChangeData: new LinkAsButton({
         href: AppRoutes.ProfileEditInfo,
         text: "Изменить данные",

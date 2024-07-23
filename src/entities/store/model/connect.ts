@@ -7,8 +7,8 @@ export const connect = <T extends BlockProps>(
   Component: typeof Block,
 ): typeof Block => {
   return class extends Component {
-    constructor(...args: unknown[]) {
-      super({ ...args });
+    constructor(args: Record<string, unknown> = {}) {
+      super(args);
 
       store.subscribe(() => {
         this.setProps(mapStateToProps(store.getState()));

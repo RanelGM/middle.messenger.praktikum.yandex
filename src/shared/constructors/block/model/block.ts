@@ -91,7 +91,7 @@ export class Block {
       if (value instanceof Block) {
         children[key] = value;
       } else if (Array.isArray(value)) {
-        lists[key] = value;
+        lists[key] = value as Block[];
       } else {
         props[key] = value;
       }
