@@ -1,6 +1,6 @@
 import { store } from "entities/store";
-import { ApiRoutes, AppRoutes } from "shared/constants";
-import { BasicApi, router } from "shared/constructors";
+import { ApiRoutes } from "shared/constants";
+import { BasicApi } from "shared/constructors";
 import { checkIsServerError } from "shared/constructors/api/lib/checkIsServerError";
 import { adaptUserFromServer } from "./adapters/adapt-user";
 import type { ServerUser, SignIn, SignUp, User } from "../model/types";
@@ -28,13 +28,12 @@ class AuthApi extends BasicApi {
 
       const adaptedUser = adaptUserFromServer(data);
 
-      setUserApiState({ data: adaptedUser, isLoadedOnce: true, isError: false });
-      router.go(AppRoutes.Chat);
+      setUserApiState({ data: adaptedUser, isError: false });
     } catch (error: unknown) {
       setUserApiState({ isError: true });
       this.handleError(error);
     } finally {
-      setUserApiState({ isLoading: false });
+      setUserApiState({ isLoading: false, isLoadedOnce: true });
     }
   }
 
@@ -114,7 +113,6 @@ class AuthApi extends BasicApi {
       }
 
       setUserApiState({ data: null, isError: false });
-      router.go(AppRoutes.SignIn);
     } catch (error: unknown) {
       setUserApiState({ isError: true });
       this.handleError(error);

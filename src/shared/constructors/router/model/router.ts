@@ -65,12 +65,16 @@ class Router {
     this._history?.forward();
   }
 
-  getRoute(pathname: string): Route | undefined {
+  findRoute(pathname: string): Route | undefined {
     return this._routes?.find((route) => route.matchPathname(pathname));
   }
 
+  getCurrentRoute(): Route | null | undefined {
+    return this._currentRoute;
+  }
+
   _onRouteChange(pathname: string): void {
-    const route = this.getRoute(pathname) ?? this._fallbackRoute;
+    const route = this.findRoute(pathname) ?? this._fallbackRoute;
 
     if (!route || !this._root || this._currentRoute === route) {
       return;
