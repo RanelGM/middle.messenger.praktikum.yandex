@@ -82,8 +82,8 @@ export class HTTPTransport {
 
   _request: HTTPMethod = async (url, options = {}) => {
     const { headers = {}, method, query, timeout = 10_000, body } = options;
-    const defaultHeaders = { "Content-Type": "application/json" };
-    const requestHeaders = { ...headers, ...defaultHeaders };
+    const defaultHeaders = body instanceof FormData ? {} : { "Content-Type": "application/json" };
+    const requestHeaders = { ...defaultHeaders, ...headers };
 
     return new Promise((resolve, reject) => {
       if (!method) {
@@ -100,7 +100,7 @@ export class HTTPTransport {
       xhr.withCredentials = true;
 
       Object.entries(requestHeaders).forEach(([key, value]) => {
-        xhr.setRequestHeader(key, value);
+        xhr.setRequestHeader(key, value as string);
       });
 
       xhr.addEventListener("load", () => {
@@ -119,7 +119,13 @@ export class HTTPTransport {
         reject(this._parseXHR(xhr));
       });
 
-      xhr.send(body ? JSON.stringify(body) : undefined);
+      if (!body) {
+        xhr.send();
+
+        return;
+      }
+
+      xhr.send(body instanceof FormData ? body : JSON.stringify(body));
     });
   };
 }

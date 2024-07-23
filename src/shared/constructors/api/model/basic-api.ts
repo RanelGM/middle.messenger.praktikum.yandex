@@ -1,16 +1,27 @@
+import { ApiRoutes } from "shared/constants";
 import { checkIsServerError } from "../lib/checkIsServerError";
 import { HTTPTransport } from "./http-transport";
 
-const BaseUrl = "https://ya-praktikum.tech/api/v2";
 export class BasicApi {
   api: HTTPTransport;
+  baseUrl = "";
 
   constructor() {
-    this.api = new HTTPTransport({ baseUrl: BaseUrl });
+    const baseUrl = ApiRoutes.BaseUrl;
+    this.api = new HTTPTransport({ baseUrl });
+    this.baseUrl = baseUrl;
   }
 
   public getApi(): HTTPTransport {
     return this.api;
+  }
+
+  public getBaseUrl(): string {
+    return this.baseUrl;
+  }
+
+  public getResourcesPath(): string {
+    return `${this.baseUrl}/${ApiRoutes.ResourcesUrl}`;
   }
 
   public handleError(error: unknown, statusCode?: number) {

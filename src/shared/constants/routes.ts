@@ -10,6 +10,8 @@ export const AppRoutes = {
 } as const;
 
 export const ApiRoutes = {
+  BaseUrl: "https://ya-praktikum.tech/api/v2",
+  ResourcesUrl: "resources",
   Auth: {
     user: "/auth/user",
     signup: "/auth/signup",
@@ -19,5 +21,6 @@ export const ApiRoutes = {
   Users: {
     changeUser: "/user/profile",
     ChangePassword: "/user/password",
+    ChangeAvatar: "/user/profile/avatar",
   },
 } as const;

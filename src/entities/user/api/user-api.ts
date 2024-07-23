@@ -176,6 +176,37 @@ class UserApi extends BasicApi {
       setUserApiState({ isLoading: false });
     }
   }
+
+  async changeAvatar(formData: FormData): Promise<void> {
+    const setUserApiState = (payload: Partial<ApiState<User | null>>) => {
+      store.dispatch({ type: "SET_USER", payload });
+    };
+
+    try {
+      setUserApiState({ isLoading: true });
+
+      const response = await this.api.put(ApiRoutes.Users.ChangeAvatar, {
+        body: formData,
+      });
+      const data = response.getData<ServerUser>();
+
+      if (!data || !response.isOK || checkIsServerError(data)) {
+        setUserApiState({ isError: true });
+        this.handleError(data, response.statusCode);
+
+        return;
+      }
+
+      const adaptedUser = adaptUserFromServer(data);
+
+      setUserApiState({ isError: false, data: adaptedUser });
+    } catch (error: unknown) {
+      setUserApiState({ isError: true });
+      this.handleError(error);
+    } finally {
+      setUserApiState({ isLoading: false });
+    }
+  }
 }
 
 export const userApi = new UserApi();

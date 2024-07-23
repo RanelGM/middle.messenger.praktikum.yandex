@@ -1,6 +1,6 @@
 import { Block } from "shared/constructors";
 
-export type InputType = "text" | "email" | "password" | "tel";
+export type InputType = "text" | "email" | "password" | "tel" | "file";
 
 export type BasicInputEvent<T> = Omit<T, "target"> & { target: HTMLInputElement };
 
@@ -8,6 +8,7 @@ export type InputBasicProps = {
   value?: string;
   type?: InputType;
   name?: string;
+  accept?: string;
   required?: boolean;
   disabled?: boolean;
   classNameInput?: string;
@@ -36,6 +37,7 @@ export class InputBasic extends Block {
         class="{{ classNameInput }}"
         name="{{ name }}"
         type="{{ type }}"
+        {{#if accept}} accept="{{ accept }}"{{/if}}
         value="{{#if value}}{{ value }}{{/if}}"
         {{#if disabled}}disabled{{/if}}
         {{#if required}}required{{/if}}
