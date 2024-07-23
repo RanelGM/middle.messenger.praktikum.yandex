@@ -10,3 +10,27 @@ export const adaptUserFromServer = (user: ServerUser): User => {
     ...restUser,
   };
 };
+
+export const adaptUserToServer = (user: User): ServerUser => {
+  const { firstName, secondName, displayName, ...restUser } = user;
+
+  return {
+    first_name: firstName,
+    second_name: secondName,
+    display_name: displayName,
+    ...restUser,
+  };
+};
+
+export const adaptUserToChanges = (user: User) => {
+  const { firstName, secondName, displayName, login, email, phone } = user;
+
+  return {
+    first_name: firstName,
+    second_name: secondName,
+    display_name: displayName,
+    login,
+    email,
+    phone,
+  };
+};

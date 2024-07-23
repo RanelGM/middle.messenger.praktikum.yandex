@@ -4,11 +4,11 @@ import { ProfileFormInfoWithStore } from "../../profile-form-info/profile-form-i
 export class ProfileEditInfoSubPage extends Block {
   constructor() {
     super({
-      Form: new ProfileFormInfoWithStore({}),
+      Form: new ProfileFormInfoWithStore(),
     });
   }
 
   override render() {
-    return /* HTML */ `{{{ Form }}}`;
+    return /* HTML */ `{{{ Form }}} `;
   }
 }

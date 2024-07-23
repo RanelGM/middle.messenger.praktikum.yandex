@@ -31,6 +31,11 @@ export type SignUp = {
   phone: string;
 };
 
+export type PasswordUpdate = {
+  oldPassword: string;
+  newPassword: string;
+};
+
 export type SetUserAction = {
   type: "SET_USER";
   payload: Partial<ApiState<User | null>>;

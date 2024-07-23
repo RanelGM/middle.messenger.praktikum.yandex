@@ -1,25 +1,16 @@
 import { checkIsServerError } from "../lib/checkIsServerError";
 import { HTTPTransport } from "./http-transport";
 
+const BaseUrl = "https://ya-praktikum.tech/api/v2";
 export class BasicApi {
   api: HTTPTransport;
-  baseUrl: string;
 
   constructor() {
-    this.api = new HTTPTransport();
-    this.baseUrl = "https://ya-praktikum.tech/api/v2";
+    this.api = new HTTPTransport({ baseUrl: BaseUrl });
   }
 
   public getApi(): HTTPTransport {
     return this.api;
-  }
-
-  public getBaseUrl(): string {
-    return this.baseUrl;
-  }
-
-  public getUrl(path: string): string {
-    return `${this.baseUrl}${path}`;
   }
 
   public handleError(error: unknown, statusCode?: number) {

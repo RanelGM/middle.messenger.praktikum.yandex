@@ -28,19 +28,20 @@ export class Form<SubmitData extends Record<string, string>> extends Block {
   inputsIndexMap: Record<string, number> = {};
 
   constructor(props: Props<SubmitData>) {
-    const { inputs, submitText, isLoading, onSubmit, ...restProps } = props;
+    const { inputs, submitText, isLoading, onSubmit, values = {}, ...restProps } = props;
 
     const lists = inputs.map((inputProps) => {
       return new Input({
         ...inputProps,
         onBlur: (evt) => {
-          this._handleInputBlur(evt, inputProps.name);
+          this.handleInputBlur(evt, inputProps.name);
         },
       });
     });
 
     super({
       ...restProps,
+      values,
       lists,
       submitText,
       SubmitButton: new Button({
@@ -49,7 +50,7 @@ export class Form<SubmitData extends Record<string, string>> extends Block {
         type: "button",
         isLoading,
         onClick: () => {
-          this._handleSubmitButtonClick(onSubmit);
+          this.handleSubmitButtonClick(onSubmit);
         },
       }),
     });
@@ -70,14 +71,22 @@ export class Form<SubmitData extends Record<string, string>> extends Block {
     }
 
     if (!isEqual(oldProps.values ?? {}, newProps.values ?? {})) {
-      this._updateValues(newProps.values ?? {});
+      this.updateValues(newProps.values ?? {});
     }
 
     return true;
   }
 
-  _updateValues(values: Record<string, string>) {
-    const inputsMap: typeof this.inputsMap = {};
+  private getValues = (): Record<string, string> => {
+    return (this.props.values as Record<string, string>) ?? {};
+  };
+
+  private getValue = (key: string): string => {
+    return this.getValues()[key] ?? "";
+  };
+
+  private updateValues(values: Record<string, string>) {
+    const inputsMap = deepClone(this.inputsMap);
 
     Object.entries(values).forEach(([key, value]) => {
       if (!this.inputsMap[key] || this.inputsIndexMap[key] === undefined) {
@@ -93,10 +102,11 @@ export class Form<SubmitData extends Record<string, string>> extends Block {
       }
     });
 
+    this.inputsMap = inputsMap;
     this.setProps({ inputsMap });
   }
 
-  _updateErrorMessage(inputName: string, errorMessage: string) {
+  private updateErrorMessage(inputName: string, errorMessage: string) {
     const index = this.inputsIndexMap[inputName];
 
     if (index !== undefined && this.lists.lists?.[index]) {
@@ -104,7 +114,7 @@ export class Form<SubmitData extends Record<string, string>> extends Block {
     }
   }
 
-  _validateRepeatFor(value: string, inputName: string) {
+  private validateRepeatFor(value: string, inputName: string) {
     const { validate, repeatForName } = this.inputsMap[inputName] ?? {};
 
     if (!validate || !repeatForName) {
@@ -112,15 +122,16 @@ export class Form<SubmitData extends Record<string, string>> extends Block {
     }
 
     const byValue = value;
-    const forValue = (this.props[repeatForName] as string | undefined) ?? "";
+    const forValue = this.getValue(repeatForName);
+
     const { isValid, errorMessage } = validate(byValue, forValue);
 
-    this._updateErrorMessage(inputName, errorMessage);
+    this.updateErrorMessage(inputName, errorMessage);
 
     return isValid;
   }
 
-  _validate(value: string, inputName: string): boolean {
+  private validate(value: string, inputName: string): boolean {
     const { validate, repeatForName } = this.inputsMap[inputName] ?? {};
 
     if (!validate) {
@@ -128,23 +139,23 @@ export class Form<SubmitData extends Record<string, string>> extends Block {
     }
 
     if (repeatForName) {
-      return this._validateRepeatFor(value, inputName);
+      return this.validateRepeatFor(value, inputName);
     }
 
     const { isValid, errorMessage } = validate(value);
 
-    this._updateErrorMessage(inputName, errorMessage);
+    this.updateErrorMessage(inputName, errorMessage);
 
     return isValid;
   }
 
-  _handleSubmitButtonClick(onSubmit: (submitData: SubmitData) => void) {
+  private handleSubmitButtonClick(onSubmit: (submitData: SubmitData) => void) {
     const submitData: Record<string, string> = {};
     let isFormValid = true;
 
     Object.keys(this.inputsMap).forEach((inputName) => {
-      const value = (this.props[inputName] as string | undefined) ?? "";
-      const isValid = this._validate(value, inputName);
+      const value = this.getValue(inputName);
+      const isValid = this.validate(value, inputName);
 
       submitData[inputName] = value;
 
@@ -158,9 +169,10 @@ export class Form<SubmitData extends Record<string, string>> extends Block {
     }
   }
 
-  _handleInputBlur(evt: BasicInputEvent<FocusEvent>, inputName: string) {
-    this.setProps({ [inputName]: evt.target.value });
-    this._validate(evt.target.value, inputName);
+  private handleInputBlur(evt: BasicInputEvent<FocusEvent>, inputName: string) {
+    const values = { ...this.getValues(), [inputName]: evt.target.value };
+    this.setProps({ values });
+    this.validate(evt.target.value, inputName);
   }
 
   render(): string {

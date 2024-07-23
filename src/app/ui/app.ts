@@ -1,6 +1,6 @@
 import { shouldChangeRoute } from "app/lib/shouldChangeRoute";
-import { userApi } from "entities/user";
 import { connect } from "entities/store";
+import { userApi } from "entities/user";
 import { Block, router } from "shared/constructors";
 import { allRoutes } from "../lib/getRoutes";
 import type { StoreState } from "entities/store";
@@ -13,8 +13,7 @@ type MapProps = {
 
 const mapStateToProps = (state: StoreState): MapProps => {
   return {
-    isAuthorized:
-      state.userReducer.user.isLoadedOnce && !state.userReducer.user.isLoading && Boolean(state.userReducer.user.data),
+    isAuthorized: Boolean(state.userReducer.user.data) && state.userReducer.user.isLoadedOnce,
     isLoadedOnce: state.userReducer.user.isLoadedOnce,
   };
 };

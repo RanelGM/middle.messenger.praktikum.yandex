@@ -9,6 +9,10 @@ const METHODS = {
   DELETE: "DELETE",
 } as const;
 
+type HTTPTransportProps = {
+  baseUrl: string;
+};
+
 type Options = {
   timeout?: number;
   method?: ValueOf<typeof METHODS>;
@@ -20,6 +24,13 @@ type Options = {
 type HTTPMethod = (url: string, options?: Options) => Promise<ParsedXHRResponse>;
 
 export class HTTPTransport {
+  baseUrl = "";
+
+  constructor(props: HTTPTransportProps) {
+    const { baseUrl } = props;
+    this.baseUrl = baseUrl;
+  }
+
   get: HTTPMethod = async (url, options = {}) => {
     return this._request(url, { ...options, method: METHODS.GET });
   };
@@ -84,7 +95,7 @@ export class HTTPTransport {
       const xhr = new XMLHttpRequest();
       const queryString = queryStringify(query ?? {});
 
-      xhr.open(method, `${url}${queryString}`);
+      xhr.open(method, `${this.baseUrl}${url}${queryString}`);
       xhr.timeout = timeout;
       xhr.withCredentials = true;
 

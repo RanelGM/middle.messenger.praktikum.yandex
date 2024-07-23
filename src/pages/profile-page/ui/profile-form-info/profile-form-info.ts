@@ -1,5 +1,7 @@
 import { connect } from "entities/store";
-import { Block } from "shared/constructors";
+import { userApi } from "entities/user";
+import { AppRoutes } from "shared/constants";
+import { Block, router } from "shared/constructors";
 import { cn, isEqual, validateEmail, validateLogin, validateName, validatePhone } from "shared/lib";
 import { Form } from "shared/ui";
 import type { StoreState } from "entities/store/model/types";
@@ -97,8 +99,8 @@ class ProfileFormInfo extends Block {
         ],
         submitText: isReadonly ? undefined : "Сохранить",
         className: isReadonly ? styles.readonly : "",
-        onSubmit: () => {
-          //
+        onSubmit: (submitData) => {
+          this.handleSubmit(submitData);
         },
       }),
     });
@@ -109,11 +111,36 @@ class ProfileFormInfo extends Block {
       this.children.Form?.setProps({ values: newProps.userApi?.data ?? {} });
     }
 
+    this.children.Form?.setProps({ isLoading: newProps.userApi.isLoading });
+
     return true;
   }
 
+  private redirect() {
+    router.go(AppRoutes.Profile);
+  }
+
+  private handleSubmit(submitData: SubmitState) {
+    const user = (this.props as MapProps).userApi?.data;
+
+    if (!user) {
+      return;
+    }
+
+    const updates: User = { ...user, ...submitData };
+    const isSameData = isEqual(user, updates);
+
+    if (isSameData) {
+      this.redirect();
+
+      return;
+    }
+
+    void userApi.changeUser({ ...user, ...submitData }, this.redirect.bind(this));
+  }
+
   override render() {
-    return /* HTML */ ` {{{ Form }}} `;
+    return /* HTML */ `<div>{{{ Form }}}</div>`;
   }
 }
 

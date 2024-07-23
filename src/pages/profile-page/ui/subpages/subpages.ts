@@ -1,6 +1,6 @@
 import { Block } from "shared/constructors";
 import { ProfileEditInfoSubPage } from "./profile-edit-info-subpage/profile-edit-info-subpage";
-import { ProfileEditPasswordSubPage } from "./profile-edit-password-subpage/profile-edit-password-subpage";
+import { ProfileEditPasswordSubPageWithStore } from "./profile-edit-password-subpage/profile-edit-password-subpage";
 import { ProfileMainSubPage } from "./profile-main-subpage/profile-main-subpage";
 
 export type SubPageType = "main" | "edit-info" | "edit-password";
@@ -12,7 +12,7 @@ type Props = {
 const SubPageMap = {
   main: ProfileMainSubPage,
   "edit-info": ProfileEditInfoSubPage,
-  "edit-password": ProfileEditPasswordSubPage,
+  "edit-password": ProfileEditPasswordSubPageWithStore,
 } as const;
 
 export class SubPages extends Block {
@@ -23,20 +23,6 @@ export class SubPages extends Block {
     super({
       SubPage: new SubPage(),
     });
-  }
-
-  _getSubPage(subPage: SubPageType) {
-    switch (subPage) {
-      case "edit-info": {
-        return ProfileEditInfoSubPage;
-      }
-      case "edit-password": {
-        return ProfileEditPasswordSubPage;
-      }
-      default: {
-        return ProfileMainSubPage;
-      }
-    }
   }
 
   override render() {

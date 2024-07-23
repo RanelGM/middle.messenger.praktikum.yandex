@@ -16,4 +16,8 @@ export const ApiRoutes = {
     signin: "/auth/signin",
     logout: "/auth/logout",
   },
+  Users: {
+    changeUser: "/user/profile",
+    ChangePassword: "/user/password",
+  },
 } as const;
