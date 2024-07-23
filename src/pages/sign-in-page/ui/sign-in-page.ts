@@ -2,7 +2,7 @@ import { AppRoutes } from "shared/constants";
 import { Block, BlockProps } from "shared/constructors";
 import { validateLogin, validatePassword } from "shared/lib";
 import { Form, LinkAsButton, PageTitle } from "shared/ui";
-import { authApi, User, type SignIn } from "entities/auth";
+import { userApi, User, type SignIn } from "entities/user";
 import styles from "./sign-in-page.module.scss";
 import { StoreState } from "entities/store/model/types";
 import { ApiState } from "shared/types";
@@ -14,7 +14,7 @@ type MapProps = {
 
 const mapStateToProps = (state: StoreState): MapProps => {
   return {
-    userApi: state.authReducer.user,
+    userApi: state.userReducer.user,
   };
 };
 class SignInPage extends Block {
@@ -28,7 +28,7 @@ class SignInPage extends Block {
         ],
         submitText: "Войти",
         onSubmit: (submitData) => {
-          void authApi.signIn(submitData);
+          void userApi.signIn(submitData);
         },
       }),
       SignUp: new LinkAsButton({

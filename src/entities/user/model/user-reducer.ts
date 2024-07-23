@@ -1,23 +1,23 @@
 import { deepClone, getDefaultApiState } from "shared/lib";
-import type { AuthReducerAction, SetUserAction, User } from "./types";
+import type { SetUserAction, User, UserReducerAction } from "./types";
 import type { ApiState } from "shared/types";
 
-type AuthReducerState = {
+type UserReducerState = {
   user: ApiState<User | null>;
 };
 
-const initialState: AuthReducerState = {
+const initialState: UserReducerState = {
   user: getDefaultApiState<User | null>(null),
 };
 
-class AuthReducer {
+class UserReducer {
   private state = initialState;
 
   public getState() {
     return this.state;
   }
 
-  public dispatch(action: AuthReducerAction) {
+  public dispatch(action: UserReducerAction) {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (action.type === "SET_USER") {
       const updatedState = this.setUser(action.payload);
@@ -34,4 +34,4 @@ class AuthReducer {
   }
 }
 
-export const authReducer = new AuthReducer();
+export const userReducer = new UserReducer();

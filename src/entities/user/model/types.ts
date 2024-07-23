@@ -36,4 +36,4 @@ export type SetUserAction = {
   payload: Partial<ApiState<User | null>>;
 };
 
-export type AuthReducerAction = SetUserAction;
+export type UserReducerAction = SetUserAction;

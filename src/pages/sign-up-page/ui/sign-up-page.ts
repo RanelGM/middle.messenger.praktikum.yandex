@@ -1,4 +1,4 @@
-import { authApi } from "entities/auth";
+import { userApi } from "entities/user";
 import { connect } from "entities/store";
 import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
@@ -11,7 +11,7 @@ import {
   validatePhone,
 } from "shared/lib";
 import { Form, LinkAsButton, PageTitle } from "shared/ui";
-import type { SignUp, User } from "entities/auth";
+import type { SignUp, User } from "entities/user";
 import type { StoreState } from "entities/store/model/types";
 import type { BlockProps } from "shared/constructors";
 import type { ApiState } from "shared/types";
@@ -23,7 +23,7 @@ type MapProps = {
 
 const mapStateToProps = (state: StoreState): MapProps => {
   return {
-    userApi: state.authReducer.user,
+    userApi: state.userReducer.user,
   };
 };
 
@@ -56,7 +56,7 @@ class SignUpPage extends Block {
         submitText: "Зарегистрироваться",
         isLoading: false,
         onSubmit: (submitData) => {
-          void authApi.signUp(submitData);
+          void userApi.signUp(submitData);
         },
       }),
       SignIn: new LinkAsButton({

@@ -1,4 +1,4 @@
-import { authApi } from "entities/auth";
+import { userApi } from "entities/user";
 import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
 import { Button, LinkAsButton } from "shared/ui";
@@ -26,7 +26,7 @@ export class ProfileMainSubPage extends Block {
         variant: "white",
         size: "medium",
         onClick: () => {
-          void authApi.logout();
+          void userApi.logout();
         },
       }),
     });

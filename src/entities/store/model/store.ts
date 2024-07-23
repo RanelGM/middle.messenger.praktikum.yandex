@@ -1,15 +1,15 @@
-import { authReducer } from "../../auth/model/auth-reducer";
-import type { AuthReducerAction } from "../../auth/model/types";
+import { userReducer } from "../../user/model/user-reducer";
+import type { UserReducerAction } from "../../user/model/types";
 
 class Store {
   private subscribes: ((state: typeof this.state) => unknown)[] = [];
 
   private reducers = {
-    authReducer,
+    userReducer: userReducer,
   };
 
   state = {
-    authReducer: this.reducers.authReducer.getState(),
+    userReducer: this.reducers.userReducer.getState(),
   };
 
   public getState() {
@@ -21,12 +21,12 @@ class Store {
     mapStateToProps(this.getState());
   }
 
-  public dispatch(action: AuthReducerAction) {
+  public dispatch(action: UserReducerAction) {
     if (!("type" in action)) {
       return;
     }
 
-    this.reducers.authReducer.dispatch(action);
+    this.reducers.userReducer.dispatch(action);
 
     Object.entries(this.reducers).forEach(([key, reducer]) => {
       this.state[key as keyof typeof this.reducers] = reducer.getState();

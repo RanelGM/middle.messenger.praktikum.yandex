@@ -1,5 +1,5 @@
 import { shouldChangeRoute } from "app/lib/shouldChangeRoute";
-import { authApi } from "entities/auth";
+import { userApi } from "entities/user";
 import { connect } from "entities/store";
 import { Block, router } from "shared/constructors";
 import { allRoutes } from "../lib/getRoutes";
@@ -14,8 +14,8 @@ type MapProps = {
 const mapStateToProps = (state: StoreState): MapProps => {
   return {
     isAuthorized:
-      state.authReducer.user.isLoadedOnce && !state.authReducer.user.isLoading && Boolean(state.authReducer.user.data),
-    isLoadedOnce: state.authReducer.user.isLoadedOnce,
+      state.userReducer.user.isLoadedOnce && !state.userReducer.user.isLoading && Boolean(state.userReducer.user.data),
+    isLoadedOnce: state.userReducer.user.isLoadedOnce,
   };
 };
 
@@ -45,7 +45,7 @@ class App extends Block {
   }
 
   private initLoaders() {
-    void authApi.getUser();
+    void userApi.getUser();
   }
 
   componentDidUpdate(oldProps: BlockProps & MapProps, newProps: BlockProps & MapProps): boolean {

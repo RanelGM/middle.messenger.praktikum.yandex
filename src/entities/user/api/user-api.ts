@@ -6,7 +6,7 @@ import { adaptUserFromServer } from "./adapters/adapt-user";
 import type { ServerUser, SignIn, SignUp, User } from "../model/types";
 import type { ApiState } from "shared/types";
 
-class AuthApi extends BasicApi {
+class UserApi extends BasicApi {
   async getUser(): Promise<void> {
     const url = this.getUrl(ApiRoutes.Auth.user);
     const setUserApiState = (payload: Partial<ApiState<User | null>>) => {
@@ -122,4 +122,4 @@ class AuthApi extends BasicApi {
   }
 }
 
-export const authApi = new AuthApi();
+export const userApi = new UserApi();

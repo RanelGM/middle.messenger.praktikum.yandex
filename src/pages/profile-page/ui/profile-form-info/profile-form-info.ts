@@ -2,8 +2,8 @@ import { connect } from "entities/store";
 import { Block } from "shared/constructors";
 import { cn, isEqual, validateEmail, validateLogin, validateName, validatePhone } from "shared/lib";
 import { Form } from "shared/ui";
-import type { User } from "entities/auth";
 import type { StoreState } from "entities/store/model/types";
+import type { User } from "entities/user";
 import type { BlockProps } from "shared/constructors";
 import type { ApiState } from "shared/types";
 import styles from "./profile-form-info.module.scss";
@@ -35,7 +35,7 @@ const inputsClassNames = {
 
 const mapStateToProps = (state: StoreState): MapProps => {
   return {
-    userApi: state.authReducer.user,
+    userApi: state.userReducer.user,
   };
 };
 
