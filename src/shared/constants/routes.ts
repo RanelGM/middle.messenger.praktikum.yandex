@@ -23,4 +23,7 @@ export const ApiRoutes = {
     ChangePassword: "/user/password",
     ChangeAvatar: "/user/profile/avatar",
   },
+  Chats: {
+    getChats: "/chats",
+  },
 } as const;

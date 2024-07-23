@@ -18,7 +18,6 @@ class UserReducer {
   }
 
   public dispatch(action: UserReducerAction) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (action.type === "SET_USER") {
       const updatedState = this.setUser(action.payload);
       this.state = updatedState;

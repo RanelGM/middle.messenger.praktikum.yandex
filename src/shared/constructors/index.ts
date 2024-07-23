@@ -1,4 +1,4 @@
-export { BasicApi } from "./api";
+export { BasicApi, checkIsServerError } from "./api";
 
 export type { BlockProps, EventBus } from "./block";
 export { Block } from "./block";

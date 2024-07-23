@@ -1,7 +1,6 @@
 import { store } from "entities/store";
 import { ApiRoutes } from "shared/constants";
-import { BasicApi } from "shared/constructors";
-import { checkIsServerError } from "shared/constructors/api/lib/checkIsServerError";
+import { BasicApi, checkIsServerError } from "shared/constructors";
 import { adaptUserFromServer, adaptUserToChanges } from "./adapters/adapt-user";
 import type { PasswordUpdate, ServerUser, SignIn, SignUp, User } from "../model/types";
 import type { ApiState } from "shared/types";
