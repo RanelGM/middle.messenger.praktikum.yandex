@@ -1,5 +1,7 @@
 import { getIconArrowCircle } from "./components/icon-arrow-circle";
 import { getIconArrowTick } from "./components/icon-arrow-tick";
+import { getIconCircleCross } from "./components/icon-circle-cross";
+import { getIconCirclePlus } from "./components/icon-circle-plus";
 import { getIconCirclePoint } from "./components/icon-circle-point";
 import { getIconClip } from "./components/icon-clip";
 import { getIconCross } from "./components/icon-cross";
@@ -13,6 +15,8 @@ import { getIconTickSingle } from "./components/icon-tick-single";
 export const IconsMap = {
   ArrowCircle: getIconArrowCircle(),
   ArrowTick: getIconArrowTick(),
+  CircleCross: getIconCircleCross(),
+  CirclePlus: getIconCirclePlus(),
   CirclePoint: getIconCirclePoint(),
   Clip: getIconClip(),
   Cross: getIconCross(),

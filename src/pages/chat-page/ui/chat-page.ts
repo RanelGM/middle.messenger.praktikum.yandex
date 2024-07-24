@@ -1,5 +1,5 @@
 import { chatApi } from "entities/chat";
-import { connect } from "entities/store";
+import { connect, store } from "entities/store";
 import { Block } from "shared/constructors";
 import { isEqual } from "shared/lib";
 import { ChatCreate } from "./chat-create/chat-create";
@@ -50,6 +50,9 @@ class ChatPage extends Block {
   componentDidUpdate(oldProps: BlockProps & MapProps, newProps: BlockProps & MapProps): boolean {
     if (!isEqual(oldProps.chatsApi?.data ?? {}, newProps.chatsApi?.data ?? {})) {
       this.setLists({ lists: this.createChatItems(newProps.chatsApi.data ?? []) });
+
+      // FIXME:
+      store.dispatch({ type: "SET_ACTIVE_CHAT", payload: newProps?.chatsApi.data?.[0] ?? null });
     }
 
     if (!isEqual(oldProps.activeChat ?? {}, newProps.activeChat ?? {})) {

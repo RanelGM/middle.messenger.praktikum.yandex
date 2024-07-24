@@ -1,7 +1,7 @@
 import { connect } from "entities/store";
 import { Block } from "shared/constructors";
 import { getImageSrc, isEqual } from "shared/lib";
-import { IconButton } from "shared/ui";
+import { Button, Icon, IconButton } from "shared/ui";
 import type { Chat } from "entities/chat";
 import type { StoreState } from "entities/store";
 import type { BlockProps } from "shared/constructors";
@@ -21,6 +21,8 @@ const mapStateToProps = (state: StoreState): MapProps => {
   };
 };
 
+const KebabWrapperId = "user-controls-kebab-wrapper";
+
 class UserControls extends Block {
   constructor(props: Props) {
     const { chat } = props;
@@ -28,7 +30,39 @@ class UserControls extends Block {
     super({
       chat,
       imageSrc: getImageSrc(null),
-      KebabButton: new IconButton({ name: "Kebab", size: "extra-small", hasBackground: true }),
+      isKebabOpen: false,
+      KebabButton: new IconButton({
+        name: "Kebab",
+        size: "extra-small",
+        hasBackground: true,
+        onClick: () => {
+          this.toggleKebab();
+        },
+      }),
+      KebabAddUserButton: new Button({
+        text: "Добавить пользователя",
+        Icon: new Icon({ name: "CirclePlus", size: "extra-small" }),
+        className: styles.kebabButton,
+        onClick: () => {
+          this.handleAddUserBtnClick();
+        },
+      }),
+      KebabRemoveUserButton: new Button({
+        text: "Удалить пользователя",
+        Icon: new Icon({ name: "CircleCross", size: "extra-small" }),
+        className: styles.kebabButton,
+        onClick: () => {
+          this.handleRemoveUserBtnClick();
+        },
+      }),
+      KebabRemoveChatButton: new Button({
+        text: "Удалить чат",
+        Icon: new Icon({ name: "CircleCross", size: "extra-small" }),
+        className: styles.kebabButton,
+        onClick: () => {
+          this.handleRemoveChatBtnClick();
+        },
+      }),
     });
   }
 
@@ -40,6 +74,38 @@ class UserControls extends Block {
     return true;
   }
 
+  private toggleKebab() {
+    const shouldOpen = !this.props.isKebabOpen;
+
+    const handleClickOutside = (evt: MouseEvent) => {
+      const kebabWrapper = (evt.target as HTMLDivElement | null)?.closest(`#${KebabWrapperId}`);
+
+      if (!kebabWrapper) {
+        this.setProps({ isKebabOpen: false });
+      }
+    };
+
+    this.setProps({ isKebabOpen: shouldOpen });
+
+    if (shouldOpen) {
+      window.addEventListener("click", handleClickOutside);
+    } else {
+      window.removeEventListener("click", handleClickOutside);
+    }
+  }
+
+  private handleAddUserBtnClick() {
+    //
+  }
+
+  private handleRemoveUserBtnClick() {
+    //
+  }
+
+  private handleRemoveChatBtnClick() {
+    //
+  }
+
   render() {
     return /* HTML */ `
       <div class="${styles.userControls}">
@@ -48,7 +114,15 @@ class UserControls extends Block {
           <p class="${styles.name}">{{ chat.title }}</p>
         </div>
 
-        {{{ KebabButton }}}
+        <div id="${KebabWrapperId}" class="${styles.kebabWrapper}">
+          {{{ KebabButton }}} {{#if isKebabOpen}}
+          <ul class="${styles.kebabList}">
+            <li>{{{ KebabAddUserButton }}}</li>
+            <li>{{{ KebabRemoveUserButton }}}</li>
+            <li>{{{ KebabRemoveUserButton }}}</li>
+          </ul>
+          {{/if}}
+        </div>
       </div>
     `;
   }
