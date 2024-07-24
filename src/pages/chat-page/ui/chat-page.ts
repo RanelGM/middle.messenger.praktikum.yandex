@@ -3,8 +3,8 @@ import { connect } from "entities/store";
 import { Block } from "shared/constructors";
 import { isEqual } from "shared/lib";
 import { ChatCreate } from "./chat-create/chat-create";
-import { ChatExpanded } from "./chat-expanded/chat-expanded";
-import { ChatItem } from "./chat-item/chat-item";
+import { ChatExpandedWithStore } from "./chat-expanded/chat-expanded";
+import { ChatItemWithStore } from "./chat-item/chat-item";
 import { ProfileLink } from "./profile-link/profile-link";
 import { Search } from "./search/search";
 import { Stub } from "./stub/stub";
@@ -16,11 +16,13 @@ import styles from "./chat-page.module.scss";
 
 type MapProps = {
   chatsApi: ApiState<Chat[] | null>;
+  activeChat: Chat | null;
 };
 
 const mapStateToProps = (state: StoreState): MapProps => {
   return {
     chatsApi: state.chatReducer.chats,
+    activeChat: state.chatReducer.activeChat,
   };
 };
 
@@ -33,7 +35,7 @@ class ChatPage extends Block {
       ProfileLink: new ProfileLink(),
       Search: new Search(),
       Stub: new Stub(),
-      ChatExpanded: new ChatExpanded({ chat: null }),
+      ChatExpanded: new ChatExpandedWithStore({ chat: null }),
       lists: [],
     });
   }
@@ -50,11 +52,21 @@ class ChatPage extends Block {
       this.setLists({ lists: this.createChatItems(newProps.chatsApi.data ?? []) });
     }
 
+    if (!isEqual(oldProps.activeChat ?? {}, newProps.activeChat ?? {})) {
+      const chat = newProps.activeChat;
+
+      if (chat) {
+        this.children.Stub?.hide();
+      } else {
+        this.children.Stub?.show();
+      }
+    }
+
     return true;
   }
 
-  private createChatItems(chats: Chat[]): ChatItem[] {
-    return chats.map((chat) => new ChatItem({ chat }));
+  private createChatItems(chats: Chat[]): Block[] {
+    return chats.map((chat) => new ChatItemWithStore({ chat }));
   }
 
   override render() {

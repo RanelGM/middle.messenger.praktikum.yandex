@@ -1,37 +1,44 @@
+import { connect } from "entities/store";
 import { Block } from "shared/constructors";
 import { ChatMessage } from "../chat-message/chat-message";
 import { getMessageMock } from "../chat-message/getMessageMock";
 import { ChatMessageForm } from "../chat-message-form/chat-message-form";
-import { UserControls } from "../user-controls/user-controls";
+import { UserControlsWithStore } from "../user-controls/user-controls";
 import type { Chat } from "entities/chat";
-import type { BlockProps } from "shared/constructors";
+import type { StoreState } from "entities/store";
 import styles from "./chat-expanded.module.scss";
 
 type Props = {
   chat: Chat | null;
 };
 
+type MapProps = {
+  activeChat: Chat | null;
+};
+
 const messagesMock = Array.from({ length: 10 }, (_value, index) => getMessageMock(index));
 
-export class ChatExpanded extends Block {
+const mapStateToProps = (state: StoreState): MapProps => {
+  return {
+    activeChat: state.chatReducer.activeChat,
+  };
+};
+
+class ChatExpanded extends Block {
   constructor(props: Props) {
     const { chat } = props;
+
+    console.log(props);
 
     const lists = messagesMock.map((message) => {
       return new ChatMessage({ message });
     });
 
     super({
-      UserControls: new UserControls({ chat }),
+      UserControls: new UserControlsWithStore({ chat }),
       SendForm: new ChatMessageForm(),
       lists,
     });
-  }
-
-  componentDidUpdate(_oldProps: BlockProps, newProps: BlockProps) {
-    (this.children.UserControls as UserControls).setProps({ chatItem: newProps.chatItem });
-
-    return true;
   }
 
   render() {
@@ -46,3 +53,5 @@ export class ChatExpanded extends Block {
     `;
   }
 }
+
+export const ChatExpandedWithStore = connect(mapStateToProps, ChatExpanded);

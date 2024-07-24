@@ -1,7 +1,7 @@
 import { connect } from "entities/store";
 import { userApi } from "entities/user";
-import { ApiRoutes, DefaultImageSrc } from "shared/constants";
 import { Block } from "shared/constructors";
+import { getImageSrc } from "shared/lib";
 import { InputBasic } from "shared/ui";
 import type { StoreState } from "entities/store";
 import type { User } from "entities/user";
@@ -26,7 +26,7 @@ const mapStateToProps = (state: StoreState): MapProps => {
 
 class ProfileAvatar extends Block {
   constructor(props: InnerProps) {
-    const { imageSrc = DefaultImageSrc, userApi } = props;
+    const { imageSrc = getImageSrc(null), userApi } = props;
 
     super({
       userApi,
@@ -56,10 +56,8 @@ class ProfileAvatar extends Block {
 
   componentDidUpdate(oldProps: BlockProps & InnerProps, newProps: BlockProps & InnerProps): boolean {
     if (oldProps.userApi?.data?.avatar !== newProps.userApi?.data?.avatar) {
-      const avatarSrc = newProps.userApi?.data?.avatar;
-
       this.setProps({
-        imageSrc: avatarSrc ? `${ApiRoutes.BaseUrl}/${ApiRoutes.ResourcesUrl}${avatarSrc}` : DefaultImageSrc,
+        imageSrc: getImageSrc(newProps.userApi?.data?.avatar),
       });
     }
 

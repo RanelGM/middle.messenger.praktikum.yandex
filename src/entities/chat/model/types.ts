@@ -32,4 +32,9 @@ export type SetChatsAction = {
   payload: Partial<ApiState<Chat[] | null>>;
 };
 
-export type ChatReducerAction = SetChatsAction;
+export type SetActiveChatAction = {
+  type: "SET_ACTIVE_CHAT";
+  payload: Chat | null;
+};
+
+export type ChatReducerAction = SetChatsAction | SetActiveChatAction;

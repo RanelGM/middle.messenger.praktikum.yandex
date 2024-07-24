@@ -1,42 +1,54 @@
+import { connect, store } from "entities/store";
 import { formatPreviewDate } from "pages/chat-page/lib/formatPreviewDate";
-import { ApiRoutes, DefaultImageSrc } from "shared/constants";
 import { Block } from "shared/constructors";
-import { cn } from "shared/lib";
+import { getImageSrc, isEqual } from "shared/lib";
 import type { Chat } from "entities/chat";
+import type { StoreState } from "entities/store";
+import type { BlockProps } from "shared/constructors";
 import styles from "./chat-item.module.scss";
 
 type Props = {
   chat: Chat;
 };
 
-export class ChatItem extends Block {
+type MapProps = {
+  activeChat: Chat | null;
+};
+
+const mapStateToProps = (state: StoreState): MapProps => {
+  return {
+    activeChat: state.chatReducer.activeChat,
+  };
+};
+
+class ChatItem extends Block {
   constructor(props: Props) {
     const { chat } = props;
     const { unreadCount, lastMessage, avatar, ...restChatItem } = chat;
 
     const dateTime = lastMessage ? formatPreviewDate(lastMessage.time) : undefined;
-    const imgSrc = avatar ? `${ApiRoutes.BaseUrl}/${ApiRoutes.ResourcesUrl}${avatar}` : DefaultImageSrc;
+    const imgSrc = getImageSrc(avatar);
 
     super({
       ...restChatItem,
+      isActive: false,
       dateTime,
       imgSrc,
       count: unreadCount > 0 ? unreadCount : undefined,
       events: {
         click: () => {
-          // onItemClick(chat);
+          store.dispatch({ type: "SET_ACTIVE_CHAT", payload: chat });
         },
       },
     });
   }
 
-  toggleActive(isActive: boolean) {
-    if (isActive) {
-      this.addAttributes({ class: cn(styles.chatItem, styles.chatItem_active) });
-    } else {
-      this.removeAttributes(["class"]);
-      this.addAttributes({ class: cn(styles.chatItem) });
+  componentDidUpdate(oldProps: BlockProps & MapProps, newProps: BlockProps & MapProps): boolean {
+    if (!isEqual(oldProps.activeChat ?? {}, newProps.activeChat ?? {})) {
+      this.setProps({ isActive: Boolean(newProps.activeChat?.id === this.props.id) });
     }
+
+    return true;
   }
 
   render() {
@@ -61,3 +73,5 @@ export class ChatItem extends Block {
     `;
   }
 }
+
+export const ChatItemWithStore = connect(mapStateToProps, ChatItem);
