@@ -1,6 +1,6 @@
 import { Block } from "shared/constructors";
 import { Button } from "shared/ui";
-import { ChatCreateModalWithStore } from "../chat-create-modal/chat-create-modal";
+import { ChatCreateModalWithStore } from "../modals/chat-create-modal/chat-create-modal";
 import type { BlockProps } from "shared/constructors";
 import styles from "./chat-create.module.scss";
 

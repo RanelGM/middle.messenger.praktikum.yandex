@@ -64,6 +64,39 @@ class ChatApi extends BasicApi {
       setChatsApiState({ isLoading: false });
     }
   }
+
+  async removeChat(chat: Chat, onSuccess: () => void): Promise<void> {
+    const setChatsApiState = (payload: Partial<ApiState<Chat[] | null>>) => {
+      store.dispatch({ type: "SET_CHATS", payload });
+    };
+
+    try {
+      setChatsApiState({ isLoading: true });
+
+      const response = await this.api.delete(ApiRoutes.Chats.createChat, {
+        body: { chatId: chat.id },
+      });
+      const data = response.getData();
+
+      if (!response.isOK || checkIsServerError(data)) {
+        setChatsApiState({ isError: true });
+        this.handleError(data, response.statusCode);
+
+        return;
+      }
+
+      const currentChats = store.getState().chatReducer.chats.data ?? [];
+      const updatedChats = currentChats.filter((currentChat) => currentChat.id !== chat.id);
+
+      onSuccess();
+      setChatsApiState({ data: updatedChats, isError: false });
+    } catch (error: unknown) {
+      setChatsApiState({ isError: true });
+      this.handleError(error);
+    } finally {
+      setChatsApiState({ isLoading: false });
+    }
+  }
 }
 
 export const chatApi = new ChatApi();

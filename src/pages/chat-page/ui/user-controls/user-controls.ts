@@ -2,6 +2,7 @@ import { connect } from "entities/store";
 import { Block } from "shared/constructors";
 import { getImageSrc, isEqual } from "shared/lib";
 import { Button, Icon, IconButton } from "shared/ui";
+import { ChatRemoveModalWithStore } from "../modals/chat-remove-modal/chat-remove-modal";
 import type { Chat } from "entities/chat";
 import type { StoreState } from "entities/store";
 import type { BlockProps } from "shared/constructors";
@@ -31,6 +32,8 @@ class UserControls extends Block {
       chat,
       imageSrc: getImageSrc(null),
       isKebabOpen: false,
+      isModalRemoveChatOpen: false,
+
       KebabButton: new IconButton({
         name: "Kebab",
         size: "extra-small",
@@ -61,6 +64,11 @@ class UserControls extends Block {
         className: styles.kebabButton,
         onClick: () => {
           this.handleRemoveChatBtnClick();
+        },
+      }),
+      ModalRemoveChat: new ChatRemoveModalWithStore({
+        closeModal: () => {
+          this.toggleRemoveChatModal(false);
         },
       }),
     });
@@ -94,6 +102,10 @@ class UserControls extends Block {
     }
   }
 
+  private toggleRemoveChatModal(isOpen: boolean) {
+    this.setProps({ isModalRemoveChatOpen: isOpen });
+  }
+
   private handleAddUserBtnClick() {
     //
   }
@@ -103,7 +115,8 @@ class UserControls extends Block {
   }
 
   private handleRemoveChatBtnClick() {
-    //
+    this.toggleRemoveChatModal(true);
+    this.toggleKebab();
   }
 
   render() {
@@ -115,14 +128,16 @@ class UserControls extends Block {
         </div>
 
         <div id="${KebabWrapperId}" class="${styles.kebabWrapper}">
-          {{{ KebabButton }}} {{#if isKebabOpen}}
-          <ul class="${styles.kebabList}">
+          {{{ KebabButton }}}
+
+          <ul class="${styles.kebabList} {{#unless  isKebabOpen}} visually-hidden {{/unless}}">
             <li>{{{ KebabAddUserButton }}}</li>
             <li>{{{ KebabRemoveUserButton }}}</li>
             <li>{{{ KebabRemoveUserButton }}}</li>
           </ul>
-          {{/if}}
         </div>
+
+        {{#if isModalRemoveChatOpen}} {{{ ModalRemoveChat }}} {{/if}}
       </div>
     `;
   }

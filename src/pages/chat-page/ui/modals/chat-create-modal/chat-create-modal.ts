@@ -5,7 +5,6 @@ import { Button, Icon, Input } from "shared/ui";
 import type { StoreState } from "entities/store";
 import type { BlockProps } from "shared/constructors";
 import type { BasicInputEvent } from "shared/ui";
-import styles from "./chat-create-modal.module.scss";
 
 type ChatCreateModalProps = {
   toggleModal: (isOpen: boolean) => void;
@@ -38,7 +37,7 @@ class ChatCreateModal extends Block {
         size: "small",
         variant: "clear",
         Icon: new Icon({ name: "Cross", size: "small" }),
-        className: styles.buttonClose,
+        className: "modalButtonClose",
         onClick: closeModal,
       }),
       Input: new Input({

@@ -27,5 +27,6 @@ export const ApiRoutes = {
   Chats: {
     getChats: "/chats",
     createChat: "/chats",
+    deleteChat: "/chats",
   },
 } as const;
