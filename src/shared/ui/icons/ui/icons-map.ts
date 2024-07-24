@@ -2,6 +2,7 @@ import { getIconArrowCircle } from "./components/icon-arrow-circle";
 import { getIconArrowTick } from "./components/icon-arrow-tick";
 import { getIconCirclePoint } from "./components/icon-circle-point";
 import { getIconClip } from "./components/icon-clip";
+import { getIconCross } from "./components/icon-cross";
 import { getIconKebab } from "./components/icon-kebab";
 import { getIconSearch } from "./components/icon-search";
 import { getIconSquareCorner } from "./components/icon-square-corner";
@@ -14,6 +15,7 @@ export const IconsMap = {
   ArrowTick: getIconArrowTick(),
   CirclePoint: getIconCirclePoint(),
   Clip: getIconClip(),
+  Cross: getIconCross(),
   Kebab: getIconKebab(),
   Search: getIconSearch(),
   SquareCorner: getIconSquareCorner(),

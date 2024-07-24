@@ -11,15 +11,17 @@ export type InputBasicProps = {
   accept?: string;
   required?: boolean;
   disabled?: boolean;
+  placeholder?: string;
   classNameInput?: string;
   onChange?: (evt: BasicInputEvent<Event>) => void;
   onFocus?: (evt: BasicInputEvent<FocusEvent>) => void;
   onBlur?: (evt: BasicInputEvent<FocusEvent>) => void;
+  onInput?: (evt: BasicInputEvent<Event>) => void;
 };
 
 export class InputBasic extends Block {
   constructor(props: InputBasicProps) {
-    const { onChange, onFocus, onBlur, ...restProps } = props;
+    const { onChange, onFocus, onBlur, onInput, ...restProps } = props;
 
     super({
       ...restProps,
@@ -27,6 +29,7 @@ export class InputBasic extends Block {
         change: onChange,
         focus: onFocus,
         blur: onBlur,
+        input: onInput,
       },
     });
   }
@@ -38,9 +41,11 @@ export class InputBasic extends Block {
         name="{{ name }}"
         type="{{ type }}"
         {{#if accept}} accept="{{ accept }}"{{/if}}
-        value="{{#if value}}{{ value }}{{/if}}"
+        {{#if placeholder}} placeholder="{{ placeholder }}"{{/if}}
+        {{#if value}} value="{{ value }}"{{/if}}
         {{#if disabled}}disabled{{/if}}
         {{#if required}}required{{/if}}
+
       />
     `;
   }

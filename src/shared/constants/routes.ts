@@ -22,8 +22,10 @@ export const ApiRoutes = {
     changeUser: "/user/profile",
     ChangePassword: "/user/password",
     ChangeAvatar: "/user/profile/avatar",
+    Search: "/user/search",
   },
   Chats: {
     getChats: "/chats",
+    createChat: "/chats",
   },
 } as const;

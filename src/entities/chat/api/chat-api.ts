@@ -34,6 +34,36 @@ class ChatApi extends BasicApi {
       setChatsApiState({ isLoading: false });
     }
   }
+
+  async createChat(title: string, onSuccess: () => void): Promise<void> {
+    const setChatsApiState = (payload: Partial<ApiState<Chat[] | null>>) => {
+      store.dispatch({ type: "SET_CHATS", payload });
+    };
+
+    try {
+      setChatsApiState({ isLoading: true });
+
+      const response = await this.api.post(ApiRoutes.Chats.createChat, {
+        body: { title },
+      });
+      const data = response.getData();
+
+      if (!response.isOK || checkIsServerError(data)) {
+        setChatsApiState({ isError: true });
+        this.handleError(data, response.statusCode);
+
+        return;
+      }
+
+      onSuccess();
+      void this.getChats();
+    } catch (error: unknown) {
+      setChatsApiState({ isError: true });
+      this.handleError(error);
+    } finally {
+      setChatsApiState({ isLoading: false });
+    }
+  }
 }
 
 export const chatApi = new ChatApi();

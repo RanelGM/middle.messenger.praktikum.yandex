@@ -50,6 +50,17 @@
     border-color: transparent;
     background-color: transparent;
   }
+
+  &-clear {
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+
+    &:active {
+      box-shadow: none;
+    }
+  }
 }
 
 .button_size,

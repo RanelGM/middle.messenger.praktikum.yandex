@@ -3,14 +3,11 @@ import type { Chat, ServerChat } from "../../model/types";
 
 export const adaptChatFromServer = (chat: ServerChat): Chat => {
   const { created_by: createdBy, unread_count: unreadCount, last_message: lastMessage, ...restChat } = chat;
-  const { user, ...restLastMessage } = lastMessage;
-
-  const adaptedUser = adaptUserFromServer(user);
 
   return {
     createdBy,
     unreadCount,
-    lastMessage: { user: adaptedUser, ...restLastMessage },
+    lastMessage: lastMessage ? { ...lastMessage, user: adaptUserFromServer(lastMessage.user) } : undefined,
     ...restChat,
   };
 };
@@ -21,14 +18,11 @@ export const adaptChatsFromServer = (chats: ServerChat[]): Chat[] => {
 
 export const adaptChatToServer = (chat: Chat): ServerChat => {
   const { createdBy, unreadCount, lastMessage, ...restChat } = chat;
-  const { user, ...restLastMessage } = lastMessage;
-
-  const adaptedUser = adaptUserToServer(user);
 
   return {
     created_by: createdBy,
     unread_count: unreadCount,
-    last_message: { user: adaptedUser, ...restLastMessage },
+    last_message: lastMessage ? { ...lastMessage, user: adaptUserToServer(lastMessage.user) } : undefined,
     ...restChat,
   };
 };

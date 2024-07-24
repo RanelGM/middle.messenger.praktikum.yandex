@@ -4,6 +4,7 @@ export { getEndOfDate } from "./date/getEndOfDate";
 export { zeroficate } from "./date/zeroficate";
 
 export { cn } from "./misc/classNames";
+export { debounce } from "./misc/debounce";
 export { getDefaultApiState } from "./misc/getDefaultApiState";
 export { isEqual } from "./misc/isEqual";
 export { isFalsy } from "./misc/isFalsy";

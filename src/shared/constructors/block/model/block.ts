@@ -173,6 +173,7 @@ export class Block {
     this._element = newElement;
     this._addEvents();
     this.addAttributes();
+    this._componentDidMount();
   }
 
   render() {

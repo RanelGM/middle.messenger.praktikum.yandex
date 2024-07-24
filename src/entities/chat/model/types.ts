@@ -7,7 +7,7 @@ export type ServerChat = {
   avatar: string;
   unread_count: number;
   created_by: number;
-  last_message: {
+  last_message?: {
     user: ServerUser;
     time: string;
     content: string;
@@ -20,7 +20,7 @@ export type Chat = {
   avatar: string;
   unreadCount: number;
   createdBy: number;
-  lastMessage: {
+  lastMessage?: {
     user: User;
     time: string;
     content: string;

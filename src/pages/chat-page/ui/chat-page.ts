@@ -1,10 +1,12 @@
+import { chatApi } from "entities/chat";
 import { Block } from "shared/constructors";
+import { ChatCreate } from "./chat-create/chat-create";
 import { ChatExpanded } from "./chat-expanded/chat-expanded";
-import { ChatItem } from "./chat-item/chat-item";
 import { getChatItemMock } from "./chat-item/getChatItemsMock";
 import { ProfileLink } from "./profile-link/profile-link";
 import { Search } from "./search/search";
 import { Stub } from "./stub/stub";
+import type { ChatItem } from "./chat-item/chat-item";
 import type { ChatItemType } from "../model/types";
 import styles from "./chat-page.module.scss";
 
@@ -14,22 +16,27 @@ export class ChatPage extends Block {
   activeChat: ChatItemType | null = null;
 
   constructor() {
-    const lists = chatItemsMock.map((chatItem) => {
-      return new ChatItem({
-        chatItem,
-        onItemClick: () => {
-          this._handleChatItemClick(chatItem);
-        },
-      });
-    });
+    // const lists = chatItemsMock.map((chatItem) => {
+    //   return new ChatItem({
+    //     chatItem,
+    //     onItemClick: () => {
+    //       this._handleChatItemClick(chatItem);
+    //     },
+    //   });
+    // });
 
     super({
+      ChatCreate: new ChatCreate(),
       ProfileLink: new ProfileLink(),
       Search: new Search(),
       Stub: new Stub(),
       ChatExpanded: new ChatExpanded({ chatItem: chatItemsMock[0] as ChatItemType }),
-      lists,
+      lists: [],
     });
+  }
+
+  componentDidMount(): void {
+    void chatApi.getChats();
   }
 
   _handleChatItemClick(chatItem: ChatItemType) {
@@ -59,7 +66,8 @@ export class ChatPage extends Block {
     return /* HTML */ `
       <main class="${styles.main}">
         <div class="${styles.sidebar}">
-          <div class="${styles.sidebarHeader}">{{{ ProfileLink }}} {{{ Search }}}</div>
+          <div class="${styles.sidebarHeader}">{{{ ChatCreate }}} {{{ Search }}}</div>
+          <div>{{{ ProfileLink }}}</div>
           <ul class="${styles.chatList}">
             {{{ lists }}}
           </ul>
