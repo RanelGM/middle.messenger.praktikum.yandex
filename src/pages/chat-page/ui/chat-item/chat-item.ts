@@ -1,27 +1,30 @@
 import { formatPreviewDate } from "pages/chat-page/lib/formatPreviewDate";
+import { ApiRoutes, DefaultImageSrc } from "shared/constants";
 import { Block } from "shared/constructors";
 import { cn } from "shared/lib";
-import type { ChatItemType } from "pages/chat-page/model/types";
+import type { Chat } from "entities/chat";
 import styles from "./chat-item.module.scss";
 
 type Props = {
-  chatItem: ChatItemType;
-  onItemClick: (chatItem: ChatItemType) => void;
+  chat: Chat;
 };
 
 export class ChatItem extends Block {
   constructor(props: Props) {
-    const { chatItem, onItemClick } = props;
-    const { date, unreadCount, ...restChatItem } = chatItem;
+    const { chat } = props;
+    const { unreadCount, lastMessage, avatar, ...restChatItem } = chat;
 
-    formatPreviewDate(date);
+    const dateTime = lastMessage ? formatPreviewDate(lastMessage.time) : undefined;
+    const imgSrc = avatar ? `${ApiRoutes.BaseUrl}/${ApiRoutes.ResourcesUrl}${avatar}` : DefaultImageSrc;
+
     super({
       ...restChatItem,
-      count: unreadCount && unreadCount > 0 ? unreadCount : undefined,
-      dateTime: formatPreviewDate(date),
+      dateTime,
+      imgSrc,
+      count: unreadCount > 0 ? unreadCount : undefined,
       events: {
         click: () => {
-          onItemClick(chatItem);
+          // onItemClick(chat);
         },
       },
     });
@@ -40,11 +43,11 @@ export class ChatItem extends Block {
     return /* HTML */ `
       <li class="${styles.chatItem} {{#if isActive}}${styles.chatItem_active}{{/if}}">
         <button class="${styles.button}">
-          <img class="${styles.image}" src="{{ img }}" alt="Изображение пользователя" width="47" height="47" />
+          <img class="${styles.image}" src="{{ imgSrc }}" alt="Изображение пользователя" width="47" height="47" />
 
           <div class="${styles.contentWrapper}">
             <div class="${styles.nameDateWrapper}">
-              <h3 class="${styles.name}">{{ name }}<h3>
+              <h3 class="${styles.title}">{{ title }}<h3>
               <p class="${styles.date}">{{ dateTime }}</p>
             </div>
 

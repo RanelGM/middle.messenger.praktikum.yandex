@@ -22,7 +22,7 @@ export class Block {
     const { props, children, lists } = this._getChildrenPropsAndProps(propsWithChildren);
     this.props = this._makePropsProxy({ ...props });
     this.children = children;
-    this.lists = lists;
+    this.lists = this._makeListsProxy({ ...lists });
     this.eventBus = () => eventBus;
     this._registerEvents(eventBus);
     eventBus.emit(Block.EVENTS.INIT);
@@ -122,6 +122,14 @@ export class Block {
     Object.assign(this.props, nextProps);
   };
 
+  setLists = (lists: ListsProps) => {
+    if (!lists) {
+      return;
+    }
+
+    Object.assign(this.lists, lists);
+  };
+
   get element() {
     return this._element;
   }
@@ -195,6 +203,23 @@ export class Block {
       },
       set(target, prop: string, value) {
         const oldTarget = { ...target };
+        target[prop] = value;
+        self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+
+        return true;
+      },
+      deleteProperty() {
+        throw new Error("No access");
+      },
+    });
+  }
+
+  _makeListsProxy(lists: ListsProps): ListsProps {
+    const self = this;
+
+    return new Proxy(lists, {
+      set(target, prop: string, value: Block[]) {
+        const oldTarget: ListsProps = { ...target };
         target[prop] = value;
         self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
 

@@ -1,5 +1,6 @@
 import { connect } from "entities/store";
 import { userApi } from "entities/user";
+import { ApiRoutes, DefaultImageSrc } from "shared/constants";
 import { Block } from "shared/constructors";
 import { InputBasic } from "shared/ui";
 import type { StoreState } from "entities/store";
@@ -22,9 +23,6 @@ const mapStateToProps = (state: StoreState): MapProps => {
     userApi: state.userReducer.user,
   };
 };
-
-const DefaultImageSrc = "/media/profile-avatar.svg";
-const resoursesPath = userApi.getResourcesPath();
 
 class ProfileAvatar extends Block {
   constructor(props: InnerProps) {
@@ -60,7 +58,9 @@ class ProfileAvatar extends Block {
     if (oldProps.userApi?.data?.avatar !== newProps.userApi?.data?.avatar) {
       const avatarSrc = newProps.userApi?.data?.avatar;
 
-      this.setProps({ imageSrc: avatarSrc ? `${resoursesPath}${avatarSrc}` : DefaultImageSrc });
+      this.setProps({
+        imageSrc: avatarSrc ? `${ApiRoutes.BaseUrl}/${ApiRoutes.ResourcesUrl}${avatarSrc}` : DefaultImageSrc,
+      });
     }
 
     if (oldProps.userApi?.data?.firstName !== newProps.userApi?.data?.firstName) {
