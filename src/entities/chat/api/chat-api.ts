@@ -2,7 +2,8 @@ import { store } from "entities/store";
 import { ApiRoutes } from "shared/constants";
 import { BasicApi, checkIsServerError } from "shared/constructors";
 import { adaptChatsFromServer } from "./adapters/adaptChat";
-import type { Chat, ServerChat } from "../model/types";
+import { chatWs } from "./chat-ws";
+import type { Chat, ChatToken, ServerChat } from "../model/types";
 import type { ApiState } from "shared/types";
 
 class ChatApi extends BasicApi {
@@ -24,9 +25,13 @@ class ChatApi extends BasicApi {
         return;
       }
 
-      const adaptedUser = adaptChatsFromServer(data);
+      const adaptedChats = adaptChatsFromServer(data);
 
-      setChatsApiState({ isError: false, data: adaptedUser });
+      setChatsApiState({ isError: false, data: adaptedChats });
+
+      adaptedChats.forEach((chat) => {
+        void this.getChatToken(chat);
+      });
     } catch (error: unknown) {
       setChatsApiState({ isError: true });
       this.handleError(error);
@@ -95,6 +100,23 @@ class ChatApi extends BasicApi {
       this.handleError(error);
     } finally {
       setChatsApiState({ isLoading: false });
+    }
+  }
+
+  async getChatToken(chat: Chat): Promise<void> {
+    try {
+      const response = await this.api.post(ApiRoutes.Chats.getToken(chat.id));
+      const data = response.getData<ChatToken>();
+
+      if (!data || !response.isOK || checkIsServerError(data)) {
+        this.handleError(data, response.statusCode);
+
+        return;
+      }
+
+      chatWs.initConnection(chat, data.token);
+    } catch (error: unknown) {
+      this.handleError(error);
     }
   }
 }

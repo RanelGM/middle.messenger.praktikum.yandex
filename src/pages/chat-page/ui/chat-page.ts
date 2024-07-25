@@ -28,6 +28,7 @@ const mapStateToProps = (state: StoreState): MapProps => {
 
 class ChatPage extends Block {
   isMounted = false;
+  isConnected = false;
 
   constructor() {
     super({
@@ -40,18 +41,16 @@ class ChatPage extends Block {
     });
   }
 
-  componentDidMount(): void {
+  componentDidUpdate(oldProps: BlockProps & MapProps, newProps: BlockProps & MapProps): boolean {
     if (!this.isMounted) {
       this.isMounted = true;
       void chatApi.getChats();
     }
-  }
 
-  componentDidUpdate(oldProps: BlockProps & MapProps, newProps: BlockProps & MapProps): boolean {
     if (!isEqual(oldProps.chatsApi?.data ?? {}, newProps.chatsApi?.data ?? {})) {
       this.setLists({ lists: this.createChatItems(newProps.chatsApi.data ?? []) });
 
-      // FIXME:
+      // TODO:
       store.dispatch({ type: "SET_ACTIVE_CHAT", payload: newProps?.chatsApi.data?.[0] ?? null });
     }
 

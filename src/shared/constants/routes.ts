@@ -11,6 +11,7 @@ export const AppRoutes = {
 
 export const ApiRoutes = {
   BaseUrl: "https://ya-praktikum.tech/api/v2",
+  SocketBaseUrl: "wss://ya-praktikum.tech/ws",
   ResourcesUrl: "resources",
   Auth: {
     user: "/auth/user",
@@ -28,5 +29,6 @@ export const ApiRoutes = {
     getChats: "/chats",
     createChat: "/chats",
     deleteChat: "/chats",
+    getToken: (id: number) => `/chats/token/${id}`,
   },
 } as const;

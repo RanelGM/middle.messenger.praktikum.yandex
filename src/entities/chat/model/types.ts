@@ -27,6 +27,10 @@ export type Chat = {
   };
 };
 
+export type ChatToken = {
+  token: string;
+};
+
 export type SetChatsAction = {
   type: "SET_CHATS";
   payload: Partial<ApiState<Chat[] | null>>;
