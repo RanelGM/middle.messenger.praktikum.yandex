@@ -4,10 +4,10 @@ export type ServerUser = {
   id: number;
   first_name: string;
   second_name: string;
-  display_name: string;
+  display_name: string | null;
   phone: string;
   login: string;
-  avatar: string;
+  avatar: string | null;
   email: string;
 };
 
@@ -41,4 +41,19 @@ export type SetUserAction = {
   payload: Partial<ApiState<User | null>>;
 };
 
-export type UserReducerAction = SetUserAction;
+export type SetSearchUsersAction = {
+  type: "SET_SEARCH_USERS";
+  payload: Partial<ApiState<User[] | null>>;
+};
+
+export type SetCheckedUsersAction = {
+  type: "SET_CHECKED_USERS";
+  payload: Record<string, User>;
+};
+
+export type ToggleCheckedUsersAction = {
+  type: "TOGGLE_CHECKED_USERS";
+  payload: User;
+};
+
+export type UserReducerAction = SetUserAction | SetSearchUsersAction | SetCheckedUsersAction | ToggleCheckedUsersAction;

@@ -39,7 +39,7 @@ export class Button extends Block {
 
   override render() {
     return /* HTML */ `
-      <button type="{{ type }}" class="{{ className }}">
+      <button type="{{ type }}" class="{{ className }} {{#if isLoading}}${styles.isLoading}{{/if}}">
         {{#if Icon }} {{{ Icon }}} {{/if}} {{#if isLoading }} Загружаем... {{ else }} {{ text }} {{/if}}
       </button>
     `;

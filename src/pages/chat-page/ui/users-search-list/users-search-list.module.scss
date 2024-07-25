@@ -1,0 +1,45 @@
+.userSearchList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: auto;
+  max-height: 320px;
+}
+
+.userSearchItem {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 6px 0;
+  font-size: var(--font-size-medium);
+  line-height: var(--line-height-medium);
+  cursor: pointer;
+  transition: background-color var(--transition-default);
+
+  &:hover {
+    background-color: var(--color-blue-1-opacity-60);
+  }
+}
+
+.userSearchItem_active {
+  background-color: var(--color-blue-1-opacity-90);
+
+  &:hover {
+    background-color: var(--color-blue-1);
+  }
+}
+
+.image {
+  flex-shrink: 0;
+  object-fit: cover;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+.namesWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+}

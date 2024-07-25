@@ -20,9 +20,9 @@ export const ApiRoutes = {
   },
   Users: {
     changeUser: "/user/profile",
-    ChangePassword: "/user/password",
-    ChangeAvatar: "/user/profile/avatar",
-    Search: "/user/search",
+    changePassword: "/user/password",
+    changeAvatar: "/user/profile/avatar",
+    search: "/user/search",
   },
   Chats: {
     getChats: "/chats",

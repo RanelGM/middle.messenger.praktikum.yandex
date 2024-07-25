@@ -8,7 +8,7 @@ import type { StoreState } from "entities/store";
 import type { BlockProps } from "shared/constructors";
 
 type ChatRemoveModalProps = {
-  closeModal: () => void;
+  isOpen: boolean;
 };
 
 type MapProps = {
@@ -24,19 +24,20 @@ const mapStateToProps = (state: StoreState): MapProps => {
 };
 
 class ChatRemoveModal extends Block {
-  closeModal: () => void;
-
   constructor(props: ChatRemoveModalProps) {
-    const { closeModal } = props;
+    const { isOpen } = props;
 
     super({
+      isOpen,
       ButtonClose: new Button({
         text: "",
         size: "small",
         variant: "clear",
         Icon: new Icon({ name: "Cross", size: "small" }),
         className: "modalButtonClose",
-        onClick: closeModal,
+        onClick: () => {
+          this.handleClose();
+        },
       }),
       ButtonSubmit: new Button({
         text: "Удалить",
@@ -45,8 +46,6 @@ class ChatRemoveModal extends Block {
         },
       }),
     });
-
-    this.closeModal = closeModal;
   }
 
   componentDidUpdate(oldProps: BlockProps & MapProps, newProps: BlockProps & MapProps): boolean {
@@ -61,17 +60,21 @@ class ChatRemoveModal extends Block {
     return true;
   }
 
-  handleSubmit() {
+  private handleClose() {
+    this.setProps({ isOpen: false });
+  }
+
+  private handleSubmit() {
     const activeChat = (this.props as MapProps).activeChat;
 
     if (activeChat) {
-      void chatApi.removeChat(activeChat, this.closeModal);
+      void chatApi.removeChat(activeChat, this.handleClose.bind(this));
     }
   }
 
   render(): string {
     return /* HTML */ `
-      <div class="modal">
+      <div class="modal {{#unless isOpen}}visually-hidden{{/unless}}">
         <div class="modalContent">
           {{{ ButtonClose }}}
           <h2 class="modalTitle">Вы уверены, что хотите удалить чат {{ chat.title }}?</h2>

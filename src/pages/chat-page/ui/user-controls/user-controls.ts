@@ -3,6 +3,7 @@ import { Block } from "shared/constructors";
 import { getImageSrc, isEqual } from "shared/lib";
 import { Button, Icon, IconButton } from "shared/ui";
 import { ChatRemoveModalWithStore } from "../modals/chat-remove-modal/chat-remove-modal";
+import { UserAddModalWithStore } from "../modals/user-add-modal/user-add-modal";
 import type { Chat } from "entities/chat";
 import type { StoreState } from "entities/store";
 import type { BlockProps } from "shared/constructors";
@@ -32,8 +33,6 @@ class UserControls extends Block {
       chat,
       imageSrc: getImageSrc(null),
       isKebabOpen: false,
-      isModalRemoveChatOpen: false,
-
       KebabButton: new IconButton({
         name: "Kebab",
         size: "extra-small",
@@ -66,11 +65,8 @@ class UserControls extends Block {
           this.handleRemoveChatBtnClick();
         },
       }),
-      ModalRemoveChat: new ChatRemoveModalWithStore({
-        closeModal: () => {
-          this.toggleRemoveChatModal(false);
-        },
-      }),
+      ModalUserAdd: new UserAddModalWithStore({ isOpen: false }),
+      ModalRemoveChat: new ChatRemoveModalWithStore({ isOpen: false }),
     });
   }
 
@@ -79,7 +75,7 @@ class UserControls extends Block {
       this.setProps({ chat: newProps.activeChat, imageSrc: getImageSrc(newProps.activeChat?.avatar) });
     }
 
-    return true;
+    return !isEqual(oldProps, newProps);
   }
 
   private toggleKebab() {
@@ -102,12 +98,9 @@ class UserControls extends Block {
     }
   }
 
-  private toggleRemoveChatModal(isOpen: boolean) {
-    this.setProps({ isModalRemoveChatOpen: isOpen });
-  }
-
   private handleAddUserBtnClick() {
-    //
+    this.children.ModalUserAdd?.setProps({ isOpen: true });
+    this.toggleKebab();
   }
 
   private handleRemoveUserBtnClick() {
@@ -115,7 +108,7 @@ class UserControls extends Block {
   }
 
   private handleRemoveChatBtnClick() {
-    this.toggleRemoveChatModal(true);
+    this.children.ModalRemoveChat?.setProps({ isOpen: true });
     this.toggleKebab();
   }
 
@@ -137,7 +130,7 @@ class UserControls extends Block {
           </ul>
         </div>
 
-        {{#if isModalRemoveChatOpen}} {{{ ModalRemoveChat }}} {{/if}}
+        {{{ ModalUserAdd }}} {{{ ModalRemoveChat }}}
       </div>
     `;
   }

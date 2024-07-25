@@ -11,6 +11,10 @@ export const adaptUserFromServer = (user: ServerUser): User => {
   };
 };
 
+export const adaptUsersFromServer = (users: ServerUser[]): User[] => {
+  return users.map((user) => adaptUserFromServer(user));
+};
+
 export const adaptUserToServer = (user: User): ServerUser => {
   const { firstName, secondName, displayName, ...restUser } = user;
 

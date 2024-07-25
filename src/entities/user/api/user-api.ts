@@ -1,7 +1,7 @@
 import { store } from "entities/store";
 import { ApiRoutes } from "shared/constants";
 import { BasicApi, checkIsServerError } from "shared/constructors";
-import { adaptUserFromServer, adaptUserToChanges } from "./adapters/adapt-user";
+import { adaptUserFromServer, adaptUserToChanges, adaptUsersFromServer } from "./adapters/adapt-user";
 import type { PasswordUpdate, ServerUser, SignIn, SignUp, User } from "../model/types";
 import type { ApiState } from "shared/types";
 
@@ -156,7 +156,7 @@ class UserApi extends BasicApi {
     try {
       setUserApiState({ isLoading: true });
 
-      const response = await this.api.put(ApiRoutes.Users.ChangePassword, { body: update });
+      const response = await this.api.put(ApiRoutes.Users.changePassword, { body: update });
       const data = response.getData();
 
       if (!response.isOK || checkIsServerError(data)) {
@@ -184,7 +184,7 @@ class UserApi extends BasicApi {
     try {
       setUserApiState({ isLoading: true });
 
-      const response = await this.api.put(ApiRoutes.Users.ChangeAvatar, {
+      const response = await this.api.put(ApiRoutes.Users.changeAvatar, {
         body: formData,
       });
       const data = response.getData<ServerUser>();
@@ -204,6 +204,38 @@ class UserApi extends BasicApi {
       this.handleError(error);
     } finally {
       setUserApiState({ isLoading: false });
+    }
+  }
+
+  async searchUsers(login: string): Promise<void> {
+    const setSearchUsersApiState = (payload: Partial<ApiState<User[] | null>>) => {
+      store.dispatch({ type: "SET_SEARCH_USERS", payload });
+    };
+
+    try {
+      setSearchUsersApiState({ isLoading: true });
+
+      const response = await this.api.post(ApiRoutes.Users.search, {
+        body: { login },
+      });
+      const data = response.getData<ServerUser[]>();
+
+      if (!data || !response.isOK || checkIsServerError(data)) {
+        setSearchUsersApiState({ isError: true });
+        this.handleError(data, response.statusCode);
+
+        return;
+      }
+
+      const adaptedUsers = adaptUsersFromServer(data);
+
+      setSearchUsersApiState({ isError: false, data: adaptedUsers });
+    } catch (error: unknown) {
+      setSearchUsersApiState({ isError: true });
+      this.handleError(error);
+    } finally {
+      setSearchUsersApiState({ isLoading: false });
+      store.dispatch({ type: "SET_CHECKED_USERS", payload: {} });
     }
   }
 }

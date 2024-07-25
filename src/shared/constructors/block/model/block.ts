@@ -137,6 +137,7 @@ export class Block {
   _render() {
     const propsAndStubs = { ...this.props };
     const tmpId = Math.floor(100_000 + Math.random() * 900_000);
+
     Object.entries(this.children).forEach(([key, child]) => {
       propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
     });

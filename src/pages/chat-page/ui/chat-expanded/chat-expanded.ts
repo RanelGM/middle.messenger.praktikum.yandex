@@ -28,8 +28,6 @@ class ChatExpanded extends Block {
   constructor(props: Props) {
     const { chat } = props;
 
-    console.log(props);
-
     const lists = messagesMock.map((message) => {
       return new ChatMessage({ message });
     });
