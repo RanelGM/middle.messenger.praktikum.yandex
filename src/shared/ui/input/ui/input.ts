@@ -38,6 +38,10 @@ export class Input extends Block {
     return true;
   }
 
+  public resetValue() {
+    this.children.InputBasic?.setProps({ value: "", errorMessage: "" });
+  }
+
   override render() {
     return /* HTML */ `
       <div class="{{ classNameWrapper }}">

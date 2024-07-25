@@ -1,30 +1,65 @@
+import { chatWs } from "entities/chat";
+import { connect } from "entities/store";
 import { Block } from "shared/constructors";
+import { isEqual } from "shared/lib";
 import { IconButton, Input } from "shared/ui";
+import type { Chat } from "entities/chat";
+import type { StoreState } from "entities/store";
+import type { BlockProps } from "shared/constructors";
 import type { BasicInputEvent } from "shared/ui";
 import styles from "./chat-message-form.module.scss";
 
-export class ChatMessageForm extends Block {
+type MapProps = {
+  activeChat: Chat | null;
+};
+
+const mapStateToProps = (state: StoreState): MapProps => {
+  return {
+    activeChat: state.chatReducer.activeChat,
+  };
+};
+
+class ChatMessageForm extends Block {
+  activeChat: Chat | null;
+  inputValue = "";
+
   constructor() {
     super({
-      ButtonClip: new IconButton({ name: "Clip" }),
+      handleSubmit: (evt: SubmitEvent) => {
+        evt.preventDefault();
+      },
       Input: new Input({
         name: "message",
+        value: "",
+        placeholder: "Введите текст",
         classNameWrapper: styles.inputWrapper,
-        onBlur: (evt) => {
-          this._handleInputBlur(evt);
+        onInput: (evt) => {
+          this.handleInputChange(evt);
         },
       }),
       ButtonSend: new IconButton({
         name: "ArrowCircle",
         className: styles.buttonSend,
         onClick: () => {
-          this._handleSendButtonClick();
+          this.handleSendButtonClick();
         },
       }),
+      events: {
+        submit: (evt: SubmitEvent) => {
+          this.handleFormSubmit(evt);
+        },
+      },
     });
+
+    this.activeChat = null;
   }
 
-  _validate(value: string) {
+  private resetInput() {
+    this.inputValue = "";
+    (this.children.Input as Input | undefined)?.resetValue();
+  }
+
+  private validate(value: string) {
     if (!value) {
       this.children.Input?.setProps({ errorMessage: "Значение обязательно" });
 
@@ -36,31 +71,43 @@ export class ChatMessageForm extends Block {
     return true;
   }
 
-  _handleInputBlur(evt: BasicInputEvent<FocusEvent>) {
-    const value = evt.target.value;
-
-    this.setProps({ message: value });
-    this._validate(value);
+  private handleInputChange(evt: BasicInputEvent<Event>) {
+    this.inputValue = evt.target.value;
   }
 
-  _handleSendButtonClick() {
-    const message = (this.props.message as string | undefined) ?? "";
-    const isFormValid = this._validate(message);
+  private handleSendButtonClick() {
+    const message = this.inputValue;
+    const isFormValid = this.validate(message);
 
-    const formData = { message };
-    const validationMessage = `Форма ${isFormValid ? "прошла" : "не прошла"} валидацию`;
+    if (!this.activeChat || !isFormValid) {
+      return;
+    }
 
-    console.group("Форма");
-    console.log(validationMessage);
-    console.log(`Текущие данные:`, formData);
-    console.groupEnd();
+    this.resetInput();
 
-    alert(`${validationMessage} ${JSON.stringify(formData, null, 2)}`);
+    const socket = chatWs.getSocket(this.activeChat.id);
+    socket?.send({ type: "message", content: message });
+  }
+
+  private handleFormSubmit(evt: SubmitEvent) {
+    evt.preventDefault();
+    this.handleSendButtonClick();
+  }
+
+  componentDidUpdate(oldProps: BlockProps & MapProps, newProps: BlockProps & MapProps): boolean {
+    const hasChanges = !isEqual(oldProps.activeChat ?? {}, newProps.activeChat ?? {});
+
+    if (hasChanges) {
+      this.resetInput();
+      this.activeChat = newProps.activeChat;
+    }
+
+    return hasChanges;
   }
 
   render() {
-    return /* HTML */ `
-      <form class="${styles.chatMessageForm}">{{{ ButtonClip }}} {{{ Input }}} {{{ ButtonSend }}}</form>
-    `;
+    return /* HTML */ ` <form class="${styles.chatMessageForm}">{{{ Input }}} {{{ ButtonSend }}}</form> `;
   }
 }
+
+export const ChatMessageFormWithStore = connect(mapStateToProps, ChatMessageForm);

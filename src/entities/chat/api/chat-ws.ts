@@ -1,13 +1,12 @@
 import { store } from "entities/store";
 import { WSTransport } from "shared/constructors/api";
-import { checkIsChatMessage } from "../model/checkIsChatMessage";
-import { adaptChatMessagesFromServer } from "./adapters/adaptChatMessage";
+import { checkIsChatMessage, checkIsChatMessages } from "../model/checkIsChatMessage";
+import { adaptChatMessageFromServer, adaptChatMessagesFromServer } from "./adapters/adaptChatMessage";
 import type { Chat } from "../model/types";
 
 export class ChatWs {
   static __instance: ChatWs | null;
-  chats: Chat[] = [];
-  sockets: Record<string, WSTransport> = {};
+  private sockets: Record<string, WSTransport> = {};
 
   constructor() {
     if (ChatWs.__instance) {
@@ -38,12 +37,15 @@ export class ChatWs {
     ws.connect();
   }
 
+  public getSocket(chatId: number): WSTransport | undefined {
+    return this.sockets[chatId];
+  }
+
   public closeConnections() {
     Object.values(this.sockets).forEach((socket) => {
       socket.close();
     });
 
-    this.chats = [];
     this.sockets = {};
   }
 
@@ -58,12 +60,20 @@ export class ChatWs {
       return;
     }
 
-    if (!checkIsChatMessage(data)) {
+    const isChatMessages = checkIsChatMessages(data);
+    const isChatMessage = checkIsChatMessage(data);
+
+    if (!isChatMessage && !isChatMessages) {
       return;
     }
 
-    const adaptedMessages = adaptChatMessagesFromServer(data);
-    store.dispatch({ type: "SET_CHAT_MESSAGES", payload: { chatId: chat.id, messages: adaptedMessages } });
+    const currentMessages = store.getState().chatReducer.chatMessages[chat.id] ?? [];
+    const adaptedMessages = isChatMessage ? [adaptChatMessageFromServer(data)] : adaptChatMessagesFromServer(data);
+
+    store.dispatch({
+      type: "SET_CHAT_MESSAGES",
+      payload: { chatId: chat.id, messages: [...adaptedMessages, ...currentMessages] },
+    });
   }
 }
 

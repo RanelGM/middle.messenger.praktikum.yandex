@@ -42,7 +42,7 @@ export class InputBasic extends Block {
         type="{{ type }}"
         {{#if accept}} accept="{{ accept }}"{{/if}}
         {{#if placeholder}} placeholder="{{ placeholder }}"{{/if}}
-        {{#if value}} value="{{ value }}"{{/if}}
+        value="{{ value }}"
         {{#if disabled}}disabled{{/if}}
         {{#if required}}required{{/if}}
 

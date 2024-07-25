@@ -2,7 +2,7 @@ import { connect } from "entities/store";
 import { Block } from "shared/constructors";
 import { isEqual } from "shared/lib";
 import { ChatMessage } from "../chat-message/chat-message";
-import { ChatMessageForm } from "../chat-message-form/chat-message-form";
+import { ChatMessageFormWithStore } from "../chat-message-form/chat-message-form";
 import { UserControlsWithStore } from "../user-controls/user-controls";
 import type { Chat } from "entities/chat";
 import type { ChatMessage as ChatMessageType } from "entities/chat/model/types";
@@ -38,7 +38,7 @@ class ChatExpanded extends Block {
 
     super({
       UserControls: new UserControlsWithStore({ chat }),
-      SendForm: new ChatMessageForm(),
+      ChatMessageForm: new ChatMessageFormWithStore(),
       lists: [],
     });
   }
@@ -66,7 +66,7 @@ class ChatExpanded extends Block {
 
         <div class="${styles.messagesWrapper}">{{{ lists }}}</div>
 
-        {{{ SendForm }}}
+        {{{ ChatMessageForm }}}
       </div>
     `;
   }
