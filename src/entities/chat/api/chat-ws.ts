@@ -1,5 +1,7 @@
 import { store } from "entities/store";
 import { WSTransport } from "shared/constructors/api";
+import { checkIsChatMessage } from "../model/checkIsChatMessage";
+import { adaptChatMessagesFromServer } from "./adapters/adaptChatMessage";
 import type { Chat } from "../model/types";
 
 export class ChatWs {
@@ -22,7 +24,16 @@ export class ChatWs {
       return;
     }
 
-    const ws = new WSTransport({ url: `/chats/${user.id}/${chat.id}/${token}` });
+    const ws = new WSTransport({
+      url: `/chats/${user.id}/${chat.id}/${token}`,
+      onOpen: () => {
+        this.handleOpen(ws);
+      },
+      onMessage: (evt) => {
+        this.handleMessage(evt, chat);
+      },
+    });
+
     this.sockets[chat.id] = ws;
     ws.connect();
   }
@@ -34,6 +45,25 @@ export class ChatWs {
 
     this.chats = [];
     this.sockets = {};
+  }
+
+  private handleOpen(wsTransport: WSTransport) {
+    wsTransport.send({ type: "get old", content: "0" });
+  }
+
+  private handleMessage(evt: MessageEvent, chat: Chat) {
+    const data = JSON.parse(evt.data as string) as Record<string, string>;
+
+    if ("type" in data && ["pong", "user connected"].includes(data.type)) {
+      return;
+    }
+
+    if (!checkIsChatMessage(data)) {
+      return;
+    }
+
+    const adaptedMessages = adaptChatMessagesFromServer(data);
+    store.dispatch({ type: "SET_CHAT_MESSAGES", payload: { chatId: chat.id, messages: adaptedMessages } });
   }
 }
 

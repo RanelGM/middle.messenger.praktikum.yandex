@@ -1,15 +1,24 @@
 import { deepClone, getDefaultApiState } from "shared/lib";
-import type { Chat, ChatReducerAction, SetActiveChatAction, SetChatsAction } from "./types";
+import type {
+  Chat,
+  ChatMessage,
+  ChatReducerAction,
+  SetActiveChatAction,
+  SetChatMessagesAction,
+  SetChatsAction,
+} from "./types";
 import type { ApiState } from "shared/types";
 
 type ChatReducerState = {
   chats: ApiState<Chat[] | null>;
   activeChat: Chat | null;
+  chatMessages: Record<string, ChatMessage[]>;
 };
 
 const initialState: ChatReducerState = {
   chats: getDefaultApiState<Chat[] | null>(null),
   activeChat: null,
+  chatMessages: {},
 };
 
 class ChatReducer {
@@ -34,6 +43,13 @@ class ChatReducer {
       return updatedState;
     }
 
+    if (action.type === "SET_CHAT_MESSAGES") {
+      const updatedState = this.setChatMessages(action.payload);
+      this.state = updatedState;
+
+      return updatedState;
+    }
+
     return this.getState();
   }
 
@@ -43,6 +59,12 @@ class ChatReducer {
 
   private setActiveChat(payload: SetActiveChatAction["payload"]) {
     return deepClone({ ...this.state, activeChat: payload });
+  }
+
+  private setChatMessages(payload: SetChatMessagesAction["payload"]) {
+    const { chatId, messages } = payload;
+
+    return deepClone({ ...this.state, chatMessages: { ...this.state.chatMessages, [chatId]: messages } });
   }
 }
 

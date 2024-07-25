@@ -27,6 +27,23 @@ export type Chat = {
   };
 };
 
+export type ServerChatMessage = {
+  id: number;
+  type: string;
+  time: string;
+  content: string;
+  file: string | null;
+  is_read: boolean;
+  user_id: number;
+  chat_id: number;
+};
+
+export type ChatMessage = Omit<ServerChatMessage, "is_read" | "user_id" | "chat_id"> & {
+  isRead: ServerChatMessage["is_read"];
+  userId: ServerChatMessage["user_id"];
+  chatId: ServerChatMessage["chat_id"];
+};
+
 export type ChatToken = {
   token: string;
 };
@@ -41,4 +58,9 @@ export type SetActiveChatAction = {
   payload: Chat | null;
 };
 
-export type ChatReducerAction = SetChatsAction | SetActiveChatAction;
+export type SetChatMessagesAction = {
+  type: "SET_CHAT_MESSAGES";
+  payload: { chatId: number; messages: ChatMessage[] };
+};
+
+export type ChatReducerAction = SetChatsAction | SetActiveChatAction | SetChatMessagesAction;

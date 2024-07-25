@@ -23,9 +23,19 @@
   }
 }
 
-.time {
-  align-self: flex-end;
+.timeWrapper {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+  align-items: center;
   color: var(--color-text-secondary);
+}
+
+.timeWrapper_isRead {
+  color: var(--color-blue-1);
+}
+
+.time {
   font-size: var(--font-size-small);
   line-height: var(--line-height-small);
 }

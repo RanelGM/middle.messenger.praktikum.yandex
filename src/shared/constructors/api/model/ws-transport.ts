@@ -57,27 +57,9 @@ export class WSTransport {
   }
 
   private initEvents(socket: WebSocket) {
-    const handleMessage = (evt: MessageEvent) => {
-      if (typeof evt.data !== "string") {
-        return;
-      }
-
-      const data = JSON.parse(evt.data) as Record<string, string>;
-
-      if ("type" in data && data.type === "pong") {
-        console.log("ret");
-
-        return;
-      }
-
-      if (this.onMessage) {
-        this.onMessage(evt);
-      }
-    };
-
     socket.addEventListener("open", this.onOpen);
     socket.addEventListener("error", this.onError);
-    socket.addEventListener("message", handleMessage);
+    socket.addEventListener("message", this.onMessage);
     socket.addEventListener("close", this.onClose);
   }
 
