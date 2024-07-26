@@ -2,12 +2,11 @@ import { connect } from "entities/store";
 import { userApi } from "entities/user";
 import { Block } from "shared/constructors";
 import { getImageSrc } from "shared/lib";
-import { InputBasic } from "shared/ui";
+import { ImageInput } from "shared/ui";
 import type { StoreState } from "entities/store";
 import type { User } from "entities/user";
 import type { BlockProps } from "shared/constructors";
 import type { ApiState } from "shared/types";
-import type { BasicInputEvent } from "shared/ui";
 import styles from "./profile-avatar.module.scss";
 
 type MapProps = {
@@ -32,31 +31,25 @@ class ProfileAvatar extends Block {
       userApi,
       imageSrc,
       firstName: "",
-      FileInput: new InputBasic({
-        type: "file",
-        classNameInput: "visually-hidden",
-        accept: "image/jpeg, image/jpg, image/png, image/gif, image/webp",
-        onChange: (evt) => {
-          this.handleInputChange(evt);
+      ImageInput: new ImageInput({
+        imageSrc: "",
+        onChange: (file) => {
+          this.handleInputChange(file);
         },
       }),
     });
   }
 
-  private handleInputChange(evt: BasicInputEvent<Event>) {
-    const [file] = evt.target.files ?? [];
+  private handleInputChange(file: File) {
+    const formData = new FormData();
+    formData.append("avatar", file);
 
-    if (file) {
-      const formData = new FormData();
-      formData.append("avatar", file);
-
-      void userApi.changeAvatar(formData);
-    }
+    void userApi.changeAvatar(formData);
   }
 
   componentDidUpdate(oldProps: BlockProps & InnerProps, newProps: BlockProps & InnerProps): boolean {
     if (oldProps.userApi?.data?.avatar !== newProps.userApi?.data?.avatar) {
-      this.setProps({
+      this.children.ImageInput?.setProps({
         imageSrc: getImageSrc(newProps.userApi?.data?.avatar),
       });
     }
@@ -71,11 +64,7 @@ class ProfileAvatar extends Block {
   override render() {
     return /* HTML */ `
       <div class="${styles.profileAvatar}">
-        <label class="${styles.imageWrapper}">
-          <img class="${styles.image}" src="{{ imageSrc }}" alt="Аватар пользователя" width="130" height="130" />
-          <p class="${styles.changeOverlay}">Поменять аватар</p>
-          {{{ FileInput }}}
-        </label>
+        {{{ ImageInput }}}
 
         <h2 class="${styles.name}">{{ firstName }}</h2>
       </div>
