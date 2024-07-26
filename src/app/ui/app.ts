@@ -1,4 +1,6 @@
 import { shouldChangeRoute } from "app/lib/shouldChangeRoute";
+import { notificator } from "entities/notification";
+import { Notifications } from "entities/notification/ui/notifications";
 import { connect } from "entities/store";
 import { userApi } from "entities/user";
 import { Block, router } from "shared/constructors";
@@ -25,6 +27,7 @@ class App extends Block {
     super();
 
     this.initLoaders();
+    this.initNotifications();
   }
 
   private initRoutes() {
@@ -45,6 +48,10 @@ class App extends Block {
 
   private initLoaders() {
     void userApi.getUser();
+  }
+
+  private initNotifications() {
+    notificator.init(new Notifications());
   }
 
   componentDidUpdate(oldProps: BlockProps & MapProps, newProps: BlockProps & MapProps): boolean {
