@@ -1,9 +1,10 @@
+import { chatApi } from "entities/chat";
 import { connect, store } from "entities/store";
 import { userApi } from "entities/user";
 import { Block } from "shared/constructors";
 import { debounce, isEqual } from "shared/lib";
 import { Button, Icon, Input } from "shared/ui";
-import { UsersSearchListWithStore } from "../../users-search-list/users-search-list";
+import { UsersSearchList } from "../../users-search-list/users-search-list";
 import type { Chat } from "entities/chat";
 import type { StoreState } from "entities/store";
 import type { User } from "entities/user";
@@ -62,7 +63,7 @@ class UserAddModal extends Block {
           }
         },
       }),
-      UsersSearchList: new UsersSearchListWithStore({}),
+      UsersSearchList: new UsersSearchList({ users: [] }),
       ButtonSubmit: new Button({
         text: "Добавить",
         onClick: () => {
@@ -82,6 +83,12 @@ class UserAddModal extends Block {
       this.chat = newProps.activeChat;
     }
 
+    if (!isEqual(oldProps.searchUsersApi?.data ?? {}, newProps.searchUsersApi?.data ?? {})) {
+      const users = newProps.searchUsersApi?.data ?? [];
+
+      this.children.UsersSearchList?.setProps({ users });
+    }
+
     this.checkedUsers = newProps.checkedUsers ?? {};
 
     return true;
@@ -99,7 +106,15 @@ class UserAddModal extends Block {
   }
 
   private handleSubmit() {
-    // TODO: Добавить
+    const userIds = Object.values(this.checkedUsers).map((user) => user.id);
+    const chat = this.chat;
+    const onSuccess = this.handleClose.bind(this);
+
+    if (!chat || userIds.length === 0) {
+      return;
+    }
+
+    void chatApi.addChatUsers(userIds, chat.id, onSuccess);
   }
 
   render(): string {

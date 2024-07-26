@@ -49,18 +49,17 @@ class ChatPage extends Block {
 
     if (!isEqual(oldProps.chatsApi?.data ?? {}, newProps.chatsApi?.data ?? {})) {
       this.setLists({ lists: this.createChatItems(newProps.chatsApi.data ?? []) });
-
-      // TODO:
-      store.dispatch({ type: "SET_ACTIVE_CHAT", payload: newProps?.chatsApi.data?.[0] ?? null });
     }
 
-    if (!isEqual(oldProps.activeChat ?? {}, newProps.activeChat ?? {})) {
+    if (oldProps.activeChat?.id !== newProps.activeChat?.id) {
       const chat = newProps.activeChat;
 
       if (chat) {
         this.children.Stub?.hide();
+        void chatApi.getChatUsers(chat.id);
       } else {
         this.children.Stub?.show();
+        store.dispatch({ type: "SET_CHAT_USERS", payload: { data: [] } });
       }
     }
 

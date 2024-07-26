@@ -5,20 +5,24 @@ import type {
   ChatReducerAction,
   SetActiveChatAction,
   SetChatMessagesAction,
+  SetChatUsersAction,
   SetChatsAction,
 } from "./types";
+import type { ChatUser } from "entities/user";
 import type { ApiState } from "shared/types";
 
 type ChatReducerState = {
-  chats: ApiState<Chat[] | null>;
   activeChat: Chat | null;
   chatMessages: Record<string, ChatMessage[]>;
+  chats: ApiState<Chat[] | null>;
+  chatUsers: ApiState<ChatUser[]>;
 };
 
 const initialState: ChatReducerState = {
-  chats: getDefaultApiState<Chat[] | null>(null),
   activeChat: null,
   chatMessages: {},
+  chats: getDefaultApiState<Chat[] | null>(null),
+  chatUsers: getDefaultApiState<ChatUser[]>([]),
 };
 
 class ChatReducer {
@@ -29,13 +33,6 @@ class ChatReducer {
   }
 
   public dispatch(action: ChatReducerAction) {
-    if (action.type === "SET_CHATS") {
-      const updatedState = this.setChats(action.payload);
-      this.state = updatedState;
-
-      return updatedState;
-    }
-
     if (action.type === "SET_ACTIVE_CHAT") {
       const updatedState = this.setActiveChat(action.payload);
       this.state = updatedState;
@@ -45,6 +42,20 @@ class ChatReducer {
 
     if (action.type === "SET_CHAT_MESSAGES") {
       const updatedState = this.setChatMessages(action.payload);
+      this.state = updatedState;
+
+      return updatedState;
+    }
+
+    if (action.type === "SET_CHATS") {
+      const updatedState = this.setChats(action.payload);
+      this.state = updatedState;
+
+      return updatedState;
+    }
+
+    if (action.type === "SET_CHAT_USERS") {
+      const updatedState = this.setChatUsers(action.payload);
       this.state = updatedState;
 
       return updatedState;
@@ -65,6 +76,10 @@ class ChatReducer {
     const { chatId, messages } = payload;
 
     return deepClone({ ...this.state, chatMessages: { ...this.state.chatMessages, [chatId]: messages } });
+  }
+
+  private setChatUsers(payload: SetChatUsersAction["payload"]) {
+    return deepClone({ ...this.state, chatUsers: { ...this.state.chatUsers, ...payload } });
   }
 }
 

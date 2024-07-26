@@ -1,9 +1,12 @@
 import { store } from "entities/store";
+import { adaptChatUsersFromServer } from "entities/user";
 import { ApiRoutes } from "shared/constants";
 import { BasicApi, checkIsServerError } from "shared/constructors";
+import { getUnique } from "shared/lib";
 import { adaptChatsFromServer } from "./adapters/adaptChat";
 import { chatWs } from "./chat-ws";
 import type { Chat, ChatToken, ServerChat } from "../model/types";
+import type { ChatServerUser, ChatUser, User } from "entities/user";
 import type { ApiState } from "shared/types";
 
 class ChatApi extends BasicApi {
@@ -117,6 +120,76 @@ class ChatApi extends BasicApi {
       chatWs.initConnection(chat, data.token);
     } catch (error: unknown) {
       this.handleError(error);
+    }
+  }
+
+  async getChatUsers(id: Chat["id"]): Promise<void> {
+    const setApiState = (payload: Partial<ApiState<ChatUser[]>>) => {
+      store.dispatch({ type: "SET_CHAT_USERS", payload });
+    };
+
+    try {
+      setApiState({ isLoading: true });
+
+      const response = await this.api.get(ApiRoutes.Chats.getUsers(id), {
+        body: { id },
+      });
+
+      const data = response.getData<ChatServerUser[]>();
+
+      if (!data || !response.isOK || checkIsServerError(data)) {
+        setApiState({ isError: true });
+        this.handleError(data, response.statusCode);
+
+        return;
+      }
+
+      const adaptedData = adaptChatUsersFromServer(data);
+
+      setApiState({ isError: false, data: adaptedData });
+    } catch (error: unknown) {
+      setApiState({ isError: true });
+      this.handleError(error);
+    } finally {
+      setApiState({ isLoading: false });
+    }
+  }
+
+  async addChatUsers(addingUserIds: User["id"][], chatId: Chat["id"], onSuccess: () => void): Promise<void> {
+    const setApiState = (payload: Partial<ApiState<ChatUser[]>>) => {
+      store.dispatch({ type: "SET_CHAT_USERS", payload });
+    };
+
+    const currentIds = store.getState().chatReducer.chatUsers.data.map((user) => user.id);
+    const allIds = [...currentIds, ...addingUserIds];
+    const uniqueIds = getUnique(allIds, (id) => id);
+
+    try {
+      setApiState({ isLoading: true });
+
+      const response = await this.api.put(ApiRoutes.Chats.addUsers, {
+        body: {
+          users: uniqueIds,
+          chatId,
+        },
+      });
+
+      const data = response.getData<ChatServerUser[]>();
+
+      if (!data || !response.isOK || checkIsServerError(data)) {
+        setApiState({ isError: true });
+        this.handleError(data, response.statusCode);
+
+        return;
+      }
+
+      void this.getChatUsers(chatId);
+      onSuccess();
+    } catch (error: unknown) {
+      setApiState({ isError: true });
+      this.handleError(error);
+    } finally {
+      setApiState({ isLoading: false });
     }
   }
 }

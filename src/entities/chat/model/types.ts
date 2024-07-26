@@ -1,4 +1,4 @@
-import type { ServerUser, User } from "entities/user";
+import type { ChatUser, ServerUser, User } from "entities/user";
 import type { ApiState } from "shared/types";
 
 export type ServerChat = {
@@ -63,4 +63,9 @@ export type SetChatMessagesAction = {
   payload: { chatId: number; messages: ChatMessage[] };
 };
 
-export type ChatReducerAction = SetChatsAction | SetActiveChatAction | SetChatMessagesAction;
+export type SetChatUsersAction = {
+  type: "SET_CHAT_USERS";
+  payload: Partial<ApiState<ChatUser[]>>;
+};
+
+export type ChatReducerAction = SetChatsAction | SetActiveChatAction | SetChatMessagesAction | SetChatUsersAction;

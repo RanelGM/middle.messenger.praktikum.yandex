@@ -17,6 +17,14 @@ export type User = Omit<ServerUser, "first_name" | "second_name" | "display_name
   displayName: ServerUser["display_name"];
 };
 
+export type ChatServerUser = Omit<ServerUser, "phone" | "email"> & {
+  role: "regular" | "admin";
+};
+
+export type ChatUser = Omit<User, "phone" | "email"> & {
+  role: "regular" | "admin";
+};
+
 export type SignIn = {
   login: string;
   password: string;

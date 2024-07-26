@@ -1,3 +1,5 @@
+export { getUnique } from "./array/getUnique";
+
 export { getBeginningOfDate } from "./date/getBeginningOfDate";
 export { getDateDifference } from "./date/getDateDifference";
 export { getEndOfDate } from "./date/getEndOfDate";

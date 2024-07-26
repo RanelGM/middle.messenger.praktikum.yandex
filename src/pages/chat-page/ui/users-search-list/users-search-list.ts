@@ -1,47 +1,41 @@
-import { connect } from "entities/store";
 import { Block } from "shared/constructors";
 import { isEqual } from "shared/lib";
 import { UserSearchItemWithStore } from "./user-search-item";
-import type { StoreState } from "entities/store";
-import type { User } from "entities/user";
+import type { ChatUser, User } from "entities/user";
 import type { BlockProps } from "shared/constructors";
-import type { ApiState } from "shared/types";
 import styles from "./users-search-list.module.scss";
 
-type MapProps = {
-  searchUsersApi: ApiState<User[] | null>;
+type UsersSearchListProps = {
+  users: User[] | ChatUser[];
 };
 
-const mapStateToProps = (state: StoreState): MapProps => {
-  return {
-    searchUsersApi: state.userReducer.searchUsers,
-  };
-};
+export class UsersSearchList extends Block {
+  getItems: (users: User[] | ChatUser[]) => Block[];
 
-class UsersSearchList extends Block {
-  constructor() {
+  constructor(props: UsersSearchListProps) {
+    const { users } = props;
+
+    const getItems = (users: User[] | ChatUser[]) => {
+      return users.map((user) => new UserSearchItemWithStore({ user }));
+    };
+
     super({
       isLoading: false,
-      lists: [],
+      lists: getItems(users),
     });
+
+    this.getItems = getItems;
   }
 
-  componentDidUpdate(oldProps: BlockProps & MapProps, newProps: BlockProps & MapProps): boolean {
-    if (!isEqual(oldProps.searchUsersApi?.data ?? {}, newProps.searchUsersApi?.data ?? {})) {
-      const users = newProps.searchUsersApi?.data ?? [];
-
-      this.setLists({ lists: this.getItems(users) });
-    }
-
-    if (oldProps.searchUsersApi?.isLoading !== newProps.searchUsersApi?.isLoading) {
-      //
+  componentDidUpdate(
+    oldProps: BlockProps & UsersSearchListProps,
+    newProps: BlockProps & UsersSearchListProps,
+  ): boolean {
+    if (!isEqual(oldProps.users ?? {}, newProps.users ?? {})) {
+      this.setLists({ lists: this.getItems(newProps.users) });
     }
 
     return true;
-  }
-
-  getItems(users: User[]) {
-    return users.map((user) => new UserSearchItemWithStore({ user }));
   }
 
   render(): string {
@@ -52,5 +46,3 @@ class UsersSearchList extends Block {
     `;
   }
 }
-
-export const UsersSearchListWithStore = connect(mapStateToProps, UsersSearchList);
