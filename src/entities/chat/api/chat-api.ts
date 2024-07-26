@@ -176,7 +176,7 @@ class ChatApi extends BasicApi {
 
       const data = response.getData<ChatServerUser[]>();
 
-      if (!data || !response.isOK || checkIsServerError(data)) {
+      if (!response.isOK || checkIsServerError(data)) {
         setApiState({ isError: true });
         this.handleError(data, response.statusCode);
 
@@ -185,6 +185,39 @@ class ChatApi extends BasicApi {
 
       void this.getChatUsers(chatId);
       onSuccess();
+    } catch (error: unknown) {
+      setApiState({ isError: true });
+      this.handleError(error);
+    } finally {
+      setApiState({ isLoading: false });
+    }
+  }
+
+  async removeChatUsers(userIds: User["id"][], chatId: Chat["id"], onSuccess: () => void): Promise<void> {
+    const setApiState = (payload: Partial<ApiState<ChatUser[]>>) => {
+      store.dispatch({ type: "SET_CHAT_USERS", payload });
+    };
+    try {
+      setApiState({ isLoading: true });
+
+      const response = await this.api.delete(ApiRoutes.Chats.addUsers, {
+        body: {
+          users: userIds,
+          chatId,
+        },
+      });
+
+      const data = response.getData();
+
+      if (!response.isOK || checkIsServerError(data)) {
+        setApiState({ isError: true });
+        this.handleError(data, response.statusCode);
+
+        return;
+      }
+
+      onSuccess();
+      void this.getChatUsers(chatId);
     } catch (error: unknown) {
       setApiState({ isError: true });
       this.handleError(error);

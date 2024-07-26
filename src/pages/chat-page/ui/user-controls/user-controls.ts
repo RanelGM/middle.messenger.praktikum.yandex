@@ -4,6 +4,7 @@ import { getImageSrc, isEqual } from "shared/lib";
 import { Button, Icon, IconButton } from "shared/ui";
 import { ChatRemoveModalWithStore } from "../modals/chat-remove-modal/chat-remove-modal";
 import { UserAddModalWithStore } from "../modals/user-add-modal/user-add-modal";
+import { UserRemoveModalWithStore } from "../modals/user-remove-modal/user-remove-modal";
 import type { Chat } from "entities/chat";
 import type { StoreState } from "entities/store";
 import type { BlockProps } from "shared/constructors";
@@ -66,6 +67,7 @@ class UserControls extends Block {
         },
       }),
       ModalUserAdd: new UserAddModalWithStore({ isOpen: false }),
+      ModalUserRemove: new UserRemoveModalWithStore({ isOpen: false }),
       ModalRemoveChat: new ChatRemoveModalWithStore({ isOpen: false }),
     });
   }
@@ -104,7 +106,8 @@ class UserControls extends Block {
   }
 
   private handleRemoveUserBtnClick() {
-    //
+    this.children.ModalUserRemove?.setProps({ isOpen: true });
+    this.toggleKebab();
   }
 
   private handleRemoveChatBtnClick() {
@@ -130,7 +133,7 @@ class UserControls extends Block {
           </ul>
         </div>
 
-        {{{ ModalUserAdd }}} {{{ ModalRemoveChat }}}
+        {{{ ModalUserAdd }}} {{{ ModalUserRemove }}} {{{ ModalRemoveChat }}}
       </div>
     `;
   }
