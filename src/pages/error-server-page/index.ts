@@ -1,1 +1,1 @@
-export { ErrorServerPage } from "./ui/error-server-page";
+export { ErrorServerPageWithStore as ErrorServerPage } from "./ui/error-server-page";

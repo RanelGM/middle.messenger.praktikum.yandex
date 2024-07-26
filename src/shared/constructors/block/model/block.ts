@@ -240,7 +240,7 @@ export class Block {
     const element = this.getContent();
 
     if (element) {
-      element.style.display = "block";
+      element.classList.remove("visually-hidden");
     }
   }
 
@@ -248,7 +248,7 @@ export class Block {
     const element = this.getContent();
 
     if (element) {
-      element.style.display = "none";
+      element.classList.add("visually-hidden");
     }
   }
 
