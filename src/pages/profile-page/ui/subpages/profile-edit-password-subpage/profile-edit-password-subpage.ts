@@ -90,7 +90,8 @@ class ProfileEditPasswordSubPage extends Block {
   private handleSubmit(submitData: SubmitState) {
     const { oldPassword, newPassword } = submitData;
 
-    void userApi.changePassword({ oldPassword, newPassword }, this.redirect.bind(this));
+    this.redirect();
+    void userApi.changePassword({ oldPassword, newPassword });
   }
 
   private redirect() {

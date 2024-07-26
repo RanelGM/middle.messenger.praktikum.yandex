@@ -136,7 +136,8 @@ class ProfileFormInfo extends Block {
       return;
     }
 
-    void userApi.changeUser({ ...user, ...submitData }, this.redirect.bind(this));
+    this.redirect();
+    void userApi.changeUser({ ...user, ...submitData });
   }
 
   override render() {

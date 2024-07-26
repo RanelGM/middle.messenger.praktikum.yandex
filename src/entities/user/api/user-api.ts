@@ -1,3 +1,4 @@
+import { notificator } from "entities/notification";
 import { store } from "entities/store";
 import { ApiRoutes } from "shared/constants";
 import { BasicApi, checkIsServerError } from "shared/constructors";
@@ -16,6 +17,10 @@ class UserApi extends BasicApi {
 
       const response = await this.api.get(ApiRoutes.Auth.user);
       const data = response.getData<ServerUser>();
+
+      if (response.statusCode === 401) {
+        return;
+      }
 
       if (!data || !response.isOK || checkIsServerError(data)) {
         setUserApiState({ isError: true });
@@ -116,7 +121,7 @@ class UserApi extends BasicApi {
     }
   }
 
-  async changeUser(user: User, onSuccess: () => void): Promise<void> {
+  async changeUser(user: User): Promise<void> {
     const setUserApiState = (payload: Partial<ApiState<User | null>>) => {
       store.dispatch({ type: "SET_USER", payload });
     };
@@ -137,9 +142,8 @@ class UserApi extends BasicApi {
       }
 
       const adaptedUser = adaptUserFromServer(data);
-
+      notificator.success("Данные успешно изменены");
       setUserApiState({ data: adaptedUser, isError: false });
-      onSuccess();
     } catch (error: unknown) {
       setUserApiState({ isError: true });
       this.handleError(error);
@@ -148,7 +152,7 @@ class UserApi extends BasicApi {
     }
   }
 
-  async changePassword(update: PasswordUpdate, onSuccess: () => void): Promise<void> {
+  async changePassword(update: PasswordUpdate): Promise<void> {
     const setUserApiState = (payload: Partial<ApiState<User | null>>) => {
       store.dispatch({ type: "SET_USER", payload });
     };
@@ -166,8 +170,8 @@ class UserApi extends BasicApi {
         return;
       }
 
+      notificator.success("Данные успешно изменены");
       setUserApiState({ isError: false });
-      onSuccess();
     } catch (error: unknown) {
       setUserApiState({ isError: true });
       this.handleError(error);

@@ -51,6 +51,10 @@ export class Notificator {
   private open(notification: Notification) {
     this.notifications = [...this.notifications, notification];
     this.update(this.notifications);
+
+    setTimeout(() => {
+      this.close(notification.id);
+    }, 5000);
   }
 
   private update(notifications: Notification[]) {

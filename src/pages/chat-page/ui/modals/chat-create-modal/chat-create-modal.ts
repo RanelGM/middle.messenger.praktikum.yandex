@@ -67,7 +67,8 @@ class ChatCreateModal extends Block {
     this.children.Input?.setProps({ errorMessage: value ? "" : "Обязательно к заполнению" });
 
     if (value) {
-      void chatApi.createChat(value, this.closeModal);
+      this.closeModal();
+      void chatApi.createChat(value);
     }
   }
 

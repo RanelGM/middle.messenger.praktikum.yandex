@@ -1,4 +1,7 @@
-import { ApiRoutes } from "shared/constants";
+import { notificator } from "entities/notification";
+import { ApiRoutes, AppRoutes } from "shared/constants";
+import { router } from "shared/constructors/router";
+import { isBetweenRange } from "shared/lib";
 import { checkIsServerError } from "../lib/checkIsServerError";
 import { HTTPTransport } from "./http-transport";
 
@@ -25,11 +28,15 @@ export class BasicApi {
   }
 
   public handleError(error: unknown, statusCode?: number) {
-    console.log("ERROR IS", error);
-
     const notify = (message: string) => {
-      console.log(message, statusCode);
+      notificator.error(`${statusCode ? `${statusCode}. ` : ""}${message}`);
     };
+
+    if (statusCode && isBetweenRange(statusCode, [500, 599])) {
+      router.go(AppRoutes.ErrorServer);
+
+      return;
+    }
 
     if (typeof error === "string") {
       notify(error);
@@ -38,7 +45,7 @@ export class BasicApi {
     }
 
     if (checkIsServerError(error)) {
-      notify(`Произошла ошибка: ${error.reason}`);
+      notify(`${error.reason}`);
 
       return;
     }

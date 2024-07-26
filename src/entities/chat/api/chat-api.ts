@@ -1,3 +1,4 @@
+import { notificator } from "entities/notification";
 import { store } from "entities/store";
 import { adaptChatUsersFromServer } from "entities/user";
 import { ApiRoutes } from "shared/constants";
@@ -43,7 +44,7 @@ class ChatApi extends BasicApi {
     }
   }
 
-  async createChat(title: string, onSuccess: () => void): Promise<void> {
+  async createChat(title: string): Promise<void> {
     const setChatsApiState = (payload: Partial<ApiState<Chat[] | null>>) => {
       store.dispatch({ type: "SET_CHATS", payload });
     };
@@ -63,7 +64,6 @@ class ChatApi extends BasicApi {
         return;
       }
 
-      onSuccess();
       void this.getChats();
     } catch (error: unknown) {
       setChatsApiState({ isError: true });
@@ -73,7 +73,7 @@ class ChatApi extends BasicApi {
     }
   }
 
-  async removeChat(chat: Chat, onSuccess: () => void): Promise<void> {
+  async removeChat(chat: Chat): Promise<void> {
     const setChatsApiState = (payload: Partial<ApiState<Chat[] | null>>) => {
       store.dispatch({ type: "SET_CHATS", payload });
     };
@@ -96,7 +96,6 @@ class ChatApi extends BasicApi {
       const currentChats = store.getState().chatReducer.chats.data ?? [];
       const updatedChats = currentChats.filter((currentChat) => currentChat.id !== chat.id);
 
-      onSuccess();
       setChatsApiState({ data: updatedChats, isError: false });
     } catch (error: unknown) {
       setChatsApiState({ isError: true });
@@ -155,7 +154,7 @@ class ChatApi extends BasicApi {
     }
   }
 
-  async addChatUsers(addingUserIds: User["id"][], chatId: Chat["id"], onSuccess: () => void): Promise<void> {
+  async addChatUsers(addingUserIds: User["id"][], chatId: Chat["id"]): Promise<void> {
     const setApiState = (payload: Partial<ApiState<ChatUser[]>>) => {
       store.dispatch({ type: "SET_CHAT_USERS", payload });
     };
@@ -183,8 +182,8 @@ class ChatApi extends BasicApi {
         return;
       }
 
+      notificator.success("Пользователь успешно добавлен");
       void this.getChatUsers(chatId);
-      onSuccess();
     } catch (error: unknown) {
       setApiState({ isError: true });
       this.handleError(error);
@@ -193,7 +192,7 @@ class ChatApi extends BasicApi {
     }
   }
 
-  async removeChatUsers(userIds: User["id"][], chatId: Chat["id"], onSuccess: () => void): Promise<void> {
+  async removeChatUsers(userIds: User["id"][], chatId: Chat["id"]): Promise<void> {
     const setApiState = (payload: Partial<ApiState<ChatUser[]>>) => {
       store.dispatch({ type: "SET_CHAT_USERS", payload });
     };
@@ -216,7 +215,7 @@ class ChatApi extends BasicApi {
         return;
       }
 
-      onSuccess();
+      notificator.success("Пользователь успешно удалён");
       void this.getChatUsers(chatId);
     } catch (error: unknown) {
       setApiState({ isError: true });

@@ -86,13 +86,13 @@ class UserRemoveModal extends Block {
   private handleSubmit() {
     const userIds = Object.values(this.checkedUsers).map((user) => user.id);
     const chat = this.chat;
-    const onSuccess = this.handleClose.bind(this);
 
     if (!chat || userIds.length === 0) {
       return;
     }
 
-    void chatApi.removeChatUsers(userIds, chat.id, onSuccess);
+    this.handleClose();
+    void chatApi.removeChatUsers(userIds, chat.id);
   }
 
   render(): string {

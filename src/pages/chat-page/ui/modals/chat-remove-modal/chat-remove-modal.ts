@@ -68,7 +68,8 @@ class ChatRemoveModal extends Block {
     const activeChat = (this.props as MapProps).activeChat;
 
     if (activeChat) {
-      void chatApi.removeChat(activeChat, this.handleClose.bind(this));
+      this.handleClose();
+      void chatApi.removeChat(activeChat);
     }
   }
 
