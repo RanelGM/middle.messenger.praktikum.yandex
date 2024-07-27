@@ -33,5 +33,6 @@ export const ApiRoutes = {
     addUsers: "/chats/users",
     removeUsers: "/chats/users",
     getToken: (id: number) => `/chats/token/${id}`,
+    changeAvatar: "/chats/avatar",
   },
 } as const;

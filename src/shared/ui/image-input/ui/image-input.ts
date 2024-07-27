@@ -5,16 +5,18 @@ import styles from "./image-input.module.scss";
 type ImageInputProps = {
   imageSrc: string;
   imageClassName?: string;
+  changeOverlayClassName?: string;
   onChange: (file: File) => void;
 };
 
 export class ImageInput extends Block {
   constructor(props: ImageInputProps) {
-    const { imageSrc, imageClassName, onChange } = props;
+    const { imageSrc, imageClassName, changeOverlayClassName, onChange } = props;
 
     super({
       imageSrc,
       imageClassName,
+      changeOverlayClassName,
       FileInput: new InputBasic({
         type: "file",
         classNameInput: "visually-hidden",
@@ -40,7 +42,9 @@ export class ImageInput extends Block {
           width="130"
           height="130"
         />
-        <p class="${styles.changeOverlay}">Поменять аватар</p>
+        <p class="${styles.changeOverlay} {{#if changeOverlayClassName}}{{changeOverlayClassName}}{{/if}}">
+          Поменять аватар
+        </p>
         {{{ FileInput }}}
       </label>
     `;

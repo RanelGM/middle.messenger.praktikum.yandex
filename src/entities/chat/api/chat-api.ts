@@ -4,7 +4,7 @@ import { adaptChatUsersFromServer } from "entities/user";
 import { ApiRoutes } from "shared/constants";
 import { BasicApi, checkIsServerError } from "shared/constructors";
 import { getUnique } from "shared/lib";
-import { adaptChatsFromServer } from "./adapters/adaptChat";
+import { adaptChatFromServer, adaptChatsFromServer } from "./adapters/adaptChat";
 import { chatWs } from "./chat-ws";
 import type { Chat, ChatToken, ServerChat } from "../model/types";
 import type { ChatServerUser, ChatUser, User } from "entities/user";
@@ -187,8 +187,6 @@ class ChatApi extends BasicApi {
     } catch (error: unknown) {
       setApiState({ isError: true });
       this.handleError(error);
-    } finally {
-      setApiState({ isLoading: false });
     }
   }
 
@@ -220,8 +218,26 @@ class ChatApi extends BasicApi {
     } catch (error: unknown) {
       setApiState({ isError: true });
       this.handleError(error);
-    } finally {
-      setApiState({ isLoading: false });
+    }
+  }
+
+  async changeAvatar(formData: FormData): Promise<void> {
+    try {
+      const response = await this.api.put(ApiRoutes.Chats.changeAvatar, {
+        body: formData,
+      });
+      const data = response.getData<ServerChat>();
+
+      if (!data || !response.isOK || checkIsServerError(data)) {
+        this.handleError(data, response.statusCode);
+
+        return;
+      }
+
+      const adaptedChat = adaptChatFromServer(data);
+      store.dispatch({ type: "SET_ACTIVE_CHAT", payload: adaptedChat });
+    } catch (error: unknown) {
+      this.handleError(error);
     }
   }
 }

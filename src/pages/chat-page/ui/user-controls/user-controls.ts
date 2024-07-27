@@ -1,13 +1,16 @@
+import { chatApi } from "entities/chat";
 import { connect } from "entities/store";
 import { Block } from "shared/constructors";
 import { getImageSrc, isEqual } from "shared/lib";
-import { Button, Icon, IconButton } from "shared/ui";
+import { Button, Icon, IconButton, ImageInput } from "shared/ui";
 import { ChatRemoveModalWithStore } from "../modals/chat-remove-modal/chat-remove-modal";
 import { UserAddModalWithStore } from "../modals/user-add-modal/user-add-modal";
 import { UserRemoveModalWithStore } from "../modals/user-remove-modal/user-remove-modal";
 import type { Chat } from "entities/chat";
 import type { StoreState } from "entities/store";
+import type { ChatUser } from "entities/user";
 import type { BlockProps } from "shared/constructors";
+import type { ApiState } from "shared/types";
 import styles from "./user-controls.module.scss";
 
 type Props = {
@@ -16,24 +19,37 @@ type Props = {
 
 type MapProps = {
   activeChat: Chat | null;
+  chatUsersApi: ApiState<ChatUser[]>;
 };
 
 const mapStateToProps = (state: StoreState): MapProps => {
   return {
     activeChat: state.chatReducer.activeChat,
+    chatUsersApi: state.chatReducer.chatUsers,
   };
 };
 
 const KebabWrapperId = "user-controls-kebab-wrapper";
 
 class UserControls extends Block {
+  chat: Chat | null;
+
   constructor(props: Props) {
     const { chat } = props;
 
     super({
+      usersCount: 1,
       chat,
       imageSrc: getImageSrc(null),
       isKebabOpen: false,
+      ImageInput: new ImageInput({
+        imageSrc: "",
+        imageClassName: styles.image,
+        changeOverlayClassName: styles.imageOverlay,
+        onChange: (file) => {
+          this.handleInputChange(file);
+        },
+      }),
       KebabButton: new IconButton({
         name: "Kebab",
         size: "extra-small",
@@ -70,14 +86,38 @@ class UserControls extends Block {
       ModalUserRemove: new UserRemoveModalWithStore({ isOpen: false }),
       ModalRemoveChat: new ChatRemoveModalWithStore({ isOpen: false }),
     });
+
+    this.chat = chat;
   }
 
   componentDidUpdate(oldProps: BlockProps & MapProps, newProps: BlockProps & MapProps): boolean {
     if (!isEqual(oldProps.activeChat ?? {}, newProps.activeChat ?? {})) {
-      this.setProps({ chat: newProps.activeChat, imageSrc: getImageSrc(newProps.activeChat?.avatar) });
+      this.setProps({ chat: newProps.activeChat });
+      this.chat = newProps.activeChat;
+      this.children.ImageInput?.setProps({ imageSrc: getImageSrc(newProps.activeChat?.avatar ?? "") });
+    }
+
+    if (!isEqual(oldProps.chatUsersApi ?? {}, newProps.chatUsersApi ?? {})) {
+      this.setProps({
+        usersCount: newProps.chatUsersApi?.isLoading ? "загружаем..." : newProps.chatUsersApi.data?.length,
+      });
     }
 
     return !isEqual(oldProps, newProps);
+  }
+
+  private handleInputChange(file: File) {
+    const chatId = this.chat?.id;
+
+    if (!chatId) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("avatar", file);
+    formData.append("chatId", chatId.toString());
+
+    void chatApi.changeAvatar(formData);
   }
 
   private toggleKebab() {
@@ -119,8 +159,12 @@ class UserControls extends Block {
     return /* HTML */ `
       <div class="${styles.userControls}">
         <div class="${styles.imageWrapper}">
-          <img class="${styles.image}" src="{{ imageSrc }}" alt="Выбранный чат" width="34" height="34" />
-          <p class="${styles.name}">{{ chat.title }}</p>
+          {{{ ImageInput }}}
+
+          <div>
+            <p class="${styles.name}">{{ chat.title }}</p>
+            <p class="${styles.usersCount}">Пользователей: {{usersCount}}</p>
+          </div>
         </div>
 
         <div id="${KebabWrapperId}" class="${styles.kebabWrapper}">
