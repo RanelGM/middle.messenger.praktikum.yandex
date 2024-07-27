@@ -69,13 +69,35 @@ class ChatReducer {
   }
 
   private setActiveChat(payload: SetActiveChatAction["payload"]) {
-    return deepClone({ ...this.state, activeChat: payload });
+    const currentChats = this.getState().chats.data ?? [];
+    const updatedChats = currentChats.map((chat) => (chat.id === payload?.id ? payload : chat));
+
+    return deepClone({ ...this.state, chats: { ...this.state.chats, data: updatedChats }, activeChat: payload });
   }
 
   private setChatMessages(payload: SetChatMessagesAction["payload"]) {
     const { chatId, messages } = payload;
 
-    return deepClone({ ...this.state, chatMessages: { ...this.state.chatMessages, [chatId]: messages } });
+    const [newestMessage] = messages;
+    const currentChats = this.getState().chats.data ?? [];
+
+    const updatedChats = currentChats.map((chat) => {
+      if (chat.id !== chatId || !newestMessage) {
+        return chat;
+      }
+
+      const lastMessage = chat.lastMessage
+        ? { ...chat.lastMessage, time: newestMessage.time, content: newestMessage.content }
+        : undefined;
+
+      return { ...chat, lastMessage };
+    });
+
+    return deepClone({
+      ...this.state,
+      chats: { ...this.state.chats, data: updatedChats },
+      chatMessages: { ...this.state.chatMessages, [chatId]: messages },
+    });
   }
 
   private setChatUsers(payload: SetChatUsersAction["payload"]) {

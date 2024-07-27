@@ -4,7 +4,7 @@ import { adaptChatUsersFromServer } from "entities/user";
 import { ApiRoutes } from "shared/constants";
 import { BasicApi, checkIsServerError } from "shared/constructors";
 import { getUnique } from "shared/lib";
-import { adaptChatFromServer, adaptChatsFromServer } from "./adapters/adaptChat";
+import { adaptChatsFromServer } from "./adapters/adaptChat";
 import { chatWs } from "./chat-ws";
 import type { Chat, ChatToken, ServerChat } from "../model/types";
 import type { ChatServerUser, ChatUser, User } from "entities/user";
@@ -234,8 +234,10 @@ class ChatApi extends BasicApi {
         return;
       }
 
-      const adaptedChat = adaptChatFromServer(data);
-      store.dispatch({ type: "SET_ACTIVE_CHAT", payload: adaptedChat });
+      const currentActiveChat = store.getState().chatReducer.activeChat;
+      const updatedActiveChat = currentActiveChat ? { ...currentActiveChat, avatar: data.avatar } : null;
+
+      store.dispatch({ type: "SET_ACTIVE_CHAT", payload: updatedActiveChat });
     } catch (error: unknown) {
       this.handleError(error);
     }

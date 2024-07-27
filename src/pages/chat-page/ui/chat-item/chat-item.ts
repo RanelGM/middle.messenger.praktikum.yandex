@@ -24,16 +24,18 @@ const mapStateToProps = (state: StoreState): MapProps => {
 class ChatItem extends Block {
   constructor(props: Props) {
     const { chat } = props;
-    const { unreadCount, lastMessage, avatar, ...restChatItem } = chat;
+    const { unreadCount, lastMessage, avatar, title } = chat;
 
     const dateTime = lastMessage ? formatPreviewDate(lastMessage.time) : undefined;
     const imgSrc = getImageSrc(avatar);
+    const message = lastMessage?.content ?? "";
 
     super({
-      ...restChatItem,
       isActive: false,
-      dateTime,
+      title,
       imgSrc,
+      dateTime,
+      message,
       count: unreadCount > 0 ? unreadCount : undefined,
       events: {
         click: () => {
@@ -65,7 +67,6 @@ class ChatItem extends Block {
 
             <div class="${styles.messageCountWrapper}">
               <p class="${styles.message}">{{ message }}</p>
-              {{#if count}}<p class="${styles.count}">{{ count }}</p>{{/if}}
             </div>
           </div>
         </button>
