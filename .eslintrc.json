@@ -43,7 +43,7 @@
     {
       "files": "./server.ts",
       "rules": {
-        "import/no-nodejs-modules": "false"
+        "import/no-nodejs-modules": "off"
       }
     }
   ],
