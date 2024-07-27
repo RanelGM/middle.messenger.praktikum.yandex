@@ -39,6 +39,12 @@
         "@typescript-eslint/consistent-indexed-object-style": "off",
         "import/no-default-export": "off"
       }
+    },
+    {
+      "files": "./server.ts",
+      "rules": {
+        "import/no-nodejs-modules": "false"
+      }
     }
   ],
   "rules": {
