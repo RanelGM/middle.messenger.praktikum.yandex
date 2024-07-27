@@ -36,3 +36,34 @@ ol {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.modal {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-overlay);
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 340px;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: var(--color-white);
+  box-shadow: var(--box-shadow-around);
+}
+
+.modalTitle {
+  font-size: 15px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.modalButtonClose {
+  align-self: flex-end;
+}

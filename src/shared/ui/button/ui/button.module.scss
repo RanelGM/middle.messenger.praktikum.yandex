@@ -14,7 +14,8 @@
   cursor: pointer;
   transition:
     border-color var(--transition-default),
-    background-color var(--transition-default);
+    background-color var(--transition-default),
+    opacity var(--transition-default);
 
   &:hover,
   &:focus-visible {
@@ -50,6 +51,17 @@
     border-color: transparent;
     background-color: transparent;
   }
+
+  &-clear {
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+
+    &:active {
+      box-shadow: none;
+    }
+  }
 }
 
 .button_size,
@@ -65,4 +77,9 @@
     font-size: var(--font-size-medium);
     line-height: var(--font-size-medium);
   }
+}
+
+.isLoading {
+  opacity: 0.5;
+  pointer-events: none;
 }

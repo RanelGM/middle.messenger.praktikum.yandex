@@ -2,6 +2,7 @@ import { Block } from "shared/constructors";
 import { cn } from "shared/lib";
 import { InputBasic } from "./input-basic/input-basic";
 import type { InputBasicProps } from "./input-basic/input-basic";
+import type { BlockProps } from "shared/constructors";
 import styles from "./input.module.scss";
 
 export type InputProps = InputBasicProps & {
@@ -27,6 +28,18 @@ export class Input extends Block {
       classNameLabel: cn(styles.label, classNameLabel),
       classNameLabelText: cn(styles.labelText, errorMessage && styles.labelText_error, classNameLabelText),
     });
+  }
+
+  componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
+    if (oldProps.value !== newProps.value) {
+      this.children.InputBasic?.setProps({ value: newProps.value });
+    }
+
+    return true;
+  }
+
+  public resetValue() {
+    this.children.InputBasic?.setProps({ value: "", errorMessage: "" });
   }
 
   override render() {

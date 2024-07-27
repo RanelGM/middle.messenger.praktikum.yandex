@@ -1,33 +1,33 @@
+import { userApi } from "entities/user";
 import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
-import { LinkAsButton } from "shared/ui";
-import { ProfileFormInfo } from "../../profile-form-info/profile-form-info";
+import { Button, LinkAsButton } from "shared/ui";
+import { ProfileFormInfoWithStore } from "../../profile-form-info/profile-form-info";
 import styles from "./profile-main-subpage.module.scss";
 
 export class ProfileMainSubPage extends Block {
   constructor() {
     super({
-      ProfileFormInfo: new ProfileFormInfo({ isReadonly: true }),
-      LinkChangeData: new LinkAsButton({
+      ProfileFormInfo: new ProfileFormInfoWithStore({ isReadonly: true }),
+      ChangeData: new LinkAsButton({
         href: AppRoutes.ProfileEditInfo,
-        page: AppRoutes.ProfileEditInfo,
         text: "Изменить данные",
         variant: "white",
         size: "medium",
       }),
-      LinkChangePassword: new LinkAsButton({
+      ChangePassword: new LinkAsButton({
         href: AppRoutes.ProfileEditPassword,
-        page: AppRoutes.ProfileEditPassword,
         text: "Изменить пароль",
         variant: "white",
         size: "medium",
       }),
-      LinkSignOut: new LinkAsButton({
-        href: AppRoutes.SignIn,
-        page: AppRoutes.SignIn,
+      SignOut: new Button({
         text: "Выйти",
         variant: "white",
         size: "medium",
+        onClick: () => {
+          void userApi.logout();
+        },
       }),
     });
   }
@@ -37,7 +37,7 @@ export class ProfileMainSubPage extends Block {
       <div class="${styles.subPage}">
         {{{ ProfileFormInfo }}}
 
-        <div>{{{ LinkChangeData }}} {{{ LinkChangePassword }}} {{{ LinkSignOut }}}</div>
+        <div class="${styles.controls}">{{{ ChangeData }}} {{{ ChangePassword }}} {{{ SignOut }}}</div>
       </div>
     `;
   }

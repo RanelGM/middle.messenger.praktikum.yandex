@@ -1,65 +1,81 @@
+import { chatApi } from "entities/chat";
+import { connect, store } from "entities/store";
 import { Block } from "shared/constructors";
-import { ChatExpanded } from "./chat-expanded/chat-expanded";
-import { ChatItem } from "./chat-item/chat-item";
-import { getChatItemMock } from "./chat-item/getChatItemsMock";
+import { isEqual } from "shared/lib";
+import { ChatCreate } from "./chat-create/chat-create";
+import { ChatExpandedWithStore } from "./chat-expanded/chat-expanded";
+import { ChatItemWithStore } from "./chat-item/chat-item";
 import { ProfileLink } from "./profile-link/profile-link";
 import { Search } from "./search/search";
 import { Stub } from "./stub/stub";
-import type { ChatItemType } from "../model/types";
+import type { Chat } from "entities/chat";
+import type { StoreState } from "entities/store";
+import type { BlockProps } from "shared/constructors";
+import type { ApiState } from "shared/types";
 import styles from "./chat-page.module.scss";
 
-const chatItemsMock = Array.from({ length: 8 }, (_value, index) => getChatItemMock(index));
+type MapProps = {
+  chatsApi: ApiState<Chat[] | null>;
+  activeChat: Chat | null;
+};
 
-export class ChatPage extends Block {
-  activeChat: ChatItemType | null = null;
+const mapStateToProps = (state: StoreState): MapProps => {
+  return {
+    chatsApi: state.chatReducer.chats,
+    activeChat: state.chatReducer.activeChat,
+  };
+};
+
+class ChatPage extends Block {
+  isMounted = false;
+  isConnected = false;
 
   constructor() {
-    const lists = chatItemsMock.map((chatItem) => {
-      return new ChatItem({
-        chatItem,
-        onItemClick: () => {
-          this._handleChatItemClick(chatItem);
-        },
-      });
-    });
-
     super({
+      ChatCreate: new ChatCreate(),
       ProfileLink: new ProfileLink(),
       Search: new Search(),
       Stub: new Stub(),
-      ChatExpanded: new ChatExpanded({ chatItem: chatItemsMock[0] as ChatItemType }),
-      lists,
+      ChatExpanded: new ChatExpandedWithStore({ chat: null }),
+      lists: [],
     });
   }
 
-  _handleChatItemClick(chatItem: ChatItemType) {
-    if (chatItem.id === this.activeChat?.id || !this.lists.lists) {
-      return;
+  componentDidUpdate(oldProps: BlockProps & MapProps, newProps: BlockProps & MapProps): boolean {
+    if (!this.isMounted) {
+      this.isMounted = true;
+      void chatApi.getChats();
     }
 
-    this.setProps({ activeChat: chatItem });
-    this.children.Stub?.hide();
-
-    if (this.children.ChatExpanded) {
-      (this.children.ChatExpanded as ChatExpanded).setProps({ chatItem });
+    if (!isEqual(oldProps.chatsApi?.data ?? {}, newProps.chatsApi?.data ?? {})) {
+      this.setLists({ lists: this.createChatItems(newProps.chatsApi.data ?? []) });
     }
 
-    (this.lists.lists as ChatItem[]).forEach((chat) => {
-      if (chat.props.isActive) {
-        chat.setProps({ isActive: false });
-      }
+    if (oldProps.activeChat?.id !== newProps.activeChat?.id) {
+      const chat = newProps.activeChat;
 
-      if (chat.props.id === chatItem.id) {
-        chat.setProps({ isActive: true });
+      if (chat) {
+        this.children.Stub?.hide();
+        void chatApi.getChatUsers(chat.id);
+      } else {
+        this.children.Stub?.show();
+        store.dispatch({ type: "SET_CHAT_USERS", payload: { data: [] } });
       }
-    });
+    }
+
+    return true;
+  }
+
+  private createChatItems(chats: Chat[]): Block[] {
+    return chats.map((chat) => new ChatItemWithStore({ chat }));
   }
 
   override render() {
     return /* HTML */ `
       <main class="${styles.main}">
         <div class="${styles.sidebar}">
-          <div class="${styles.sidebarHeader}">{{{ ProfileLink }}} {{{ Search }}}</div>
+          <div class="${styles.sidebarHeader}">{{{ ChatCreate }}} {{{ Search }}}</div>
+          <div>{{{ ProfileLink }}}</div>
           <ul class="${styles.chatList}">
             {{{ lists }}}
           </ul>
@@ -70,3 +86,5 @@ export class ChatPage extends Block {
     `;
   }
 }
+
+export const ChatPageWithStore = connect<MapProps>(mapStateToProps, ChatPage);

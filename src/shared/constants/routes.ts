@@ -1,10 +1,38 @@
 export const AppRoutes = {
-  SignIn: "signin",
-  SignUp: "signup",
-  Profile: "profile",
-  ProfileEditInfo: "profile/edit-info",
-  ProfileEditPassword: "profile/edit-password",
-  Chat: "chat",
-  ErrorNotFound: "error-not-found",
-  ErrorServer: "error-server",
+  SignIn: "/",
+  SignUp: "/sign-up",
+  Profile: "/settings",
+  ProfileEditInfo: "/settings/edit-info",
+  ProfileEditPassword: "/settings/edit-password",
+  Chat: "/messenger",
+  ErrorNotFound: "/error-not-found",
+  ErrorServer: "/error-server",
+} as const;
+
+export const ApiRoutes = {
+  BaseUrl: "https://ya-praktikum.tech/api/v2",
+  SocketBaseUrl: "wss://ya-praktikum.tech/ws",
+  ResourcesUrl: "resources",
+  Auth: {
+    user: "/auth/user",
+    signup: "/auth/signup",
+    signin: "/auth/signin",
+    logout: "/auth/logout",
+  },
+  Users: {
+    changeUser: "/user/profile",
+    changePassword: "/user/password",
+    changeAvatar: "/user/profile/avatar",
+    search: "/user/search",
+  },
+  Chats: {
+    getChats: "/chats",
+    createChat: "/chats",
+    deleteChat: "/chats",
+    getUsers: (id: number) => `/chats/${id}/users`,
+    addUsers: "/chats/users",
+    removeUsers: "/chats/users",
+    getToken: (id: number) => `/chats/token/${id}`,
+    changeAvatar: "/chats/avatar",
+  },
 } as const;

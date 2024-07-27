@@ -1,56 +1,72 @@
+import { connect, store } from "entities/store";
 import { formatPreviewDate } from "pages/chat-page/lib/formatPreviewDate";
 import { Block } from "shared/constructors";
-import { cn } from "shared/lib";
-import type { ChatItemType } from "pages/chat-page/model/types";
+import { getImageSrc, isEqual } from "shared/lib";
+import type { Chat } from "entities/chat";
+import type { StoreState } from "entities/store";
+import type { BlockProps } from "shared/constructors";
 import styles from "./chat-item.module.scss";
 
 type Props = {
-  chatItem: ChatItemType;
-  onItemClick: (chatItem: ChatItemType) => void;
+  chat: Chat;
 };
 
-export class ChatItem extends Block {
-  constructor(props: Props) {
-    const { chatItem, onItemClick } = props;
-    const { date, unreadCount, ...restChatItem } = chatItem;
+type MapProps = {
+  activeChat: Chat | null;
+};
 
-    formatPreviewDate(date);
+const mapStateToProps = (state: StoreState): MapProps => {
+  return {
+    activeChat: state.chatReducer.activeChat,
+  };
+};
+
+class ChatItem extends Block {
+  constructor(props: Props) {
+    const { chat } = props;
+    const { unreadCount, lastMessage, avatar, title } = chat;
+
+    const dateTime = lastMessage ? formatPreviewDate(lastMessage.time) : undefined;
+    const imgSrc = getImageSrc(avatar);
+    const message = lastMessage?.content ?? "";
+
     super({
-      ...restChatItem,
-      count: unreadCount && unreadCount > 0 ? unreadCount : undefined,
-      dateTime: formatPreviewDate(date),
+      isActive: false,
+      title,
+      imgSrc,
+      dateTime,
+      message,
+      count: unreadCount > 0 ? unreadCount : undefined,
       events: {
         click: () => {
-          onItemClick(chatItem);
+          store.dispatch({ type: "SET_ACTIVE_CHAT", payload: chat });
         },
       },
     });
   }
 
-  toggleActive(isActive: boolean) {
-    if (isActive) {
-      this.addAttributes({ class: cn(styles.chatItem, styles.chatItem_active) });
-    } else {
-      this.removeAttributes(["class"]);
-      this.addAttributes({ class: cn(styles.chatItem) });
+  componentDidUpdate(oldProps: BlockProps & MapProps, newProps: BlockProps & MapProps): boolean {
+    if (!isEqual(oldProps.activeChat ?? {}, newProps.activeChat ?? {})) {
+      this.setProps({ isActive: Boolean(newProps.activeChat?.id === this.props.id) });
     }
+
+    return true;
   }
 
   render() {
     return /* HTML */ `
       <li class="${styles.chatItem} {{#if isActive}}${styles.chatItem_active}{{/if}}">
         <button class="${styles.button}">
-          <img class="${styles.image}" src="{{ img }}" alt="Изображение пользователя" width="47" height="47" />
+          <img class="${styles.image}" src="{{ imgSrc }}" alt="Изображение пользователя" width="47" height="47" />
 
           <div class="${styles.contentWrapper}">
             <div class="${styles.nameDateWrapper}">
-              <h3 class="${styles.name}">{{ name }}<h3>
+              <h3 class="${styles.title}">{{ title }}<h3>
               <p class="${styles.date}">{{ dateTime }}</p>
             </div>
 
             <div class="${styles.messageCountWrapper}">
               <p class="${styles.message}">{{ message }}</p>
-              {{#if count}}<p class="${styles.count}">{{ count }}</p>{{/if}}
             </div>
           </div>
         </button>
@@ -58,3 +74,5 @@ export class ChatItem extends Block {
     `;
   }
 }
+
+export const ChatItemWithStore = connect(mapStateToProps, ChatItem);

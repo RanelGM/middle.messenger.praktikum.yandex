@@ -13,8 +13,55 @@
   align-items: center;
 }
 
+.image {
+  width: 50px;
+  height: 50px;
+}
+
+.imageOverlay {
+  font-size: 9px;
+  line-height: 9px;
+}
+
 .name {
   font-weight: bold;
   font-size: var(--font-size-medium);
   line-height: var(--line-height-medium);
+}
+
+.usersCount {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.kebabWrapper {
+  position: relative;
+}
+
+.kebabList {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 210px;
+  border-radius: 8px;
+  background-color: var(--color-white);
+  box-shadow: var(--box-shadow-around);
+}
+
+.kebabButton {
+  justify-content: left;
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--color-blue-1);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-white);
+  }
 }

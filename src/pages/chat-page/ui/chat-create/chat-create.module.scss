@@ -1,0 +1,11 @@
+.createButton {
+  color: var(--color-blue-1-opacity-60);
+  font-size: 12px;
+  line-height: 12px;
+  transition: color var(--transition-default);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-blue-1);
+  }
+}

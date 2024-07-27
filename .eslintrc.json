@@ -39,6 +39,12 @@
         "@typescript-eslint/consistent-indexed-object-style": "off",
         "import/no-default-export": "off"
       }
+    },
+    {
+      "files": "./server.ts",
+      "rules": {
+        "import/no-nodejs-modules": "off"
+      }
     }
   ],
   "rules": {
@@ -185,7 +191,9 @@
       "error",
       {
         "selector": "variable",
-        "format": ["camelCase", "PascalCase", "UPPER_CASE"]
+        "format": ["camelCase", "PascalCase", "UPPER_CASE"],
+        "leadingUnderscore": "allow",
+        "trailingUnderscore": "allow"
       },
       {
         "selector": "function",
@@ -223,8 +231,15 @@
     ], // Добавляет пустую строку перед return (https://typescript-eslint.io/rules/padding-line-between-statements)
     "@typescript-eslint/non-nullable-type-assertion-style": "off", // Отключает рекомендацию использовать оператор ненулевого утверждения (https://typescript-eslint.io/rules/non-nullable-type-assertion-style)
     "@typescript-eslint/prefer-for-of": "off", // Отключает требование использовать for of вместо for loop
-    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
     "@typescript-eslint/restrict-template-expressions": "off",
-    "@typescript-eslint/no-this-alias": "off"
+    "@typescript-eslint/no-this-alias": "off",
+    "@typescript-eslint/no-unnecessary-condition": "off"
   }
 }

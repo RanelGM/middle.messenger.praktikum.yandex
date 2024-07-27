@@ -1,5 +1,5 @@
 import { Block } from "shared/constructors";
-import { ProfileAvatar } from "./profile-avatar/profile-avatar";
+import { ProfileAvatarWithStore } from "./profile-avatar/profile-avatar";
 import { ProfilePrevious } from "./profile-previous/profile-previous";
 import { SubPages } from "./subpages/subpages";
 import type { SubPageType } from "./subpages/subpages";
@@ -15,7 +15,7 @@ export class ProfilePage extends Block {
 
     super({
       ProfilePrevious: new ProfilePrevious(),
-      ProfileAvatar: new ProfileAvatar(),
+      ProfileAvatar: new ProfileAvatarWithStore(),
       SubPages: new SubPages({ subPage }),
     });
   }
