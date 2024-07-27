@@ -1,5 +1,5 @@
-import { userApi } from "entities/user";
 import { connect } from "entities/store";
+import { userApi } from "entities/user";
 import { AppRoutes } from "shared/constants";
 import { Block } from "shared/constructors";
 import {
@@ -11,8 +11,8 @@ import {
   validatePhone,
 } from "shared/lib";
 import { Form, LinkAsButton, PageTitle } from "shared/ui";
-import type { SignUp, User } from "entities/user";
 import type { StoreState } from "entities/store/model/types";
+import type { SignUp, User } from "entities/user";
 import type { BlockProps } from "shared/constructors";
 import type { ApiState } from "shared/types";
 import styles from "./sign-up-page.module.scss";

@@ -1,12 +1,14 @@
+import { connect } from "entities/store";
+import { userApi } from "entities/user";
 import { AppRoutes } from "shared/constants";
-import { Block, BlockProps } from "shared/constructors";
+import { Block } from "shared/constructors";
 import { validateLogin, validatePassword } from "shared/lib";
 import { Form, LinkAsButton, PageTitle } from "shared/ui";
-import { userApi, User, type SignIn } from "entities/user";
+import type { StoreState } from "entities/store/model/types";
+import type { SignIn, User } from "entities/user";
+import type { BlockProps } from "shared/constructors";
+import type { ApiState } from "shared/types";
 import styles from "./sign-in-page.module.scss";
-import { StoreState } from "entities/store/model/types";
-import { ApiState } from "shared/types";
-import { connect } from "entities/store";
 
 type MapProps = {
   userApi: ApiState<User | null>;
