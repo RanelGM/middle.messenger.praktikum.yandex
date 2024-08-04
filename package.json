@@ -7,7 +7,6 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "prepare": "husky install",
     "dev": "vite",
     "build": "tsc && vite build",
     "start": "npm run build && tsx server.ts",
@@ -19,7 +18,8 @@
     "prettier": "prettier . --check",
     "prettier:fix": "prettier . --write --loglevel warn",
     "lint": "npm run stylelint && npm run eslint && npm run prettier",
-    "lint:fix": "npm run stylelint:fix && npm run eslint:fix && npm run prettier:fix"
+    "lint:fix": "npm run stylelint:fix && npm run eslint:fix && npm run prettier:fix",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown --loglevel warn",
@@ -28,7 +28,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run test && npx lint-staged --concurrent false"
+      "pre-commit": "npm run lint && npm run test"
     }
   },
   "devDependencies": {
