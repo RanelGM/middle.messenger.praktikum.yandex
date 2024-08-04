@@ -4,7 +4,7 @@
 
 Учебный проект в рамках курса middle frontend developer от Яндекс Практикум.
 Прототип макета в [Figma](https://www.figma.com/design/Xzb7igEKbMxpGRLVTjDNJK/Yandex-practicum-Chat)
-Стабильная версия на [Netlify](https://taupe-bunny-433444.netlify.app/)
+Стабильная версия на [Netlify](https://deploy-preview-8--taupe-bunny-433444.netlify.app)
 
 ## Установка и запуск
 
