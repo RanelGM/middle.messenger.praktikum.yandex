@@ -1,4 +1,4 @@
-import type { Block } from "./block";
+import type { Block } from "./block/block";
 
 export type PropsWithChildrenProps = Record<string, unknown>;
 

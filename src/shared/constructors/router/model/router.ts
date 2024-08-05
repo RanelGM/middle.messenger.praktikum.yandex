@@ -5,7 +5,7 @@ type RouterProps = {
   root: string;
 };
 
-class Router {
+export class Router {
   static __instance: Router | null;
   _root: RouterProps["root"] | undefined;
   _routes: Route[] | undefined;
@@ -73,6 +73,20 @@ class Router {
     return this._currentRoute;
   }
 
+  getRoutes(): Route[] {
+    return this._routes ?? [];
+  }
+
+  getHistory(): History | undefined {
+    return this._history;
+  }
+
+  clearHistoryForTest() {
+    this._routes = [];
+    this._currentRoute = null;
+    this._history?.replaceState([], "");
+  }
+
   _onRouteChange(pathname: string): void {
     const route = this.findRoute(pathname) ?? this._fallbackRoute;
 
@@ -80,11 +94,12 @@ class Router {
       return;
     }
 
+    this._currentRoute = route;
     const rootElement = document.querySelector(this._root);
 
     if (rootElement) {
       rootElement.innerHTML = "";
-      this._currentRoute = route;
+
       route.render();
     }
   }

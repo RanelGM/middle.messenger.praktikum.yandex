@@ -1,4 +1,4 @@
-import type { Block } from "../../block/model/block";
+import type { Block } from "../../block/model/block/block";
 
 type RouteProps = {
   pathname: string;

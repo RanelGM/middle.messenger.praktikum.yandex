@@ -1,6 +1,6 @@
 import Handlebars from "handlebars";
-import { EventBus } from "./event-bus";
-import type { BlockProps, ChildrenProps, EventCallback, ListsProps, PropsWithChildrenProps } from "./types";
+import { EventBus } from "../event-bus";
+import type { BlockProps, ChildrenProps, EventCallback, ListsProps, PropsWithChildrenProps } from "../types";
 
 export class Block {
   static EVENTS = {
