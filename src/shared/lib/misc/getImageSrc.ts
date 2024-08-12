@@ -1,4 +1,4 @@
-import { ApiRoutes } from "shared/constants";
+import { ApiRoutes } from "../../constants";
 
 const DefaultImageSrc = "/media/profile-avatar.svg";
 

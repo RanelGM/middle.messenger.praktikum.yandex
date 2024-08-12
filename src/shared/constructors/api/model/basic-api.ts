@@ -3,7 +3,7 @@ import { ApiRoutes, AppRoutes } from "shared/constants";
 import { router } from "shared/constructors/router";
 import { isBetweenRange } from "shared/lib";
 import { checkIsServerError } from "../lib/checkIsServerError";
-import { HTTPTransport } from "./http-transport";
+import { HTTPTransport } from "./http-transport/http-transport";
 
 export class BasicApi {
   api: HTTPTransport;

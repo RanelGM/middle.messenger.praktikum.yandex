@@ -1,6 +1,6 @@
-import { isBetweenRange, queryStringify } from "shared/lib";
-import type { ParsedXHRResponse, ServerError } from "./types";
-import type { ValueOf } from "shared/types";
+import { isBetweenRange, queryStringify } from "../../../../lib";
+import type { ValueOf } from "../../../../types";
+import type { ParsedXHRResponse, ServerError } from "../types";
 
 const METHODS = {
   GET: "GET",
@@ -95,7 +95,7 @@ export class HTTPTransport {
       const xhr = new XMLHttpRequest();
       const queryString = queryStringify(query ?? {});
 
-      xhr.open(method, `${this.baseUrl}${url}${queryString}`);
+      xhr.open(method, `${this.baseUrl}${url}${queryString ? `?${queryString}` : ""}`);
       xhr.timeout = timeout;
       xhr.withCredentials = true;
 
